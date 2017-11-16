@@ -1,0 +1,66 @@
+﻿<ESRI.Configuration xmlns="http://schemas.esri.com/Desktop/AddIns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>BarreUniteTravail</Name>
+  <AddInID>{06f49553-cba3-4503-b9c2-6afb165acb22}</AddInID>
+  <Description>Barre d’outils ArcMap qui permet d’effectuer différents traitements relatifs aux unités de travail SNRC 50k, 250k ou Canada. </Description>
+  <Version>1.0</Version>
+  <Image>Images\mpoBarreUniteTravail.png</Image>
+  <Author>Michel Pothier</Author>
+  <Company>MPO</Company>
+  <Date>2013-11-15</Date>
+  <Targets>
+    <Target name="Desktop" version="10.5" />
+  </Targets>
+  <AddIn language="CLR" library="BarreUniteTravail.dll" namespace="BarreUniteTravail">
+    <ArcMap>
+      <Commands>
+        <Button id="MPO_BarreUniteTravail_cmdActiverMenu" class="cmdActiverMenu" message="Activer le menu pour définir une unité de travail." caption="Activer le menu" tip="Activer le menu pour définir une unité de travail." category="MPO-BarreUniteTravail" image="Images\cmdActiverMenu.png">
+          <Help source="file://BarreUniteTravail.pdf" topicID="cmdActiverMenu" />
+        </Button>
+        <Button id="MPO_BarreUniteTravail_cmdDessinerGeometrie" class="cmdDessinerGeometrie" message="Dessiner la géométrie de l'unité de travail." caption="Dessiner la géométrie" tip="Dessiner la géométrie de l'unité de travail." category="MPO-BarreUniteTravail" image="Images\cmdDessinerGeometrie.png" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="cmdDessinerGeometrie" />
+        </Button>
+        <Button id="MPO_BarreUniteTravail_cmdDessinerLimite" class="cmdDessinerLimite" message="Dessiner la limite de la géométrie de l'unité de travail." caption="Dessiner la limite" tip="Dessiner la limite de la géométrie de l'unité de travail." category="MPO-BarreUniteTravail" image="Images\cmdDessinerLimite.png" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="cmdDessinerLimite" />
+        </Button>
+        <Button id="MPO_BarreUniteTravail_cmdZoomGeometrie" class="cmdZoomGeometrie" message="Zoom selon la géométrie de l'unité de travail" caption="Zoom selon la géométrie" tip="Zoom selon la géométrie de l'unité de travail." category="MPO-BarreUniteTravail" image="Images\cmdZoomGeometrie.png" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="cmdZoomGeometrie" />
+        </Button>
+        <Button id="MPO_BarreUniteTravail_cmdCreerElement" class="cmdCreerElement" message="Créer un nouvel élément selon la géométrie de l'unité de travail et selon la classe de construction active." caption="Créer un nouvel élément" tip="Créer un nouvel élément selon la géométrie de l'unité de travail." category="MPO-BarreUniteTravail" image="Images\cmdCreerElement.png" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="cmdCreerElement" />
+        </Button>
+        <Button id="MPO_BarreUniteTravail_cmdRemplacerGeometrie" class="cmdRemplacerGeometrie" message="Remplacer la géométrie des éléments sélectionnés par la géométrie de l'unité de travail." caption="Remplacer la géométrie" tip="Remplacer la géométrie des éléments sélectionnés par la géométrie de l'unité de travail." category="Add-In Controls" image="Images\cmdRemplacerGeometrie.png" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="cmdRemplacerGeometrie" />
+        </Button>
+        <Button id="MPO_BarreUniteTravail_cmdIntersection" class="cmdIntersection" message="Intersection entre la géométrie des éléments sélectionnés et la géométrie de l'unité de découpage." caption="Intersection avec la géométrie" tip="Intersection entre la géométrie des éléments sélectionnés et la géométrie de l'unité de découpage." category="MPO-BarreUniteTravail" image="Images\cmdIntersection.png" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="cmdIntersection" />
+        </Button>
+        <Tool id="MPO_BarreUniteTravail_tooDessinerSnrc250k" class="tooDessinerSnrc250k" message="Dessiner la géométrie des unités de travail du Snrc au 250k contenue dans l'enveloppe spécifiée." caption="Dessiner la géométrie des Snrc au 250k" tip="Dessiner la géométrie des unités de travail du Snrc au 250k contenue dans l'enveloppe spécifiée." category="MPO-BarreUniteTravail" image="Images\tooDessinerSnrc250k.png" cursor="Images\Cross.cur" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="tooDessinerSnrc250k" />
+        </Tool>
+        <Tool id="MPO_BarreUniteTravail_tooDessinerSnrc50k" class="tooDessinerSnrc50k" message="Dessiner la géométrie des unités de travail du Snrc au 50k contenue dans l'enveloppe spécifiée." caption="Dessiner la géométrie des Snrc au 50k" tip="Dessiner la géométrie des unités de travail du Snrc au 50k contenue dans l'enveloppe spécifiée." category="MPO-BarreUniteTravail" image="Images\tooDessinerSnrc50k.png" cursor="Images\Cross.cur" onDemand="false">
+          <Help source="BarreUniteTravail.chm" topicID="tooDessinerSnrc50k" />
+        </Tool>
+      </Commands>
+      <Toolbars>
+        <Toolbar id="MPO_BarreUniteTravail_BarreUniteTravail" caption="MPO-BarreUniteTravail (19 septembre 2017)" showInitially="false">
+          <Items>
+            <Button refID="MPO_BarreUniteTravail_cmdActiverMenu" />
+            <Button refID="MPO_BarreUniteTravail_cmdDessinerGeometrie" />
+            <Button refID="MPO_BarreUniteTravail_cmdDessinerLimite" />
+            <Button refID="MPO_BarreUniteTravail_cmdZoomGeometrie" />
+            <Button refID="MPO_BarreUniteTravail_cmdCreerElement" />
+            <Button refID="MPO_BarreUniteTravail_cmdRemplacerGeometrie" />
+            <Button refID="MPO_BarreUniteTravail_cmdIntersection" />
+            <Button refID="MPO_BarreUniteTravail_tooDessinerSnrc250k" />
+            <Button refID="MPO_BarreUniteTravail_tooDessinerSnrc50k" />
+          </Items>
+        </Toolbar>
+      </Toolbars>
+      <DockableWindows>
+        <DockableWindow id="MPO_BarreUniteTravail_dckMenuUniteTravail" class="dckMenuUniteTravail+AddinImpl" caption="Unité de travail" image="Images\dckMenuUniteTravail.png">
+          <InitialPlacement height="300" width="300" state="unpinned" position="float" />
+        </DockableWindow>
+      </DockableWindows>
+    </ArcMap>
+  </AddIn>
+</ESRI.Configuration>

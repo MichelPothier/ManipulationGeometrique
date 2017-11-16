@@ -1,0 +1,626 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+BarreUniteTravail
+</name>
+</assembly>
+<members>
+<member name="T:BarreUniteTravail.tooDessinerSnrc50k">
+	<summary>
+Commande qui permet de dessiner dans la fenêtre graphique la géométrie du SNRC 50K en fonction du point donnée.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.Categorie">
+	<summary>
+Retourner la catégorie de l'unité de travail.
+</summary>
+	<returns>Catégorie de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.Numero">
+	<summary>
+Retourner le numéro de l'unité de travail.
+</summary>
+	<returns>Numéro de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.ZoneUTM">
+	<summary>
+Retourner la zone UTM de l'unité de travail.
+</summary>
+	<returns>Zone UTM de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.Echelle">
+	<summary>
+Retourner l'échelle de l'unité de travail.
+</summary>
+	<returns>Échelle de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.MeridienCentral">
+	<summary>
+Retourner le méridien central de l'unité de travail.
+</summary>
+	<returns>Méridien central de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.LatitudeSE">
+	<summary>
+Retourner la latitude SE de l'unité de travail.
+</summary>
+	<returns>Latitude SE de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.LongitudeSE">
+	<summary>
+Retourner la longitude SE de l'unité de travail.
+</summary>
+	<returns>Longitude SE de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.LatitudeNW">
+	<summary>
+Retourner la latitude NW de l'unité de travail.
+</summary>
+	<returns>Latitude NW de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.EstValide">
+	<summary>
+Retourner l'indice de validité de l'unité de travail.
+</summary>
+	<returns>Indice de validité de l'unité de travail de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.LongitudeNW">
+	<summary>
+Retourner la longitude NW de l'unité de travail.
+</summary>
+	<returns>Longitude NW de l'unité de travail.</returns>
+</member><member name="P:BarreUniteTravail.clsUniteTravail.Information">
+	<summary>
+Retourner l'information de l'unité de travail.
+</summary>
+	<returns>Information de l'unité de travail.</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.PolygoneGeo(System.Int32)">
+	<summary>
+Fonction qui permet de retourner la géométrie de type surface de l'unité de travail en coordonnées géographiques.
+</summary>
+	<param name="iDeltaMinute">Distance entre chaque sommet du polygone en minute.</param>
+	<returns>IPolygon correspondant à la géométrie de type surface de l'unité de travail, Nothing sinon.</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.LimiteSud(System.Int32)">
+	<summary>
+Fonction qui permet de retourner la limite SUD de l'unité de travail en coordonnées géographiques.
+</summary>
+	<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+	<returns>IPolyline correspondant à la géométrie de type ligne de la limite SUD, Nothing sinon.</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.LimiteOuest(System.Int32)">
+	<summary>
+Fonction qui permet de retourner la limite OUEST de l'unité de travail en coordonnées géographiques.
+</summary>
+	<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+	<returns>IPolyline correspondant à la géométrie de type ligne de la limite OUEST, Nothing sinon.</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.LimiteNord(System.Int32)">
+	<summary>
+Fonction qui permet de retourner la limite NORD de l'unité de travail en coordonnées géographiques.
+</summary>
+	<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+	<returns>IPolyline correspondant à la géométrie de type ligne de la limite NORD, Nothing sinon.</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.LimiteEst(System.Int32)">
+	<summary>
+Fonction qui permet de retourner la limite EST de l'unité de travail en coordonnées géographiques.
+</summary>
+	<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+	<returns>IPolyline correspondant à la géométrie de type ligne de la limite EST, Nothing sinon.</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.ProjectionUtmNad83(System.Byte)">
+	<summary>
+Fonction qui permet de retourner une référence spatiale en coordonnées UTM avec le datum Nad83 
+et selon le numéro ESRI de la projection.
+</summary>
+	<param name="ZoneUTM">Numéro de la zone UTM désiré. Par défaut, la zone UTM sera celle calculé du SNRC.</param>
+	<returns>ISpatialReference si la zone UTM est valide, sinon "Nothing"</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.NumeroProjectionUtmESRI(System.Byte)">
+	<summary>
+Fonction qui permet de retourner le numéro de projection UTM de ESRI selon la zone spécifiée.
+</summary>
+	<param name="ZoneUTM">Numéro de la zone UTM désiré.</param>
+	<returns>Numéro de projection UTM de ESRI selon la zone spécifiée, ou 0 si la zone n'est pas entre 6 et 22</returns>
+</member><member name="M:BarreUniteTravail.clsUniteTravail.ReferenceSpatialeGeoNad83">
+	<summary>
+Fonction qui permet de retourner la référence spatiale en coordonnées géographique avec le datum Nad83.
+</summary>
+	<returns>ISpatialReference correspondant au système de coordonnées géographique Nad83, Nothing sinon.</returns>
+</member><member name="T:BarreUniteTravail.clsUniteTravail">
+	<summary>
+ Classe qui contient l'information sur l'unité de travail. Cette information est calculée complètement.
+ Une unité de travail peut être de différente catégorie. Il peut être de catégorie CANADA, 
+ SNRC (Système National de Référence Cartographique du Canada) ou autres. 
+ Par défaut, la catégorie est CANADA.
+</summary>
+	<remarks>
+Auteur : Michel Pothier
+Date : 16 décembre 2009
+</remarks>
+</member><member name="T:BarreUniteTravail.cmdActiverMenu">
+	<summary>
+Commande qui permet d'activer le menu pour définir une unité de travail et afficher sa description. 
+Des paramètres d'affichage sont aussi disponibles.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="P:BarreUniteTravail.clsSNRC.DeltaLatitude(System.Double,System.Int32)">
+	<summary>
+ Retourner le Delta de la latitude pour n'importe lequel SNRC.
+</summary>
+	<returns>Delat de la latitude pour n'importe lequel SNRC.</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.DeltaLongitude(System.Double,System.Int32)">
+	<summary>
+ Retourner le Delta de la longitude pour n'importe lequel SNRC.
+</summary>
+	<returns>Delta de la longitude pour n'importe lequel SNRC.</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.LatitudeMinimum">
+	<summary>
+ Retourner la latitude minimum pour n'importe lequel SNRC.
+</summary>
+	<returns>Latitude minimum pour n'importe lequel SNRC</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.LatitudeMaximum">
+	<summary>
+ Retourner la latitude maximum pour n'importe lequel SNRC.
+</summary>
+	<returns>Latitude maximum pour n'importe lequel SNRC</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.LongitudeMinimum">
+	<summary>
+ Retourner la longitude minimum pour n'importe lequel SNRC.
+</summary>
+	<returns>Longitude minimum pour n'importe lequel SNRC</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.LongitudeMaximum">
+	<summary>
+ Retourner la longitude maximum pour n'importe lequel SNRC.
+</summary>
+	<returns>Longitude maximum pour n'importe lequel SNRC</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.ZoneUtmEst">
+	<summary>
+Retourner le numéro de zone UTM Est du SNRC.
+</summary>
+	<returns> Numéro de zone UTM Est du SNRC</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.ZoneUtmOuest">
+	<summary>
+Retourner le numéro de zone UTM Ouest du SNRC.
+</summary>
+	<returns> Numéro de zone UTM Ouest du SNRC.</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.DeuxZones">
+	<summary>
+Indiquer si le SNRC est présent dans deux zones.
+</summary>
+	<returns>Vrai si le SNRC est présent dans deux zones, faux sinon</returns>
+</member><member name="P:BarreUniteTravail.clsSNRC.Information">
+	<summary>
+Retourner l'information pour le SNRC.
+</summary>
+	<returns>Information pour le SNRC.</returns>
+</member><member name="M:BarreUniteTravail.clsSNRC.#ctor(System.String)">
+	<summary>
+Définir un nouveau SNRC lors de l'instanciation à partir d'un numéro.
+</summary>
+	<param name="sNumero">Numéro du SNRC à définir.</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.Definir(System.String)">
+	<summary>
+Fonction qui permet de définir le numéro de l'unité de travail correspondant à un SNRC. 
+Le numéro SNRC est décomposer en trois parties et chaque partie est validé. 
+À partir de chaque partie, on détermine certaine information nécessaire 
+pour le calcul du polygone et son système de coordonnées.
+</summary>
+	<param name="sNumero">Numéro du SNRC à définir.</param>
+	<returns>Vrai si le SNRC est valide, faux sinon.</returns>
+</member><member name="M:BarreUniteTravail.clsSNRC.#ctor(ESRI.ArcGIS.Geometry.IPoint,System.Int32)">
+	<summary>
+Définir un nouveau SNRC lors de l'instanciation à partir d'un point et d'une échelle.
+</summary>
+	<param name="pPoint">Point utilisé pour définir le SNRC.</param>
+	<param name="nEchelle">Échelle utilisée pour définir le SNRC.</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.Definir(ESRI.ArcGIS.Geometry.IPoint,System.Int32)">
+	<summary>
+Fonction qui permet de définir le numéro de l'unité de travail correspondant à un SNRC. 
+Le numéro SNRC est décomposer en trois parties et chaque partie est validé. 
+À partir de chaque partie, on détermine certaine information nécessaire 
+pour le calcul du polygone et son système de coordonnées.
+</summary>
+	<param name="pPoint">Point utilisé pour définir le SNRC.</param>
+	<param name="nEchelle">Échelle utilisée pour définir le SNRC.</param>
+	<returns>Vrai si le SNRC est valide, faux sinon.</returns>
+</member><member name="M:BarreUniteTravail.clsSNRC.DecomposerNumero">
+	<summary>
+Routine qui permet de décomposer le numero SNRC en trois parties. La première lettre trouvée dans le numéro SNRC 
+est utilisée pour décomposer le numéro. Tout ce qui vient avant la lettre trouvée est placé dans la partie un.
+</summary>
+</member><member name="M:BarreUniteTravail.clsSNRC.ValiderPartieUn">
+	<summary>
+Routine qui permet de valider la première partie du numéro SNRC. On vérifie que la valeur de la première partie est
+entre 1 et 120, ou 340 ou 520. On ajoute un zéro au début si le chiffre est inférieur à 100.
+</summary>
+</member><member name="M:BarreUniteTravail.clsSNRC.ValiderPartieDeux">
+	<summary>
+Routine qui permet de valider la deuxième partie du Numero SNRC. On vérifie si la lettre est entre A et P inclusivement.
+</summary>
+</member><member name="M:BarreUniteTravail.clsSNRC.ValiderPartieTrois">
+	<summary>
+Routine qui permet de valider la troisième partie du numéro SNRC et définir son échelle. 
+On vérifie que la valeur est entre 1 et 16 inclusivement. On ajoute un zéro si la valeur est inférieur à 10.
+</summary>
+</member><member name="M:BarreUniteTravail.clsSNRC.CalculCoin_SE_NW">
+	<summary>
+Routine qui permet de calculer du coin SE et NW en géographique selon l'échelle 50K ou 250K et la Zone UTM.
+</summary>
+</member><member name="M:BarreUniteTravail.clsSNRC.CoinBasGauche(System.Int32,System.Double,System.Double)">
+	<summary>
+Riutine qui permet de calculer la Latitude et la Longitude du coin en bas à gauche pour le polygone du SNRC.
+</summary>
+	<param name="position">Numéro de position de la lettre (Partie #2).</param>
+	<param name="DeltaLatitude">Distance en degrés entre les points pour la latitude.</param>
+	<param name="DeltaLongitude">Distance en degrés entre les points pour la longtude.</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.Coin68et80(System.Int32,System.Double,System.Double)">
+	<summary>
+Riutine qui permet de calculer la Latitude et la Longitude du coin selon la latitude 68 et 80.
+</summary>
+	<param name="position">Numéro de position de la lettre (Partie #2).</param>
+	<param name="DeltaLatitude">Distance en degrés entre les points pour la latitude.</param>
+	<param name="DeltaLongitude">Distance en degrés entre les points pour la longtude.</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.GET_SHEET_GEOG(ESRI.ArcGIS.Geometry.IPoint,System.Int32)">
+	<summary>
+ ROUTINE PERMETTANT DE DONNER LE NUMERO SNRC D'UN FEUILLET CARTOGRAPHIQUE AU 1:20000, 1:50000, 1:250000, 1:1000000 
+ A PARTIR D'UNE COORDONNEE GEOGRAPHIQUE ET L'ECHELLE DE LA CARTE.
+</summary>
+	<param name="pPoint">COORDONNEES GEOGRAPHIQUE D'UN POINT (LAT. LONG.).</param>
+	<param name="ECHELLE">FACTEUR ECHELLE DU FEUILLET.</param>
+	<returns>"String" contenant le numéro SNRC si le point et l'échelle sont valident, sinon "".</returns>
+	<remarks>
+ SNRC : AAABCCD
+        |  || |
+        |  || Partie du SNRC au 20000 (A-D)
+        |  |Partie du SNRC au 50000 (1-16)
+        |  Partie du SNRC au 250000 (A-P)
+        Partie du SNRC au 1000000 (1-116)
+</remarks>
+</member><member name="M:BarreUniteTravail.clsSNRC.SECTEUR(ESRI.ArcGIS.Geometry.IPoint,System.Int32[]@,System.Int32[]@,System.Int32[]@,System.Int32[]@)">
+	<summary>
+ ROUTINE PERMETTANT DE DONNER LES SECTEURS EN LAT. ET LONG. POUR LES FEUILLETS CARTOGRAPHIQUE DU SNRC.
+</summary>
+	<param name="pPoint">Coordonnee geographique (latitude et longitude).</param>
+	<param name="NTSA">Secteur en lat.(0-6) et long.(1-11) pour la partie A (1000000) du SNRC.</param>
+	<param name="NTSB">Secteur de 0-3 en lat. et long pour la partie B (250000) du SNRC.</param>
+	<param name="NTSC">Secteur de 0-3 en lat. et long pour la partie C (50000) du SNRC.</param>
+	<param name="NTSD">Secteur de 0-1 en lat. et long pour la partie D (20000) du SNRC.</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.NTS1000K(System.String@,System.Int32[])">
+	<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 1000000.
+</summary>
+	<param name="NTS">Nom de la carte selon le SNRC.</param>
+	<param name="NTSA">Secteur en lat.(0-6) et long.(1-11) pour la partie A (1000000) du SNRC.</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.NTS250K(System.String@,System.Int32[],ESRI.ArcGIS.Geometry.IPoint)">
+	<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 250000.
+</summary>
+	<param name="NTS">Nom de la carte selon le SNRC.</param>
+	<param name="NTSB">Secteur de 0-3 en lat. et long pour la partie B (250000) du SNRC.</param>
+	<param name="pPoint">Coordonnée géographique (latitude et longitude).</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.NTS50K(System.String@,System.Int32[])">
+	<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 50000.
+</summary>
+	<param name="NTS">Nom de la carte selon le SNRC.</param>
+	<param name="NTSC">Secteur de 0-3 en lat. et long pour la partie C (50000) du SNRC.</param>
+</member><member name="M:BarreUniteTravail.clsSNRC.NTS20K(System.String@,System.Int32[])">
+	<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 20000.
+</summary>
+	<param name="NTS">Nom de la carte selon le SNRC.</param>
+	<param name="NTSD">Secteur de 0-1 en lat. et long pour la partie D (20000) du SNRC.</param>
+</member><member name="T:BarreUniteTravail.clsSNRC">
+	<summary>
+ Classe qui contient l'information de l'unité de travail du SNRC (Système National de Référence Cartographique du Canada). 
+ Le SNRC est utilisé sous deux échelle 50000 et 250000.
+ Le numéro du SNRC au 50000 se divise en trois parties, tandis que celui au 250000 se divise seulement en deux parties. 
+ La longueur du numéro SNRC au 50000 est de six lettres et celui du 250000 est de quatres lettres. 
+ Les deux premières parties du numéro de ses deux échelles sont identiques. 
+ La première partie comprend trois chiffres entre 001 et 520. 
+ La deuxième partie comprend une lettre de A à P.
+ La troisième partie qui s'applique seulement à l'échelle du 50000 comprend deux chiffres de 01 à 16.
+</summary>
+	<remarks>
+Auteur : Michel Pothier
+Date : 8 décembre 2009
+</remarks>
+</member><member name="P:BarreUniteTravail.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:BarreUniteTravail.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:BarreUniteTravail.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="T:BarreUniteTravail.cmdRemplacerGeometrie">
+	<summary>
+Commande qui permet de remplacer la géométrie de l'élément sélectionné à partir de la géométrie
+de l'unité de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="P:BarreUniteTravail.dckMenuUniteTravail.Hook">
+	<summary>
+ Host object of the dockable window
+ </summary>
+</member><member name="T:BarreUniteTravail.dckMenuUniteTravail.AddinImpl">
+	<summary>
+ Implementation class of the dockable window add-in. It is responsible for
+ creating and disposing the user interface class for the dockable window.
+ </summary>
+</member><member name="M:BarreUniteTravail.dckMenuUniteTravail.Initialiser">
+	<summary>
+Routine qui permet d'initialiser le formulaire. 
+</summary>
+</member><member name="M:BarreUniteTravail.dckMenuUniteTravail.InfoUniteTravail">
+	<summary>
+Routine qui permet d'afficher l'information et de dessiner la géométrie selon un numéro de l'unité
+de travail en mémoire. 
+</summary>
+</member><member name="T:BarreUniteTravail.dckMenuUniteTravail">
+	<summary>
+Menu qui permet de faire l'interface avec l'usager afin de définir une Unité de travail.
+Ce menu est un dockable window.
+</summary>
+	<remarks>
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreUniteTravail.tooDessinerSnrc250k">
+	<summary>
+Commande qui permet de dessiner dans la fenêtre graphique la géométrie du SNRC 250K en fonction du point donnée.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreUniteTravail.cmdIntersection">
+	<summary>
+Commande qui permet d'effectuer l'intersection (AND) entre l'unité de travail en mémoire et les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreUniteTravail.cmdZoomGeometrie">
+	<summary>
+Commande qui permet d'effectuer un Zoom dans le fenêtre graphique à partir de l'étendue de la
+géométrie de l'unité de travail en mémoire et selon les paramètres spécifiés dans le menu.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreUniteTravail.cmdDessinerLimite">
+	<summary>
+Commande qui permet de dessiner dans la fenêtre graphique la limite de la géométrie de l'unité de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.cmdActiverMenu">
+	<summary>
+Returns 'MPO_BarreUniteTravail_cmdActiverMenu', the id declared for Add-in Button class 'cmdActiverMenu'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.cmdDessinerGeometrie">
+	<summary>
+Returns 'MPO_BarreUniteTravail_cmdDessinerGeometrie', the id declared for Add-in Button class 'cmdDessinerGeometrie'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.cmdDessinerLimite">
+	<summary>
+Returns 'MPO_BarreUniteTravail_cmdDessinerLimite', the id declared for Add-in Button class 'cmdDessinerLimite'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.cmdZoomGeometrie">
+	<summary>
+Returns 'MPO_BarreUniteTravail_cmdZoomGeometrie', the id declared for Add-in Button class 'cmdZoomGeometrie'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.cmdCreerElement">
+	<summary>
+Returns 'MPO_BarreUniteTravail_cmdCreerElement', the id declared for Add-in Button class 'cmdCreerElement'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.cmdRemplacerGeometrie">
+	<summary>
+Returns 'MPO_BarreUniteTravail_cmdRemplacerGeometrie', the id declared for Add-in Button class 'cmdRemplacerGeometrie'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.cmdIntersection">
+	<summary>
+Returns 'MPO_BarreUniteTravail_cmdIntersection', the id declared for Add-in Button class 'cmdIntersection'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.tooDessinerSnrc250k">
+	<summary>
+Returns 'MPO_BarreUniteTravail_tooDessinerSnrc250k', the id declared for Add-in Tool class 'tooDessinerSnrc250k'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.tooDessinerSnrc50k">
+	<summary>
+Returns 'MPO_BarreUniteTravail_tooDessinerSnrc50k', the id declared for Add-in Tool class 'tooDessinerSnrc50k'
+</summary>
+</member><member name="P:BarreUniteTravail.My.ThisAddIn.IDs.dckMenuUniteTravail">
+	<summary>
+Returns 'MPO_BarreUniteTravail_dckMenuUniteTravail', the id declared for Add-in DockableWindow class 'dckMenuUniteTravail+AddinImpl'
+</summary>
+</member><member name="T:BarreUniteTravail.My.ThisAddIn.IDs">
+	<summary>
+A class for looking up Add-in id strings declared in the associated configuration xml file (.esriaddinx).
+</summary>
+</member><member name="T:BarreUniteTravail.My.ThisAddIn">
+	<summary>
+A class for looking up declarative information in the associated configuration xml file (.esriaddinx).
+</summary>
+</member><member name="M:BarreUniteTravail.My.Internal.AddInStartupObject.GetThis">
+	<summary>
+ Expose this instance of Add-in class externally
+ </summary>
+</member><member name="T:BarreUniteTravail.cmdDessinerGeometrie">
+	<summary>
+Commande qui permet de dessiner dans la fenêtre graphique la géométrie de l'unité de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_MenuUniteTravail">
+	<summary> Classe contenant le formulaire pour l'initialisation d'un unité de travail. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_Application">
+	<summary> Objet contenant l'information de l'unité de travail. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_MxDocument">
+	<summary> Objet contenant l'information de l'unité de travail. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_UniteTravail">
+	<summary> Objet contenant l'information de l'unité de travail. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_SymboleTexte">
+	<summary> 'Interface ESRI contenant le symbol pour le texte. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_SymbolePoint">
+	<summary> 'Interface ESRI contenant le symbol pour le point. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_SymboleSurface">
+	<summary> 'Interface ESRI contenant le symbol pour la géométrie. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_RgbColor">
+	<summary> 'Interface ESRI contenant la couleur RGB pour le symbol pour la géométrie. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_GeometriePrecise">
+	<summary> 'Indique si la géométrie doit être précise ou non. </summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_Height">
+	<summary>Valeur initiale de la dimension en hauteur du menu.</summary>
+</member><member name="F:BarreUniteTravail.modUniteTravail.m_Width">
+	<summary>Valeur initiale de la dimension en largeur du menu.</summary>
+</member><member name="M:BarreUniteTravail.modUniteTravail.CreerUniteTravail(System.String)">
+	<summary>
+Routine qui permet de créer et valider une unité de travail selon un numéro.
+L'unité de travail est conservé via un variant qui pointe vers un objet qui
+contient l'information de l'unité de travail.
+</summary>
+	<param name="sNumero">Numéro de l'unité de travail à créer et valider.</param>
+	<returns>
+Retourner l'objet contenant l'information et la géométrie de l'unité  de travail.
+</returns>
+</member><member name="M:BarreUniteTravail.modUniteTravail.DessinerGeometrieUniteTravail">
+	<summary>
+Routine qui permet de dessiner dans la vue active la géométrie calculée à partir de l'unité de travail courant.
+</summary>
+</member><member name="M:BarreUniteTravail.modUniteTravail.ZoomGeometrieUniteTravail">
+	<summary>
+Routine qui permet d'afficher la fenêtre graphique selon l'enveloppe de la géométrie de l'unité de
+travail  plus 10%.
+</summary>
+</member><member name="M:BarreUniteTravail.modUniteTravail.DessinerLimiteGeometrieUniteTravail">
+	<summary>
+Routine qui permet de dessiner   la géométrie de l'unité de travail dans la fenêtre graphique.
+</summary>
+</member><member name="M:BarreUniteTravail.modUniteTravail.ConstruireElementUniteTravail">
+	<summary>
+Construire un élément selon la géométrie de l'unité de travail et selon le Layer de construction.
+Le mode édition doit être actif. L'unité de travait courant doit être actif.
+</summary>
+	<returns>
+La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".
+</returns>
+</member><member name="M:BarreUniteTravail.modUniteTravail.RemplacerGeometrieUniteTravail">
+	<summary>
+Routine qui permet de remplacer la géométrie d'un élément sélectionné selon la géométrie de
+l'unité de travail. Le mode édition doit être actif. L'unité de travait courant doit être actif.
+</summary>
+</member><member name="M:BarreUniteTravail.modUniteTravail.Intersection(System.Int32@)">
+	<summary>
+ Routine qui permet d'effectuer le traitement d'intersection des éléments sélectionnés avec l'unité de travail. 
+ Seulement les éléments qui ont la contraite "Overlap" avec l'unité de travail de même type seront traités. 
+</summary>
+	<param name=" nNbModif "> Nombre de modifications total effectuées.</param>
+</member><member name="M:BarreUniteTravail.modUniteTravail.CreerPolygoneUniteTravail">
+	<summary>
+Fonction qui permet de créer le polygone de l'unité de travail selon l'indice de précision initialisé.
+L'indice de précision indique si la distance entre les sommets doit être plus grande (moins précis 15 ou 60 minutes)
+ou plus petite (plus précis 1 ou 30 minutes) tout dépendant de la catégorie SNRC ou CANADA.
+</summary>
+	<returns>
+La fonction va retourner un "IPolygon" correspondant à l'unité de travail. "Nothing" sinon.
+</returns>
+</member><member name="M:BarreUniteTravail.modUniteTravail.ModifierValeurAttributSelonDefaut(ESRI.ArcGIS.Geodatabase.IFeature,System.Int32)">
+	<summary>
+Fonction qui permet de modifier la valeur d'attribut selon la valeur par défaut de la classe ou la sous-classe.
+Si l'élément possède des sous-classes, la valeur par défaut associée à la sous-classe sera utilisée mais
+si l'élément ne possède pas de sous-classe, alors ce sera la valeur par défaut de classe qui sera utilisée.
+</summary>
+	<param name="pFeature">Élément pour lequel on veut modifier un attribut.</param>
+	<param name="iIndexAttribut">Position de l'attribut à modifier.</param>
+	<returns>
+La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".
+</returns>
+</member><member name="M:BarreUniteTravail.modUniteTravail.ModeEditor">
+	<summary>
+Fonction qui permet de vérifier si on est en mode Edition afin de pouvoir effectuer un "Do/UnDo".
+</summary>
+	<returns>
+La fonction va retourner un "IEditor". Si le traitement n'a pas réussi, le "IEditor" sera à "Nothing".
+</returns>
+</member><member name="M:BarreUniteTravail.modUniteTravail.ReferenceSpatialeGeoNad83">
+	<summary>
+Fonction qui permet de retourner une référence spatiale en coordonnées géographique avec le datum Nad83.
+</summary>
+	<returns>
+La fonction va retourner un "ISpatialReference". Si la traitement n'a pas réussi, le
+"SpatialReference" sera à "Nothing".
+</returns>
+</member><member name="M:BarreUniteTravail.modUniteTravail.fbIntersectGeometrie(ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IGeometry@,ESRI.ArcGIS.Geometry.esriGeometryDimension)">
+	<summary>
+ Fonction qui permet de retourner l'intersection entre deux géométries selon une dimension.
+</summary>
+	<param name=" pGeometryA "> Interface ESRI contenant la première géométrie.</param>
+	<param name=" pGeometryB "> Interface ESRI contenant la deuxième géométrie.</param>
+	<param name=" pIntersectGeometry "> Interface ESRI contenant la géométrie résultante.</param>
+	<param name=" ResultDimension "> Indique la dimension du résultat désiré (0, 1 ou 2 dimension).</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est "false".</returns>
+</member><member name="M:BarreUniteTravail.modUniteTravail.TraiterZ(ESRI.ArcGIS.Geometry.IGeometry@,System.Double)">
+	<summary>
+ Routine qui permet de traiter le Z d'une Géométrie.
+</summary>
+	<param name=" pGeometry "> Interface contenant la géométrie à traiter.</param>
+	<param name=" dZ "> Contient la valeur du Z.</param>
+</member><member name="M:BarreUniteTravail.modUniteTravail.TraiterM(ESRI.ArcGIS.Geometry.IGeometry@,System.Double)">
+	<summary>
+ Routine qui permet de traiter le M d'une Géométrie.
+</summary>
+	<param name=" pGeometry "> Interface contenant la géométrie à traiter.</param>
+	<param name=" dM "> Contient la valeur du M.</param>
+</member><member name="M:BarreUniteTravail.modUniteTravail.RetournerGeometryDef(ESRI.ArcGIS.Geodatabase.IFeatureClass)">
+	<summary> 
+ Cette fonction permet de retourner la définition de la géométrie à partir de la classe afin de vérifier la présence du Z et M.
+ </summary>
+	<param name="pFeatureClass"></param>
+	<returns>IGeometryDef</returns>
+</member><member name="T:BarreUniteTravail.modUniteTravail">
+	<summary>
+ Ce module contient des constantes, variables, fonctions et routines utilisée pour manipuler 
+ les divers unités de travail (CANADA,SNRC,...).
+</summary>
+	<remarks>
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreUniteTravail.cmdCreerElement">
+	<summary>
+Commande qui permet de creer un élément selon la classe de construction sélectionné et 
+la géométrie de l'unité de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member>
+</members>
+</doc>
