@@ -1,0 +1,162 @@
+﻿<ESRI.Configuration xmlns="http://schemas.esri.com/Desktop/AddIns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>BarreGeometrieTravail</Name>
+  <AddInID>{94de76b9-691d-4010-8964-fe52cb811d49}</AddInID>
+  <Description>Barre qui permet d’effectuer différents traitements relatifs aux géométries de travail et aux géométries des éléments sélectionnés.</Description>
+  <Version>1.0</Version>
+  <Image>Images\mpoBarreGeometrieTravail.png</Image>
+  <Author>Michel Pothier</Author>
+  <Company>MPO</Company>
+  <Date>2017-07-12</Date>
+  <Targets>
+    <Target name="Desktop" version="10.5" />
+  </Targets>
+  <AddIn language="CLR" library="BarreGeometrieTravail.dll" namespace="BarreGeometrieTravail">
+    <ArcMap>
+      <Commands>
+        <Button id="MPO_BarreGeometrieTravail_cmdActiverMenu" class="cmdActiverMenu" message="Activer le menu d'information sur les géométries de travail." caption="Activer le menu d'information" tip="Activer le menu d'information." category="MPO-BarreGeometrieTravail" image="Images\cmdActiverMenu.png">
+          <Help source="BarreGeometrieTravail.pdf" topicID="cmdActiverMenu" />
+        </Button>
+        <Tool id="MPO_BarreGeometrieTravail_tooConstruirePoint" class="tooConstruirePoint" message="Construire des points dans les géométries de travail." caption="Construire des points de travail" tip="Construire des points de travail." category="MPO-BarreGeometrieTravail" image="Images\tooConstruirePoint.png" cursor="Images\Cross.cur" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="tooConstruirePoint" />
+        </Tool>
+        <Tool id="MPO_BarreGeometrieTravail_tooConstruireLigne" class="tooConstruireLigne" message="Construire des lignes dans les géométries de travail." caption="Construire des lignes de travail" tip="Construire des lignes de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdConstruireLigne.png" cursor="Images\Cross.cur" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="tooConstruireLigne" />
+        </Tool>
+        <Tool id="MPO_BarreGeometrieTravail_tooConstruireSurface" class="tooConstruireSurface" message="Construire des surfaces dans les géométries de travail." caption="Construire des surfaces de travail" tip="Construire des surfaces de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdConstruireSurface.png" cursor="Images\Cross.cur" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="tooConstruireSurface" />
+        </Tool>
+        <Button id="MPO_BarreGeometrieTravail_cmdIdentifierGeometrie" class="cmdIdentifierGeometrie" message="Identifier les géométries de travail à partir des éléments sélectionnés." caption="Identifier les géométries de travail" tip="Identifier les géométries de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdIdentifierGeometrie.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdIdentifierGeometrie" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdIdentifierLimite" class="cmdIdentifierLimite" message="Identifier les limites des géométries de travail à partir des éléments sélectionnés." caption="Identifier les limites des géométries" tip="Identifier les limites des géométries." category="MPO-BarreGeometrieTravail" image="Images\cmdIdentifierLimite.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdIdentifierLimite" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdIdentifierSommet" class="cmdIdentifierSommet" message="Identifier les sommets pour chaque élément sélectionnés dans un MultiPoint" caption="Identifier les sommets" tip="Identifier les sommets d'éléments" category="MPO-BarreGeometrieTravail" image="Images\cmdIdentifierSommet.png" onDemand="false" />
+        <Button id="MPO_BarreGeometrieTravail_cmdIdentifierSquelette" class="cmdIdentifierSquelette" message="Identifier le squelette des polygones sélectionnés" caption="Identifier le squelette" tip="Identifier le squelette des polygones sélectionnés" category="MPO-GeometrieTravail" image="Images\cmdIdentifierSquelette.png" onDemand="false" />
+        <Button id="MPO_BarreGeometrieTravail_cmdIdentifierEdge" class="cmdIdentifierEdge" message="Identifier les edges sélectionnés dans les géométries de travail." caption="Identifier les edges sélectionnés" tip="Identifier les edges sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdIdentifierEdge.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdIdentifierEdge" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdDessinerGeometrie" class="cmdDessinerGeometrie" message="Dessiner les géométries de travail." caption="Dessiner les géométries de travail" tip="Dessiner les géométries de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdDessinerGeometrie.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdDessinerGeometrie" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdDessinerSommet" class="cmdDessinerSommet" message="Dessiner les sommets des géométries de travail." caption="Dessiner les sommets des géométries de travail" tip="Dessiner les sommets des géométries de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdDessinerSommet.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdDessinerSommet" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdZoomGeometrie" class="cmdZoomGeometrie" message="Zoom selon les géométries de travail." caption="Zoom selon les géométries" tip="Zoom selon les géométries de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdZoomGeometrie.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdZoomGeometrie" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdTamponGeometrie" class="cmdTamponGeometrie" message="Créer un tampon autour des géométries de travail." caption="Créer un tampon autour des géométries de travail" tip="Créer un tampon autour des géométries de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdTamponGeometrie.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdTamponGeometrie" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdCreerSurfaceLigne" class="cmdCreerSurfaceLigne" message="Créer une surface de travail à partir des lignes d'éléments sélectionnés." caption="Créer une surface de travail à partir des lignes" tip="Créer une surface de travail à partir des lignes." category="MPO-BarreGeometrieTravail" image="Images\cmdCreerSurfaceLigne.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdCreerSurfaceLigne" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdUnionGeometrie" class="cmdUnionGeometrie" message="Union entre les géométries de travail." caption="Union entre les géométries" tip="Union entre les géométries." category="MPO-BarreGeometrieTravail" image="Images\cmdUnionGeometrie.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdUnionGeometrie" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdIntersectionMultiple" class="cmdIntersectionMultiple" message="Intersection muliple (point, ligne, surface) entre les éléments sélectionnés et les géométries de travail." caption="Intersection muliple avec les éléments sélectionnés" tip="Intersection muliple avec les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdIntersectionMultiple.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdIntersectionMultiple" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdDifferenceMultiple" class="cmdDifferenceMultiple" message="Difference multiple (point, ligne, surface) entre les éléments sélectionnés et les géométries de travail." caption="Différence multiple avec les éléments sélectionnés" tip="Difference multiple avec les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdDifferenceMultiple.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdDifferenceMultiple" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdSimplifierGeometrie" class="cmdSimplifierGeometrie" message="Simplifier les géométries de travail." caption="Simplifier les géométries" tip="Simplifier les géométries." category="MPO-BarreGeometrieTravail" image="Images\cmdSimplifierGeometrie.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdSimplifierGeometrie" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdSelectionnerElement" class="cmdSelectionnerElement" message="Sélectionner les éléments intersectant les géométries de travail." caption="Sélectionner les éléments" tip="Sélectionner les éléments." category="MPO-BarreGeometrieTravail" image="Images\cmdSelectionnerElement.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdSelectionnerElement" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdCreerElement" class="cmdCreerElement" message="Créer un élément selon les géométries de travail et la classe de construction active." caption="Créer un élément" tip="Créer un élément." category="MPO-BarreGeometrieTravail" image="Images\cmdCreerElement.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdCreerElement" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdRemplacer" class="cmdRemplacer" message="Remplacer les géométries des éléments sélectionnés par les géométries de travail de même type." caption="Remplacer les géométries des éléments" tip="Remplacer les géométries des éléments." category="MPO-BarreGeometrieTravail" image="Images\cmdRemplacer.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdRemplacer" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdCouper" class="cmdCouper" message="Couper les éléments sélectionnés selon les lignes des géométries de travail." caption="Couper les éléments sélectionnés" tip="Couper les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdCouper.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdCouper" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdCouperDroite" class="cmdCouperDroite" message="Couper les éléments sélectionnés selon les lignes des géométries de travail et conserver seulement la partie droite." caption="Couper les éléments sélectionnés à droite" tip="Couper les éléments sélectionnés à droite." category="MPO-BarreGeometrieTravail" image="Images\cmdCouperDroite.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdCouperDroite" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdCouperGauche" class="cmdCouperGauche" message="Couper les éléments sélectionnés selon les lignes des géométries de travail et conserver seulement la partie gauche." caption="Couper les éléments sélectionnés à gauche" tip="Couper les éléments sélectionnés à gauche." category="MPO-BarreGeometrieTravail" image="Images\cmdCouperGauche.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdCouperGauche" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdIntersection" class="cmdIntersection" message="Intersection d'éléments sélectionnés de même dimension et la géométrie de travail." caption="Intersection d'éléments" tip="Intersection d'éléments et la géométrie de travail" category="MPO-BarreGeometrieTravail" image="Images\cmdIntersection.png" onDemand="false" />
+        <Button id="MPO_BarreGeometrieTravail_cmdDifference" class="cmdDifference" message="Difference entre les éléments sélectionnés et les géométries de travail de même type." caption="Difference avec les éléments sélectionnés" tip="Difference avec les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdDifference.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdDifference" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdDifferenceInverser" class="cmdDifferenceInverser" message="Difference inverser entre les éléments sélectionnés et les géométries de travail de même type." caption="Difference inverser avec les éléments sélectionnés" tip="Difference inverser avec les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdDifferenceInverser.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdDifferenceInverser" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdUnion" class="cmdUnion" message="Union entre les éléments sélectionnés et les géométries de travail." caption="Union avec les éléments sélectionnés" tip="Union avec les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdUnion.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdUnion" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdSymetrie" class="cmdSymetrie" message="Symétrie entre les éléments sélectionnés et les géométries de travail." caption="Symétrie avec les éléments sélectionnés" tip="Symétrie avec les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdSymetrie.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdSymetrie" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdReshape" class="cmdReshape" message="Reshape de la géométrie des éléments sélectionnés selon les lignes des géométries de travail. " caption="Reshape des géométries d'éléments" tip="Reshape des géométries d'éléments. " category="MPO-BarreGeometrieTravail" image="Images\cmdReshape.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdReshape" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdImporter" class="cmdImporter" message="Importer les éléments graphiques de la fenêtre active dans les géométries de travail." caption="Importer les éléments graphiques" tip="Importer les éléments graphiques." category="MPO-BarreGeometrieTravail" image="Images\cmdImporter.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdImporter" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdExporter" class="cmdExporter" message="Exporter les géométries de travail dans les éléments graphique de la fenêtre active." caption="Exporter les géométries de travail" tip="Exporter les géométries de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdExporter.png" onDemand="false">
+          <Help source="BarreGeometrieTravail.chm" topicID="cmdExporter" />
+        </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdGeneraliserLigne" class="cmdGeneraliserLigne" message="Généraliser un ou plusieurs éléments de type ligne selon une largeur et une longueur minimum." caption="Généraliser une ligne" tip="Généraliser un ou plusieurs éléments de type ligne." category="MPO-BarreGeometrieTravail" image="Images\cmdGeneraliserLigne.png" onDemand="false" />
+        <Button id="MPO_BarreGeometrieTravail_cmdGeneraliserInterieur" class="cmdGeneraliserInterieur" message="Généraliser l'intérieur d'un ou plusieurs éléments de type surface selon une largeur et une longueur minimum." caption="Generaliser l'intérieur d'une surface" tip="Généraliser l'intérieur d'un ou plusieurs éléments de type surface." category="MPO-BarreGeometrieTravail" image="Images\cmdGeneraliserInterieur.png" onDemand="false" />
+        <Button id="MPO_BarreGeometrieTravail_cmdGeneraliserExterieur" class="cmdGeneraliserExterieur" message="Généraliser l'extérieur d'un ou plusieurs éléments de type surface selon une largeur et une longueur minimum." caption="Généraliser l'extérieur d'une surface" tip="Généraliser l'extérieur d'un ou plusieurs éléments de type surface." category="MPO-BarreGeometrieTravail" image="Images\cmdGeneraliserExterieur.png" onDemand="false" />
+        <Button id="MPO_BarreGeometrieTravail_cmdTrianguler" class="cmdTrianguler" message="Trianguler les éléments sélectionnés" caption="Trianguler les éléments" tip="Trianguler les éléments sélectionnés." category="MPO-BarreGeometrieTravail" image="Images\cmdTrianguler.png" onDemand="false" />
+        <Button id="MPO_BarreGeometrieTravail_cmdModifierDebutSommet" class="cmdModifierDebutSommet" message="Modifier le début des sommets des composantes d'un polygone." caption="Modifier le début des sommets" tip="Modifier le début des sommets des composantes" category="MPO-BarreGeometrieTravail" image="Images\cmdModifierDebutSommet.png" onDemand="false" />
+      </Commands>
+      <Toolbars>
+        <Toolbar id="MPO_BarreGeometrieTravail_My_Toolbar" caption="MPO-BarreGeometrieTravail (28 Septembre 2017)" showInitially="false">
+          <Items>
+            <Button refID="MPO_BarreGeometrieTravail_cmdActiverMenu" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdIdentifierGeometrie" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdIdentifierLimite" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdIdentifierSommet" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdIdentifierSquelette" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdIdentifierEdge" />
+            <Button refID="MPO_BarreGeometrieTravail_tooConstruirePoint" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_tooConstruireLigne" />
+            <Button refID="MPO_BarreGeometrieTravail_tooConstruireSurface" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdSimplifierGeometrie" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdDessinerGeometrie" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdDessinerSommet" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdZoomGeometrie" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdTamponGeometrie" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdCreerSurfaceLigne" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdUnionGeometrie" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdIntersectionMultiple" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdDifferenceMultiple" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdSelectionnerElement" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdCreerElement" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdRemplacer" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdCouper" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdCouperDroite" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdCouperGauche" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdIntersection" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdDifference" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdDifferenceInverser" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdUnion" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdSymetrie" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdReshape" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdImporter" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdExporter" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserLigne" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserInterieur" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserExterieur" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdTrianguler" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdModifierDebutSommet" />
+          </Items>
+        </Toolbar>
+      </Toolbars>
+      <DockableWindows>
+        <DockableWindow id="MPO_BarreGeometrieTravail_dckMenuGeometrieTravail" class="dckMenuGeometrieTravail+AddinImpl" caption="Menu des géométries de travail" image="Images\dckMenuGeometrieTravail.png">
+          <InitialPlacement height="300" width="300" state="pinned" position="left" />
+        </DockableWindow>
+      </DockableWindows>
+    </ArcMap>
+  </AddIn>
+</ESRI.Configuration>

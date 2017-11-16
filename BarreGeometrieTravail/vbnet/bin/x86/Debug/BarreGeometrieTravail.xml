@@ -1,0 +1,1931 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+BarreGeometrieTravail
+</name>
+</assembly>
+<members>
+<member name="T:BarreGeometrieTravail.cmdGeneraliserInterieur">
+	<summary>
+Commande qui permet de généraliser l'intérieur des éléments de type surface sélectionnés.
+</summary>
+	<remarks>
+ '''Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdGeneraliserLigne">
+	<summary>
+Commande qui permet de généraliser l'intérieur des éléments de type ligne sélectionnés selon la méthode droite ou gauche.
+</summary>
+	<remarks>
+ '''Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdIdentifierLimite">
+	<summary>
+Commande qui permet d'identifier les limites dans les géométries de travail en mémoire à partir
+des éléments sélectionnés dans la vue active.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdCouper">
+	<summary>
+Commande qui permet de couper les éléments sélectionnés selon les géométries de travail de type ligne en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdUnion">
+	<summary>
+Commande qui permet d'effectuer l'union (OR) entre les géométries de travail en mémoire 
+et les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.CancelException">
+	<summary>
+ Classe contenant une exception permettant d'annulé l'exécution d'un traitement.
+</summary>
+	<remarks>
+ Auteur : Michel Pothier
+ Date : 24 mars 2016
+</remarks>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_MenuGeometrieTravail">
+	<summary> Classe contenant le menu des géométries de travail. </summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.mpGeometrieTravail">
+	<summary> Interface ESRI contenant les géométries de travail</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.mpSymboleTexte">
+	<summary> Interface ESRI contenant le symbol pour la texte.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.mpSymboleSommet">
+	<summary> Interface ESRI contenant le symbol pour les sommets d'une géométrie.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.mpSymbolePoint">
+	<summary> Interface ESRI contenant le symbol pour la géométrie de type point.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.mpSymboleLigne">
+	<summary> Interface ESRI contenant le symbol pour la géométrie de type ligne.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.mpSymboleSurface">
+	<summary> Interface ESRI contenant le symbol pour la géométrie de type surface.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_Application">
+	<summary>Interface ESRI contenant l'application ArcMap.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_MxDocument">
+	<summary>Interface ESRI contenant le document ArcMap.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_SnapEnvironment">
+	<summary>Interface ESRI contenant l'environnement pour faire le snapping.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_MapTopology">
+	<summary>Interface ESRI contenant les paramètres de la topologie courante.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_TopologyGraph">
+	<summary>Interface ESRI contenant la topologie courante.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.mpRubberBand">
+	<summary>Interface ESRI utilisé pour visualiser la construction de géométrie.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_Height">
+	<summary>Valeur initiale de la dimension en hauteur du menu.</summary>
+</member><member name="F:BarreGeometrieTravail.modGeometrieTravail.m_Width">
+	<summary>Valeur initiale de la dimension en largeur du menu.</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.InitSymbole">
+	<summary>
+ Initialiser les couleurs par défaut pour le texte qui sera affiché avec les
+ géométries déssiné et initialiser les 3 couleurs pour les géométries de type
+ point, ligne et surface.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.InfoGeometryBag">
+	<summary>
+ Fonction qui permet d'afficher l'information à l'écran sur les géométries contenues dans une
+ GeometryBag. L'information affichée est le nombre totale de géométries, le nombre de
+ points, le nombre de lignes, la longueur totale des lignes, le nombre de surfaces, la superficie
+ totale des surfaces.
+</summary>
+	<returns>     'La fonction va retourner un "String". Si le traitement n'a pas réussi le "String" est vide. </returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.ZoomGeometrieTravail(ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Permet d'afficher la fenêtre graphique selon l'enveloppe des géométries de
+ travail plus 10%. Cette fonction est seulement appelé si le checkbox "Zoom 
+ selon les géométries de travail" est coché.
+</summary>
+	<param name=" pGeometry ">Interface contenant la géométrie à effectuer un Zoom.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.bDessinerGeometrie(ESRI.ArcGIS.Geometry.IGeometry,System.Boolean,System.Boolean,System.Boolean,System.Boolean,ESRI.ArcGIS.esriSystem.ITrackCancel@)">
+	<summary>
+ Fonction qui permet de dessiner dans la vue active les géométries Point, MultiPoint, 
+ Polyline et/ou Polygon. Ces géométries peuvent être contenu dans un GeometryBag. 
+ Un point est représenté par un carré, une ligne est représentée par une ligne pleine 
+ et la surface est représentée par une ligne pleine pour la limite et des lignes à
+ 45 dégrés pour l'intérieur. On peut afficher le numéro de la géométrie pour un GeometryBag.
+</summary>
+	<param name="pGeometry"> Interface ESRI contenant la géométrie èa dessiner.</param>
+	<param name="bRafraichir"> Indique si on doit rafraîchir la vue active.</param>
+	<param name="bGeometrie"> Indique si on doit dessiner la géométrie.</param>
+	<param name="bSommet"> Indique si on doit dessiner les sommets de la géométrie.</param>
+	<param name="bNumero"> Indique si on doit dessiner les numéros de la géométrie.</param>
+	<param name="pTrackCancel"> Permet d'annuler le traitement avec la touche ESC du clavier.</param>
+	<return>Un booleen est retourner pour indiquer la fonction s'est bien exécutée.</return>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.PathToPolyline(ESRI.ArcGIS.Geometry.IPath)">
+	<summary>
+ Routine qui permet de créer un Polyline à partir d'un Path ou un Ring.
+ 
+<param name="pPath"> Interface contenant un Path.</param>
+		<return>Le Polyline contenant le Path spécifié.</return>
+	</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.CentreGeometrie(ESRI.ArcGIS.Geometry.IGeometry@)">
+	<summary>
+ Routine qui permet de retourner le centre d'une géométrie.
+ 
+<param name="pTrackCancel"> Permet d'annuler la sélection avec la touche ESC du clavier.</param>
+		<param name="bEnleverSelection"> Indique si on doit enlever les éléments de la sélection, sinon ils sont conservés. Défaut=True.</param>
+		<return>Les géométries des éléments qui respectent ou non la comparaison avec ses éléments en relation.</return>
+	</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.bDessinerSommet(ESRI.ArcGIS.Geometry.IGeometry,System.Boolean,System.Boolean,ESRI.ArcGIS.esriSystem.ITrackCancel@)">
+	<summary>
+ Fonction qui permet de dessiner dans la vue active les sommets des géométries Point, MultiPoint, Polyline et/ou Polygon.
+ Ces géométries peuvent être contenu dans un GeometryBag. Les sommets sont représentés par un cercle.
+</summary>
+	<param name="pGeometry"> Interface ESRI contenant la géométrie utilisée pour dessiner les sommets.</param>
+	<param name="bRafraichir"> Indique si on doit rafraîchir la vue active.</param>
+	<param name="bNumero"> Indique si on doit dessiner le numéro du sommet.</param>
+	<param name="pTrackCancel"> Permet d'annuler le traitement avec la touche ESC du clavier.</param>
+	<return>Un booleen est retourner pour indiquer la fonction s'est bien exécutée.</return>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.SelectionnerElement">
+	<summary>
+ Permet d'effectuer la sélection des élément de la map active selon les géométries de travail.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.CreerSurfaceLigne">
+	<summary>
+ Permet de dessiner dans la vue active les géométries de travail à partir des lignes 
+ sélectionnées.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.pCreerSurfaceSelonLigneSelection">
+	<summary>
+ Fonction qui permet de créer une surface à partir d'une série de lignes sélectionnées.
+</summary>
+	<returns>     'La fonction va retourner un "IPolygon". Si le traitement n'a pas réussi le "IPolygon" est à "Nothing". </returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.IdentifierGeometrie">
+	<summary>
+ Permet d'identifier les géométries de travail en mémoire à partir de la sélection des
+ éléments de la vue active.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.IdentifierLimite">
+	<summary>
+ Permet d'identifier les limites des géométries de travail en mémoire à partir de la sélection des éléments de la vue active.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.IdentifierSommet">
+	<summary>
+ Permet d'identifier les sommets des géométries de travail en mémoire à partir de la sélection des éléments de la vue active.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.IdentifierEdge">
+	<summary>
+ Routine qui permet d'identifier la géométrie des Edges sélectionnés et de les mettre dans la géométrie de travail en mémoire. 
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.ModifierDebutSommet">
+	<summary>
+ Permet de modifier le début des sommets des polygones en mémoire à partir de la sélection des éléments de la vue active.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.ModifierDebutSommet(ESRI.ArcGIS.Geometry.IPolygon)">
+	<summary>
+ Permet de retourner un nouveau polygone dont le début de sommet de chaque anneau a été modifié en fonction de la position minimum maximum en X ou Y.
+</summary>
+	<param name="pPolygon"> Polygone originale à traiter </param>
+	<returns>Ipolygone contenant le nouveau polygone dont le début de sommets de ses composantes a été modifié.</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.CreerLignesTriangles(System.Double,System.Double)">
+	<summary>
+ Permet de créer les lignes des triangles de Delaunay des éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+</summary>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dDistMin"> Distance minimum utilisée pour ajouter des sommets.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.CreerSquelettePolygone(System.Double,System.Double,System.Double,System.Int32)">
+	<summary>
+ Permet de créer les squelettes des éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+</summary>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dDistMin"> Distance minimum utilisée pour ajouter des sommets.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour éliminer des lignes du squelette trop petites.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.GeneraliserPolygoneInterieur(System.Double,System.Double,System.Double,System.Double)">
+	<summary>
+ Permet de créer la généralisation intérieure de polygone pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+</summary>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargMin"> Largeur minimale de généralisation.</param>
+	<param name="dLongMin"> Longueur minimale de généralisation.</param>
+	<param name="dSupMin"> Contient la superficie de généralisation minimum.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.GeneraliserPolygoneInterieur2(System.Double,System.Double,System.Double,System.Double)">
+	<summary>
+ Permet de créer la généralisation intérieure de polygone pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+</summary>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargMin"> Largeur minimale de généralisation.</param>
+	<param name="dLongMin"> Longueur minimale de généralisation.</param>
+	<param name="dSupMin"> Contient la superficie de généralisation minimum.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.GeneraliserPolygoneExterieur(System.Double,System.Double,System.Double,System.Double)">
+	<summary>
+ Permet de créer la généralisation extérieure de polygone pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+</summary>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargMin"> Largeur minimale de généralisation.</param>
+	<param name="dLongMin"> Longueur minimale de généralisation.</param>
+	<param name="dSupMin"> Contient la superficie de généralisation minimum.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.GeneraliserLigne(System.Double,System.Double,System.Double,System.Double,System.Int32)">
+	<summary>
+ Permet de créer la généralisation de ligne pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+</summary>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargGenMin"> Largeur minimale de généralisation.</param>
+	<param name="dLongGenMin"> Longueur minimale de généralisation.</param>
+	<param name="dLongMin"> Longueur minimale d'une ligne.</param>
+	<param name="iMethode"> Méthode de généralisation (0Droite/1:Gauche).</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.bAjouterNouveauPointTravail(System.Int64)">
+	<summary>
+ Fonction qui permet de créer une géométrie point et l'ajouter aux géométries de travail déja
+ présentes. On peut détruire les géométries présentes, créer une nouvelle géométrie et ajouter la
+ géométrie à celles déja existantes. 
+</summary>
+	<param name=" Shift "> 3 possibilité: 0:Nouvelle géométrie, 1 ou 2 :Ajouter aux existantes </param>
+	<returns> 'La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.bAjouterNouvelleLigneTravail(System.Int64)">
+	<summary>
+ Fonction qui permet de créer une géométrie ligne et l'ajouter aux géométries de travail déja
+ présentes. On peut détruire les géométries présentes, créer une nouvelle géométrie et ajouter la
+ géométrie à celles déja existantes. 
+</summary>
+	<param name=" Shift "> 3 possibilité: 0:Nouvelle géométrie, 1:Complexe (shift), 2:Multiple (ctrl) </param>
+	<returns> 'La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.AjouterNouveauPointTravail(ESRI.ArcGIS.Geometry.IMultipoint,System.Boolean,System.Boolean)">
+	<summary>
+ Routine qui permet d'ajouter un nouveau Multipoint aux géométries de travail existantes ou non.
+ 
+ Si le paramètre Optimiser est Vrai, toutes les géométries de type Multipoint contenue dans les géométries de travail 
+ seront fusionnée en une seul Multipoint.
+</summary>
+	<param name=" pMultipoint "> Interface ESRI contenant le nouveau Multipoint à traiter.</param>
+	<param name=" bOptimiser "> Indiquer si on doit optimiser toutes les géométries de travail de type point. </param>
+	<param name=" bSimplifier "> Indiquer si on doit simplifier toutes les géométries de travail de type ligne. </param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.AjouterNouvelleLigneTravail(ESRI.ArcGIS.Geometry.IPolyline,System.Boolean,System.Boolean)">
+	<summary>
+ Routine qui permet d'ajouter une nouvelle ligne aux géométries de travail existantes ou non.
+ 
+ Si le paramètre Optimiser est Vrai, toutes les géométries de type ligne contenue dans les géométries de travail 
+ seront fusionnée en une seule.
+</summary>
+	<param name=" pPolyline "> Interface ESRI contenant la nouvelle ligne à traiter.</param>
+	<param name=" bOptimiser "> Indiquer si on doit optimiser toutes les géométries de travail de type ligne. </param>
+	<param name=" bSimplifier "> Indiquer si on doit simplifier toutes les géométries de travail de type ligne. </param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.AjouterNouvelleSurfaceTravail(ESRI.ArcGIS.Geometry.IPolygon,System.Boolean,System.Boolean)">
+	<summary>
+ Routine qui permet d'ajouter une nouvelle surface aux géométries de travail existantes ou non.
+ 
+ Si le paramètre Optimiser est Vrai, toutes les géométries de type surface contenue dans les géométries de travail 
+ seront fusionnée en une seule ce qui permettra de créer des trous dans les surfaces lorsque nécessaire.
+</summary>
+	<param name=" pPolygon "> Interface ESRI contenant la nouvelle surface à traiter.</param>
+	<param name=" bOptimiser "> Indiquer si on doit optimiser toutes les géométries de travail de type surface. </param>
+	<param name=" bSimplifier "> Indiquer si on doit simplifier toutes les géométries de travail de type ligne. </param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.BufferGeometrie(ESRI.ArcGIS.Geometry.IGeometryBag,System.Double)">
+	<summary>
+ Fonction qui permet de demander la valeur du buffer et de remplacer les géométries de travail par
+ le buffer de ces derniers.
+</summary>
+	<param name=" pGeometryBag "> Interface ESRI contenant les géométrie de travail</param>
+	<param name=" dTolerance "> Tolérance utilisée pour créer le tampon sur les géométries de trevail.</param>
+	<returns> 'La fonction va retourner un "IGeometryBag". Si le traitement n'a pas réussi le "IGeometryBag" est à "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.SimplifierGeometrie">
+	<summary>
+ Routine qui permet de simplifier toutes les géométries de travail en mémoire.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.UnionGeometrie">
+	<summary>
+ Routine qui permet d'effectuer le traitement d'union entre les géométries de travail en mémoire.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.DifferenceMultiple">
+	<summary>
+ Routine qui permet d'effectuer la différence multiple sur les géométries de travail selon les
+ éléments sélectionnés
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpDifferenceMultiDimension(ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les différence points, lignes et surfaces entre deux géométries.
+ La géométrie résultante est toujours de même type que la géométrie A, elle est toujours présente
+ mais il se peut qu'elle soit vide. 
+</summary>
+	<param name=" pGeometryA "> Interface ESRI de la Géométrie de base.</param>
+	<param name=" pGeometryB "> Interface ESRI de la géométrie à comparer.</param>
+	<returns> La fonction va retourner un "IGeometry". Si le traitement n'a pas réussi le "IGeometry" est "Nothing"</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpDifferencePoint(ESRI.ArcGIS.Geometry.IPoint,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les différence une géométrie point et une autre géométrie.
+ La géométrie résultante est toujours de type point, elle est toujours présente mais il se peut qu'elle soit vide. 
+</summary>
+	<param name=" pPoint "> Interface ESRI du point de base. </param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer. </param>
+	<returns> La fonction va retourner un "IPoint". Si le traitement n'a pas réussi le "IPoint" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpDifferenceMultiPoint(ESRI.ArcGIS.Geometry.IMultipoint,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les différence une géométrie Multipoint et une autre géométrie.
+ La géométrie résultante est toujours de type Multipoint, elle est toujours présente mais il se
+ peut qu'elle soit vide.
+</summary>
+	<param name=" pMultiPoint "> Interface ESRI du Multipoint de base. </param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer. </param>
+	<returns> La fonction va retourner un "IMultiPoint". Si le traitement n'a pas réussi le "IMultiPoint" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpDifferencePolyline(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les différence une géométrie Polyline et une autre géométrie.
+ La géométrie résultante est toujours de type Polyline, elle est toujours présente mais il se peut
+ qu'elle soit vide. 
+</summary>
+	<param name=" pPolyline "> Interface ESRI du Polyline de base. </param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer. </param>
+	<returns> La fonction va retourner un "Polyline". Si le traitement n'a pas réussi le "Polyline" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpDifferencePolygon(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les différence une géométrie Polygon et une autre géométrie.
+ La géométrie résultante est toujours de type Polygon, elle est toujours présente mais il se peut qu'elle soit vide.
+</summary>
+	<param name=" pPolygon "> Interface ESRI du Polygon de base. </param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer. </param>
+	<returns> La fonction va retourner un "Polygon". Si le traitement n'a pas réussi le "Polygon" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpDifferenceBag(ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les différence une géométrie Bag et une autre géométrie.
+ La géométrie résultante est toujours de type GeometryBag, elle est toujours présente mais il se peut qu'elle soit vide. 
+</summary>
+	<param name=" pGeometryBag "> Interface ESRI du GeometryBag de base. </param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer. </param>
+	<returns> La fonction va retourner un "IGeometryBag". Si le traitement n'a pas réussi le "IGeometryBag" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.IntersectionMultiple">
+	<summary>
+ Routine qui permet d'effectuer l'intersection multiple dimension sur les géométries de travail
+ selon les éléments sélectionnés.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpIntersectMultiDimension(ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IGeometry,System.Double,System.Double)">
+	<summary>
+ Fonction qui permet de retourner les intersections points, lignes et surfaces entre deux
+ géométries. Le GeometryBag résultant contient trois géométries, une géométrie MultiPoint pour
+ les intersections de points, une géométrie Polyline les intersections de lignes et une géométrie
+ Polygon pour les intersections de surfaces. Les trois géométries sont toujours présentes même s'il
+ n'y aucune intersection, le nombre de composante sera égale à zéro. Les Polylines qui ne
+ respectent pas la longueur minimum seront changées en Points et les surfaces qui ne respectent pas
+ la superficie minimale seront changées en points également.
+</summary>
+	<param name=" pGeometryA "> Interface ESRI de la Géométrie de base.</param>
+	<param name=" pGeometryB "> Interface ESRI de la géométrie à comparer.</param>
+	<param name=" dLongueur "> Longueur minimum à respecter pour un segment de ligne.</param>
+	<param name=" dSuperficie "> Superficie minimum à respecter pour une surface.</param>
+	<returns> La fonction va retourner un "IGeometryBag". Si le traitement n'a pas réussi le "IGeometryBag" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpIntersectMultiPoint(ESRI.ArcGIS.Geometry.IMultipoint,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les intersections points entre une géométrie MultiPoint et une
+ autre géométrie. Le GeometryBag résultant contient une seule géométrie MultiPoint pour les
+ intersections de points. La géométrie MultiPoint est toujours présente même s'il n'y aucune
+ intersection, le nombre de composante sera égale à zéro. 
+</summary>
+	<param name=" pMultiPoint "> Interface ESRI de la Géométrie MultiPoint de base.</param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer.</param>
+	<returns> La fonction va retourner un "IGeometryBag". Si le traitement n'a pas réussi le "IGeometryBag" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpIntersectPolyline(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les intersections points et lignes entre une géométrie Polyline et une autre
+ géométrie. Le GeometryBag résultant contient une géométrie MultiPoint pour les intersections de points et une
+ géométrie Polyline pour les intersections lignes. La géométrie Bag résultante contient toujours une géométrie
+ MultiPoint et Polyline même s'il n'y aucune intersection, le nombre de composante sera égale à zéro.
+</summary>
+	<param name=" pPolyline "> Interface ESRI de la Géométrie Polyline de base.</param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer.</param>
+	<returns> La fonction va retourner un "IGeometryBag". Si le traitement n'a pas réussi le "IGeometryBag" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpIntersectPolygon(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les intersections points, lignes et surfaces entre une géométrie
+ Polygon et une autre géométrie. Le GeometryBag résultant contient une géométrie MultiPoint pour
+ les intersections de points, une géométrie Polyline pour les intersections lignes et une géométrie
+ Polygon pours les intersections surfaces. La géométrie Bag résultante contient toujours une
+ géométrie MultiPoint, Polyline et Polygon même s'il n'y aucune intersection, le nombre de
+ composante sera égale à zéro.
+</summary>
+	<param name=" pPolygon "> Interface ESRI de la Géométrie Polygon de base.</param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer.</param>
+	<returns> La fonction va retourner un "IGeometryBag". Si le traitement n'a pas réussi le "IGeometryBag" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpIntersectBag(ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de retourner les intersections points, lignes et surfaces entre une géométrie
+ Bag et une autre géométrie. Le GeometryBag résultant contient une géométrie MultiPoint pour les
+ intersections de points, une géométrie Polyline pour les intersections lignes et une géométrie
+ Polygon pour les intersections surfaces. La géométrie Bag résultante contient toujours une
+ géométrie MultiPoint, Polyline et Polygon même s'il n'y aucune intersection, le nombre de
+ composante sera égale à zéro.
+</summary>
+	<param name=" pGeometryBag "> Interface ESRI de la Géométrie Bag de base.</param>
+	<param name=" pGeometry "> Interface ESRI de la géométrie à comparer.</param>
+	<returns> La fonction va retourner un "IGeometryBag". Si le traitement n'a pas réussi le "IGeometryBag" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpChangerSurfaceEnPointSelonSuperficie(ESRI.ArcGIS.Geometry.IPolygon2,System.Double)">
+	<summary>
+ Fonction qui permet de changer les géométries surfaces inférieures à la superficie minimale spécifiée en géométries
+ points. Les surfaces données en paramètres qui sont inférieures à la superficie minimale seront enlevées de cette
+ géométrie, elles seront transformées en points et retournées via le PointCollection.
+</summary>
+	<param name=" pPolygon "> Interface ESRI contenant des surfaces.</param>
+	<param name=" dSuperficie "> Superficie minimale des surfaces à respecter.</param>
+	<returns> La fonction va retourner un "IPointCollection". Si le traitement n'a pas réussi le "IPointCollection" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpChangerLigneEnPointSelonLongueur(ESRI.ArcGIS.Geometry.IPolyline2,System.Double,System.Int64)">
+	<summary>
+ Fonction qui permet de changer les géométries lignes inférieures à la longueur minimale spécifiée
+ en géométries points. Les lignes données en paramètres qui sont inférieures à la longueur
+ minimale seront enlevées de cette géométrie, elles seront transformées en points et retournées
+ via le PointCollection.
+</summary>
+	<param name=" pPolyline "> Interface ESRI contenant des lignes.</param>
+	<param name=" dLongueur "> Longueur minimale des lignes à respecter.</param>
+	<param name=" nNbSommet "> Nombre de sommets minimale des lignes à respecter.</param>
+	<returns> La fonction va retourner un "IPointCollection". Si le traitement n'a pas réussi le "IPointCollection" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fbIntersectGeometrie(ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IGeometry@,ESRI.ArcGIS.Geometry.esriGeometryDimension)">
+	<summary>
+ Fonction qui permet de retourner l'intersection entre deux géométries selon une dimension.
+</summary>
+	<param name=" pGeometryA "> Interface ESRI contenant la première géométrie.</param>
+	<param name=" pGeometryB "> Interface ESRI contenant la deuxième géométrie.</param>
+	<param name=" pIntersectGeometry "> Interface ESRI contenant la géométrie résultante.</param>
+	<param name=" ResultDimension "> Indique la dimension du résultat désiré (0, 1 ou 2 dimension).</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est "false".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fpSimplifierGeometrie(ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de simplifer une géométrie afin de la rendre non simple. On enlève tous
+ les croisements et les superpositions de géométries.
+</summary>
+	<param name=" pGeometry "> Interface ESRI contenant une géométrie à simplifier.</param>
+	<returns> La fonction va retourner un "IGeometry". Si le traitement n'a pas réussi le "IGeometry" est "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.RemplacerGeometrie">
+	<summary>
+ Routine qui permet de remplacer la géométrie d'un élément sélectionné selon la géométrie de
+ la géométrie de travail. Le mode édition doit être actif. la géométrie de travait courant doit être actif. 
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.CreerElement">
+	<summary>
+ Routine qui permet de créer un élément selon la géométrie de la géométrie de travail et selon le Layer de construction.
+ Le mode édition doit être actif. la géométrie de travait courant doit être actif. 
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fbModifierValeurAttributSelonDefaut(ESRI.ArcGIS.Geodatabase.IFeature@,System.Int32)">
+	<summary>
+ Fonction qui permet de modifier la valeur d'attribut selon la valeur par défaut de la classe ou la
+ sous-classe. Si l'élément possède des sous-classes, la valeur par défaut associée à la sous-classe
+ sera utilisée mais si l'élément ne possède pas de sous-classe, alors ce sera la valeur par défaut
+ de classe qui sera utilisée.
+</summary>
+	<param name=" pFeature "> Élément pour lequel on veut modifier un attribut.</param>
+	<param name=" nIndex "> Position de l'attribut à modifier.</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Reshape">
+	<summary>
+ Routine qui permet de modifier la géométrie d'un élément à partir des lignes contenues dans les
+ géométries de travail. La partie la plus grande (Gauche ou droite) sera conservée. 
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Couper(System.Boolean,System.Boolean,System.Int32@)">
+	<summary>
+ Routine qui permet de Couper la géométrie d'un élément selon une ligne de travail et garder la partie gauche
+ et/ou droite. Un message d'erreur de la liste des OID d'éléments non-coupés est affiché à l'écran. 
+</summary>
+	<param name=" bLeft "> Indique si on garde la partie gauche de la géométrie.</param>
+	<param name=" bRight "> Indique si on garde la partie droite de la géométrie.</param>
+	<param name=" nNbModif "> Nombre de modifications total effectuées.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fbCouperGeometrie(ESRI.ArcGIS.Geodatabase.IFeature,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de couper et conserver la partie gauche et droite de la géométrie d'un élément
+ en fonction d'une ligne de travail. L'élément est coupé seulement si la ligne de travail croise la
+ géométrie de l'élément. La partie gauche est conservée dans l'élément traité et la partie droite
+ est ajoutée dans la géométrie d'un nouvel élément avec les même attributs que l'élément traité.
+</summary>
+	<param name=" pFeature "> Interface ESRI contenant l'élément à traiter.</param>
+	<param name=" pGeometry "> Interface ESRI contenant la ligne utilisée pour couper les éléments.</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fbCopierValeurAttributElementIdentique(ESRI.ArcGIS.Geodatabase.IFeature@,ESRI.ArcGIS.Geodatabase.IFeature)">
+	<summary>
+  Fonction qui permet de copier les valeurs d'attributs d'un élément à un autre. Les attributs
+ OBJECTID, SHAPE, SHAPE_Length et SHAPE_Area ne sont pas traité. Le traitement n'est pas sauvé
+ à la fin. Il faut effectuer un store à la suite de ce traitement si on veut que les valeurs
+ d'attributs soient sauvées.
+</summary>
+	<param name=" pFeatureTo "> Interface ESRI de l'élément avec les valeurs de destination.</param>
+	<param name=" pFeatureFrom "> Interface ESRI de l'élément avec les valeurs d'origine.</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi, le "Boolean" sera à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fbCouperGarderPartieGauche(ESRI.ArcGIS.Geodatabase.IFeature,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de couper et conserver la partie gauche de la géométrie d'un élément en fonction d'une ligne
+de travail. L'élément est coupé seulement si la ligne de travail croise la géométrie de l'élément. 
+</summary>
+	<param name=" pFeature "> Interface ESRI contenant l'élément à traiter.</param>
+	<param name=" pGeometry "> Interface ESRI contenant la ligne pour couper.</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.fbCouperGarderPartieDroite(ESRI.ArcGIS.Geodatabase.IFeature,ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Fonction qui permet de couper et conserver la partie droite de la géométrie d'un élément en fonction d'une ligne
+ de travail. L'élément est coupé seulement si la ligne de travail croise la géométrie de l'élément.
+</summary>
+	<param name=" pFeature "> Interface ESRI contenant l'élément à traiter.</param>
+	<param name=" pGeometry"> Interface ESRI contenant la ligne pour couper.</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Intersection(System.Int32@)">
+	<summary>
+ Routine qui permet d'effectuer le traitement de symétrie des éléments sélectionnés avec les
+ géométries de travail. Seulement les éléments qui ont la contraite "Overlap" avec les géométries
+ de travail de même type seront traités. 
+</summary>
+	<param name=" nNbModif "> Nombre de modifications total effectuées.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Difference(System.Int32@)">
+	<summary>
+ Routine qui permet d'effectuer le traitement de différence des éléments sélectionnés avec les
+ géométries de travail. Seulement les éléments qui ont la contraite "Overlap" avec les géométries
+ de travail de même type seront traités.
+</summary>
+	<param name=" nNbModif "> Nombre de modifications total effectuées.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.DifferenceInverser(System.Int32@)">
+	<summary>
+ Fonction qui permet d'effectuer le traitement de différence inversée des éléments sélectionnés
+ avec les géométries de travail. Seulement les éléments qui ont la contraite "Overlap" avec les
+géométries de travail de même type seront traités.
+</summary>
+	<param name=" nNbModif "> Nombre de modifications total effectuées.</param>
+	<returns> La fonction va retourner un "Boolean". Si le traitement n'a pas réussi le "Boolean" est à "False".</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Symetrie(System.Int32@)">
+	<summary>
+ Routine qui permet d'effectuer le traitement de symétrie des éléments sélectionnés avec les
+ géométries de travail. Seulement les éléments qui ont la contraite "Overlap" avec les géométries
+ de travail de même type seront traités.
+</summary>
+	<param name=" nNbModif "> Nombre de modifications total effectuées.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Union(System.Int32@)">
+	<summary>
+ Routine qui permet d'effectuer le traitement d'union des éléments sélectionnés avec les
+ géométries de travail. Seulement les éléments qui touches ou superposes les géométries de travail. 
+</summary>
+	<param name=" nNbModif "> Nombre de modifications total effectuées.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Importer">
+	<summary>
+ Routine qui permet d'exporter les géométries de travail dans le projet afin de les conserver.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Exporter">
+	<summary>
+ Routine qui permet d'exporter les géométries de travail dans le projet afin de les conserver.
+</summary>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.Geometry2ElementCollection(ESRI.ArcGIS.Geometry.IGeometryCollection,ESRI.ArcGIS.Carto.IElementCollection@)">
+	<summary>
+ Routine qui permet de transformer une collection de géométrie en une collection d'éléments graphiques. 
+</summary>
+	<param name=" pGeometryColl "> Collection de géométries à transférer.</param>
+	<param name=" pElementColl "> Collection d'éléments générés à partir des géométries.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.TraiterZ(ESRI.ArcGIS.Geometry.IGeometry@,System.Double)">
+	<summary>
+ Routine qui permet de traiter le Z d'une Géométrie.
+</summary>
+	<param name=" pGeometry "> Interface contenant la géométrie à traiter.</param>
+	<param name=" dZ "> Contient la valeur du Z.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.TraiterM(ESRI.ArcGIS.Geometry.IGeometry@,System.Double)">
+	<summary>
+ Routine qui permet de traiter le M d'une Géométrie.
+</summary>
+	<param name=" pGeometry "> Interface contenant la géométrie à traiter.</param>
+	<param name=" dM "> Contient la valeur du M.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.RetournerGeometryDef(ESRI.ArcGIS.Geodatabase.IFeatureClass)">
+	<summary> 
+ Cette fonction permet de retourner la définition de la géométrie à partir de la classe afin de vérifier la présence du Z et M.
+ </summary>
+	<param name="pFeatureClass"></param>
+	<returns>IGeometryDef</returns>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.CreerTopologyGraph(ESRI.ArcGIS.Geometry.IEnvelope,Microsoft.VisualBasic.Collection,System.Double)">
+	<summary>
+Fonction qui permet de créer et retourner la topologie en mémoire des éléments entre une collection de FeatureLayer.
+</summary>
+	<param name="pEnvelope">Interface ESRI contenant l'enveloppe de création de la topologie traitée.</param>
+	<param name="qFeatureLayerColl">Interface ESRI contenant les FeatureLayers pour traiter la topologie.</param>
+	<param name="dTolerance">Tolerance de proximité.</param>
+	<returns>"ITopologyGraph" contenant la topologie des classes de données, "Nothing" sinon.</returns>
+</member><member name="T:BarreGeometrieTravail.modGeometrieTravail">
+	<summary>
+ Librairies de routines utilisée pour traiter les géométries de travail.
+</summary>
+	<remarks>
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdCreerSurfaceLigne">
+	<summary>
+Commande qui permet de créer une surface dans les géométries de travail en mémoire 
+à partir des éléments sélectionnés de type ligne de la fenêtre active.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdSimplifierGeometrie">
+	<summary>
+Commande qui permet de simplifier les géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdIntersectionMultiple">
+	<summary>
+Commande qui permet d'effectuer l'intersection à multiple dimensions entre les géométries de
+travail et les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdModifierDebutSommet">
+	<summary>
+Commande qui permet de modifier le début des éléments sélectionnés et de les mettre dans les géométries de travail .
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdIdentifierSommet">
+	<summary>
+Commande qui permet d'identifier les sommets dans des géométries de travail en mémoire à partir des éléments
+sélectionnés de la fenêtre active.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdUnionGeometrie">
+	<summary>
+Commande qui permet d'effectuer l'union entre les géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdDessinerSommet">
+	<summary>
+Commande qui permet de dessiner dans la fenêtre graphique les sommet des géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdImporter">
+	<summary>
+Commande qui permet d'importer les géométries de travail contenu dans les éléments graphiques du MapFrame.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdDessinerGeometrie">
+	<summary>
+Commande qui permet de dessiner dans la fenêtre graphique les géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdActiverMenu">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdActiverMenu', the id declared for Add-in Button class 'cmdActiverMenu'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.tooConstruirePoint">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_tooConstruirePoint', the id declared for Add-in Tool class 'tooConstruirePoint'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.tooConstruireLigne">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_tooConstruireLigne', the id declared for Add-in Tool class 'tooConstruireLigne'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.tooConstruireSurface">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_tooConstruireSurface', the id declared for Add-in Tool class 'tooConstruireSurface'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdIdentifierGeometrie">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdIdentifierGeometrie', the id declared for Add-in Button class 'cmdIdentifierGeometrie'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdIdentifierLimite">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdIdentifierLimite', the id declared for Add-in Button class 'cmdIdentifierLimite'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdIdentifierSommet">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdIdentifierSommet', the id declared for Add-in Button class 'cmdIdentifierSommet'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdIdentifierSquelette">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdIdentifierSquelette', the id declared for Add-in Button class 'cmdIdentifierSquelette'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdIdentifierEdge">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdIdentifierEdge', the id declared for Add-in Button class 'cmdIdentifierEdge'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdDessinerGeometrie">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdDessinerGeometrie', the id declared for Add-in Button class 'cmdDessinerGeometrie'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdDessinerSommet">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdDessinerSommet', the id declared for Add-in Button class 'cmdDessinerSommet'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdZoomGeometrie">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdZoomGeometrie', the id declared for Add-in Button class 'cmdZoomGeometrie'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdTamponGeometrie">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdTamponGeometrie', the id declared for Add-in Button class 'cmdTamponGeometrie'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdCreerSurfaceLigne">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdCreerSurfaceLigne', the id declared for Add-in Button class 'cmdCreerSurfaceLigne'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdUnionGeometrie">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdUnionGeometrie', the id declared for Add-in Button class 'cmdUnionGeometrie'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdIntersectionMultiple">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdIntersectionMultiple', the id declared for Add-in Button class 'cmdIntersectionMultiple'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdDifferenceMultiple">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdDifferenceMultiple', the id declared for Add-in Button class 'cmdDifferenceMultiple'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdSimplifierGeometrie">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdSimplifierGeometrie', the id declared for Add-in Button class 'cmdSimplifierGeometrie'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdSelectionnerElement">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdSelectionnerElement', the id declared for Add-in Button class 'cmdSelectionnerElement'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdCreerElement">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdCreerElement', the id declared for Add-in Button class 'cmdCreerElement'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdRemplacer">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdRemplacer', the id declared for Add-in Button class 'cmdRemplacer'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdCouper">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdCouper', the id declared for Add-in Button class 'cmdCouper'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdCouperDroite">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdCouperDroite', the id declared for Add-in Button class 'cmdCouperDroite'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdCouperGauche">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdCouperGauche', the id declared for Add-in Button class 'cmdCouperGauche'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdIntersection">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdIntersection', the id declared for Add-in Button class 'cmdIntersection'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdDifference">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdDifference', the id declared for Add-in Button class 'cmdDifference'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdDifferenceInverser">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdDifferenceInverser', the id declared for Add-in Button class 'cmdDifferenceInverser'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdUnion">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdUnion', the id declared for Add-in Button class 'cmdUnion'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdSymetrie">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdSymetrie', the id declared for Add-in Button class 'cmdSymetrie'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdReshape">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdReshape', the id declared for Add-in Button class 'cmdReshape'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdImporter">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdImporter', the id declared for Add-in Button class 'cmdImporter'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdExporter">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdExporter', the id declared for Add-in Button class 'cmdExporter'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdGeneraliserLigne">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdGeneraliserLigne', the id declared for Add-in Button class 'cmdGeneraliserLigne'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdGeneraliserInterieur">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdGeneraliserInterieur', the id declared for Add-in Button class 'cmdGeneraliserInterieur'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdGeneraliserExterieur">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdGeneraliserExterieur', the id declared for Add-in Button class 'cmdGeneraliserExterieur'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdTrianguler">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdTrianguler', the id declared for Add-in Button class 'cmdTrianguler'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdModifierDebutSommet">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdModifierDebutSommet', the id declared for Add-in Button class 'cmdModifierDebutSommet'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.dckMenuGeometrieTravail">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_dckMenuGeometrieTravail', the id declared for Add-in DockableWindow class 'dckMenuGeometrieTravail+AddinImpl'
+</summary>
+</member><member name="T:BarreGeometrieTravail.My.ThisAddIn.IDs">
+	<summary>
+A class for looking up Add-in id strings declared in the associated configuration xml file (.esriaddinx).
+</summary>
+</member><member name="T:BarreGeometrieTravail.My.ThisAddIn">
+	<summary>
+A class for looking up declarative information in the associated configuration xml file (.esriaddinx).
+</summary>
+</member><member name="M:BarreGeometrieTravail.My.Internal.AddInStartupObject.GetThis">
+	<summary>
+ Expose this instance of Add-in class externally
+ </summary>
+</member><member name="T:BarreGeometrieTravail.cmdGeneraliserExterieur">
+	<summary>
+Commande qui permet de généraliser l'extérieur des éléments de type surface sélectionnés.
+</summary>
+	<remarks>
+ '''Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdRemplacer">
+	<summary>
+Commande qui permet de remplacer la géométrie de l'élément sélectionné à partir des géométries
+de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdDifferenceMultiple">
+	<summary>
+Commande qui permet d'effectuer la difference à multiple dimensions entre les géométries de
+travail en mémoire et les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="P:BarreGeometrieTravail.dckMenuGeometrieTravail.Hook">
+	<summary>
+ Host object of the dockable window
+ </summary>
+</member><member name="T:BarreGeometrieTravail.dckMenuGeometrieTravail.AddinImpl">
+	<summary>
+ Implementation class of the dockable window add-in. It is responsible for
+ creating and disposing the user interface class for the dockable window.
+ </summary>
+</member><member name="M:BarreGeometrieTravail.dckMenuGeometrieTravail.treGeometrie_BeforeExpand(System.Object,System.Windows.Forms.TreeViewCancelEventArgs)">
+	<summary>
+ Routine appelée lorsqu'un noeud doit être ouvert.
+ On n'ouvre pas le noeud s'il s'agit d'un double-click.
+</summary>
+</member><member name="M:BarreGeometrieTravail.dckMenuGeometrieTravail.treGeometrie_BeforeCollapse(System.Object,System.Windows.Forms.TreeViewCancelEventArgs)">
+	<summary>
+ Routine appelée lorsqu'un noeud doit être fermé.
+ On ne ferme pas le noeud s'il s'agit d'un double-click.
+</summary>
+</member><member name="M:BarreGeometrieTravail.dckMenuGeometrieTravail.treGeometrie_MouseDown(System.Object,System.Windows.Forms.MouseEventArgs)">
+	<summary>
+ Routine appelée lorsqu'un click de souris est effectué.
+ On conserve le nombre de clicks afin de savoir si c'est un double-click qui est effectué.
+</summary>
+</member><member name="M:BarreGeometrieTravail.dckMenuGeometrieTravail.Init">
+	<summary>
+ Permet d'initialiser le menu, les symboles, d'afficher de l'information dans le richtextbox et dessiner les géométries.
+</summary>
+</member><member name="M:BarreGeometrieTravail.dckMenuGeometrieTravail.InfoGeometrieTravail">
+	<summary>
+Permet d'afficher de l'information sur les géométries de travail et de les dessiner si spécifié.
+</summary>
+</member><member name="M:BarreGeometrieTravail.dckMenuGeometrieTravail.DetailGeometrieTravail(ESRI.ArcGIS.Geometry.IGeometry,System.Windows.Forms.TreeNode,System.Windows.Forms.TreeNodeCollection@,System.Boolean)">
+	<summary>
+Permet d'afficher de détailler le contenu de chaque géométrie de travail dans une TreeView.
+</summary>
+	<param name=" pGeometry "> Interface contenant la géométrie à détailler dans le TreeView.</param>
+	<param name=" qNode "> Interface contenant un Node de géométrie.</param>
+	<param name=" qNodes "> Objet contenant la collection de Nodes dans lequel on y ajoute des Nodes du TreeView.</param>
+</member><member name="T:BarreGeometrieTravail.dckMenuGeometrieTravail">
+	<summary>
+Menu qui permet d'afficher l'information sur les géométries de travail en mémoire.
+
+Le menu d’information affiche le nombre total de géométries de travail présentent 
+en mémoire, le nombre de points, de lignes et de surfaces intérieures et extérieures. 
+De plus, la longueur totale des lignes et la superficie totale des surfaces.
+
+Le menu de paramètres permet d’indiquer si les numéros des géométries et les 
+géométries doivent être dessinées et si un Zoom doit également être fait 
+lors de la création d’une géométrie. De plus, on peut changer le symbole 
+des géométries de type point, ligne et surface ainsi que celui du  texte.
+</summary>
+	<remarks>
+Auteur : Michel Pothier
+</remarks>
+</member><member name="P:BarreGeometrieTravail.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:BarreGeometrieTravail.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="T:BarreGeometrieTravail.cmdIntersection">
+	<summary>
+Commande qui permet d'effectuer l'intersection entre les géométries de travail et les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdDifferenceInverser">
+	<summary>
+Commande qui permet d'effectuer la différence inverser (NOTAND) entre les géométries de
+travail en mémoire et les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdSelectionnerElement">
+	<summary>
+Commande qui permet de sélectionner les éléments à partir des géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdActiverMenu">
+	<summary>
+Permet d'activer un menu pour afficher l'information sur les géométries de travail.
+</summary>
+	<remarks>
+ '''Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdIdentifierSquelette">
+	<summary>
+Commande qui permet d'identifier le squelette dans des géométries de travail en mémoire à partir des éléments de type surface sélectionnés de la fenêtre active.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdReshape">
+	<summary>
+Commande qui permet de modifier la forme des éléments sélectionnés selon les géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdCreerElement">
+	<summary>
+Commande qui permet de creer un élément selon le target sélectionné et les géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdCouperGauche">
+	<summary>
+Commande qui permet de couper les éléments sélectionnés selon les géométries de travail
+de type ligne en mémoire et conserver seulement la partie gauche.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.tooConstruireLigne">
+	<summary>
+Tool qui permet de construire des nouvelles lignes dans les géométries de travail.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="F:BarreGeometrieTravail.clsGererMapLayer.gpMap">
+	<summary>Interface contenant la Map à Gérer.</summary>
+</member><member name="F:BarreGeometrieTravail.clsGererMapLayer.gqFeatureLayerCollection">
+	<summary>Collection des FeatureLayers de la Map.</summary>
+</member><member name="F:BarreGeometrieTravail.clsGererMapLayer.gqRasterLayerCollection">
+	<summary>Collection des RasterLayers de la Map.</summary>
+</member><member name="F:BarreGeometrieTravail.clsGererMapLayer.gpEnvelope">
+	<summary>Collection des FeatureLayers de la Map.</summary>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.#ctor(ESRI.ArcGIS.Carto.IMap,System.Boolean)">
+	<summary>
+ Routine qui permet d'initialiser la classe.
+ 
+<param name="pMap"> Interface ESRI utilisée pour extraire les FeatureLayers visible ou non.</param>
+		<param name="bNonVisible"> Indique si on doit aussi extraire les FeatureLayers non visibles.</param>
+	</summary>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.finalize">
+	<summary>
+Routine qui permet de vider la mémoire des objets de la classe.
+</summary>
+</member><member name="P:BarreGeometrieTravail.clsGererMapLayer.Map">
+	<summary>
+ Propriété qui permet de définir et retourner la Map traitée.
+</summary>
+</member><member name="P:BarreGeometrieTravail.clsGererMapLayer.FeatureLayerCollection">
+	<summary>
+ Propriété qui permet de définir et retourner la collection de FeatureLayer traitée.
+</summary>
+</member><member name="P:BarreGeometrieTravail.clsGererMapLayer.RasterLayerCollection">
+	<summary>
+ Propriété qui permet de définir et retourner la collection de RasterLayer traitée.
+</summary>
+</member><member name="P:BarreGeometrieTravail.clsGererMapLayer.EnvelopeFeatureLayerCollection">
+	<summary>
+ Propriété qui permet de définir et retourner l'enveloppe de la collection de FeatureLayer traitée.
+</summary>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.ExtraireFeatureLayerByName(System.String,System.Boolean)">
+	<summary>
+ Fonction qui permet d'extraire le FeatureLayer correspondant au nom spécifié.
+</summary>
+	<param name="sTexte">Texte utilisé pour trouver le FeatureLayer par défaut.</param>
+	<param name="bNonVisible"> Indique si on doit aussi extraire les FeatureLayers non visibles.</param>
+	<returns>"IFeatureLayer" correspondant au texte recherché, sinon "Nothing".</returns>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.DefinirCollectionRasterLayer(System.Boolean)">
+	<summary>
+ Fonction qui permet de définir la collection des RasterLayers présents dans la Map.
+ On peut indiquer si on veut aussi extraire les RasterLayers non visibles.
+</summary>
+	<param name="bNonVisible"> Indique si on doit aussi extraire les RasterLayer non visibles.</param>
+	<return>"Collection" contenant les "IRasterLayer" visible ou non selon ce qui est demandé.</return>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.DefinirCollectionFeatureLayer(System.Boolean,ESRI.ArcGIS.Geometry.esriGeometryType)">
+	<summary>
+ Fonction qui permet de définir la collection des FeatureLayers présents dans la Map.
+ On peut indiquer si on veut aussi extraire les FeatureLayers non visibles.
+</summary>
+	<param name="bNonVisible"> Indique si on doit aussi extraire les FeatureLayers non visibles.</param>
+	<param name="pEsriGeometryType"> Contient le type de géométrie des FeatureLayers recherchés.</param>
+	<return>"Collection" contenant les "IFeatureLayer" visible ou non selon ce qui est demandé.</return>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.DefinirGroupLayer(ESRI.ArcGIS.Carto.ILayer,System.Int32@)">
+	<summary>
+ Fonction qui permet d'extraire le GroupLayer dans lequel le Layer recherché est présent.
+</summary>
+	<param name="pLayerRechercher">Interface contenant le Layer à rechercher dans la Map active.</param>
+	<param name="nPosition">Position su Layer dans le GroupLayer.</param>
+	<returns>"Collection" contenant les "IGroupLayer" recherchés.</returns>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.EstVisible(ESRI.ArcGIS.Carto.ILayer,System.Boolean)">
+	<summary>
+ Fonction qui permet d'indiquer si le FeatureLayer est visible ou non dans la IMap.
+</summary>
+	<param name="pLayerRechercher"> Interface ESRI contenant le Layer à rechercher.</param>
+	<param name="bPresent"> Contient l'indication si le Layer à rechercher est présent dans la Map.</param>
+	<return>"Collection" contenant les "IFeatureLayer" visible ou non.</return>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.DefinirCollectionRasterLayerGroup(Microsoft.VisualBasic.Collection@,ESRI.ArcGIS.Carto.IGroupLayer,System.Boolean)">
+	<summary>
+ Routine qui permet de définir la collection des RasterLayers contenus dans un GroupLayer.
+ On peut indiquer si on veut aussi extraire les RasterLayers non visibles.
+</summary>
+	<param name="qRasterLayerColl">Collection des RasterLayer.</param>
+	<param name="pGroupLayer">Interface ESRI contenant un group de Layers.</param>
+	<param name="bNonVisible">Indique si on doit aussi extraire les RasterLayers non visibles.</param>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.DefinirCollectionFeatureLayerGroup(Microsoft.VisualBasic.Collection@,ESRI.ArcGIS.Carto.IGroupLayer,System.Boolean,ESRI.ArcGIS.Geometry.esriGeometryType)">
+	<summary>
+ Routine qui permet de définir la collection des FeatureLayers contenus dans un GroupLayer.
+ On peut indiquer si on veut aussi extraire les FeatureLayers non visibles.
+</summary>
+	<param name="qFeatureLayerColl">Collection des FeatureLayer.</param>
+	<param name="pGroupLayer">Interface ESRI contenant un group de Layers.</param>
+	<param name="bNonVisible">Indique si on doit aussi extraire les FeatureLayers non visibles.</param>
+	<param name="pEsriGeometryType"> Contient le type de géométrie des FeatureLayers recherchés.</param>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.ExtraireGroupLayerGroup(ESRI.ArcGIS.Carto.IGroupLayer,ESRI.ArcGIS.Carto.ILayer,System.Int32@)">
+	<summary>
+ Routine qui permet d'extraire le GroupLayer contenant un FeatureLayer.
+ Le GroupLayer recherché est contenu dans un GroupLayer.
+</summary>
+	<param name="pGroupLayer">Interface ESRI contenant un groupe de Layers.</param>
+	<param name="pLayerRechercher">Interface ESRI contenant le Layer à rechercher.</param>
+	<param name="nPosition">Position su Layer dans le GroupLayer.</param>
+</member><member name="M:BarreGeometrieTravail.clsGererMapLayer.EstVisibleGroup(ESRI.ArcGIS.Carto.IGroupLayer,ESRI.ArcGIS.Carto.ILayer,System.Boolean)">
+	<summary>
+ Fonction qui permet d'indiquer si le FeatureLayer est visible ou non dans la IMap.
+</summary>
+	<param name="pGroupLayer">Interface ESRI contenant un group de Layers.</param>
+	<param name="pLayerRechercher"> Interface ESRI contenant le Layer à rechercher.</param>
+	<param name="bPresent"> Contient l'indication si le Layer à rechercher est présent dans la Map.</param>
+	<return>"Collection" contenant les "IFeatureLayer" visible ou non.</return>
+</member><member name="T:BarreGeometrieTravail.clsGererMapLayer">
+	<summary>
+ Librairie de Classe qui permet de manipuler les différents types de Layer contenu dans une Map.
+</summary>
+	<remarks>
+Cette librairie est utilisable pour les outils interactifs ou Batch dans ArcMap (ArcGis de ESRI).
+
+Auteur : Michel Pothier
+Date : 6 Mai 2011
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdDifference">
+	<summary>
+Commande qui permet d'effectuer la différence (ANDNOT) entre les géométries de travail en mémoire
+et les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdExporter">
+	<summary>
+Commande qui permet d'exporter les géométries de travail en mémoire dans les éléments graphiques du projet.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdIdentifierEdge">
+	<summary>
+Commande qui permet d'identifier les Edges sélectionnés dans la vue active et les ajouter dans les géométries de travail en mémoire. 
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserInterieurPolygone(ESRI.ArcGIS.Geometry.IPolygon4,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolygon@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de retourner le Polygone de généralisation intérieure et la Polyline d'erreur de généralisation d'un polygone.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour effectuer la généralisation.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre le polygon et les éléments en relation.</param>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour généraliser.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour généraliser.</param>
+	<param name="dSupMin">Contient la superficie de généralisation minimum.</param>
+	<param name="pPolygonGen"> Interface contenant le polygone de généralisation.</param>
+	<param name="pPolylineErr"> Interface contenant la polyligne d'erreur de généralisation.</param>
+	<param name="pSquelette"> Interface contenant le squelette du polygon.</param>
+	<param name="pBagDroites"> Interface contenant les droites de Delaunay.</param>
+	<remarks>La généralisation est effectuée à partir des lignes des triangles de Delaunay.</remarks>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserExterieurPolygone(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolygon@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de retourner le Polygone de généralisation extérieure et la Polyline d'erreur de généralisation d'un polygon.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour effectuer la généralisation.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre le polygon et les éléments en relation.</param>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour généraliser.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour généraliser.</param>
+	<param name="dSupMin"> Contient la superficie de généralisation minimum.</param>
+	<param name="pPolygonGen"> Interface contenant le polygone de généralisation.</param>
+	<param name="pPolylineErr"> Interface contenant la polyligne d'erreur de généralisation.</param>
+	<param name="pSquelette"> Interface contenant le squelette du polygon.</param>
+	<param name="pBagDroites"> Interface contenant les droites de Delaunay.</param>
+	<remarks>La généralisation est effectuée à partir des lignes des triangles de Delaunay.</remarks>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserPolyligne(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de retourner la Polyligne de généralisation et la Polyline d'erreurs du résultat de la généralisation effectuée pour une polyligne.
+ La généralisation est effectuée à partir des lignes des triangles de Delaunay.
+ </summary>
+	<param name="pPolyline"> Polyligne utilisée pour effectuer la généralisation.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre la polyligne et les éléments en relation.</param>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargGenMin"> Largeur minimum utilisée pour généraliser.</param>
+	<param name="dLongGenMin"> Longueur minimale utilisée pour généraliser.</param>
+	<param name="dLongMin"> Longueur minimale d'une ligne.</param>
+	<param name="pPolylineGen"> Interface contenant les lignes de généralisation.</param>
+	<param name="pPolylineErr"> Interface contenant les lignes de généralisation en erreur.</param>
+	<param name="pSquelette"> Interface contenant le squelette de la polyligne.</param>
+	<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay utilisées pour effectuer la généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.TraiterLongueurLigneMinimale(ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IMultipoint,System.Double)">
+	<summary>
+ Routine qui permet de détruire les lignes non-connectées qui sont inférieures à la longueur minimale d'une ligne
+ </summary>
+	<param name="pPolyline">Interface contenant la polyligne à traiter.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion.</param>
+	<param name="dLongMin">Contient la longueur minimale d'une ligne.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.ConnecterLignesPolygone(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolygon@)">
+	<summary>
+ Routine qui permet d'ajouter les sommets de connexion des lignes des triangles de Delaunay au polygone.
+ </summary>
+	<param name="pLignesInt">Interface contenant les lignes intérieures des triangles de Delaunay.</param>
+	<param name="pPolygon">Polygone utilisée pour effectuer la généralisation d'un anneau intérieur.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserAnneauInterieur(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolygon@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de retourner le Polygone de généralisation intérieure et la Polyline d'erreur généralisation d'un anneau.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour effectuer la généralisation d'un anneau intérieur.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre le polygon et les éléments en relation.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour généraliser.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour généraliser.</param>
+	<param name="dSupMin"> Contient la superficie de généralisation minimum.</param>
+	<param name="pPolygonGen"> Interface contenant le polygone de généralisation.</param>
+	<param name="pPolylineErr"> Interface contenant la polyligne d'erreur de généralisation.</param>
+	<param name="pSquelette"> Interface contenant le squelette de la polyligne.</param>
+	<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay utilisées pour effectuer la généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserAnneauExterieur(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolygon@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de retourner le Polygone de généralisation extérieure et la Polyline d'erreur de généralisation d'un anneau extérieur.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour effectuer la généralisation d'un polygone extérieur.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre le polygon et les éléments en relation.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour généraliser.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour généraliser.</param>
+	<param name="dSupMin"> Contient la superficie de généralisation minimum.</param>
+	<param name="pPolygonGen"> Interface contenant le polygone de généralisation extérieur.</param>
+	<param name="pPolylineErr"> Interface contenant la polyligne d'erreur de généralisation.</param>
+	<param name="pSquelette"> Interface contenant le squelette de la polyligne.</param>
+	<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay utilisées pour effectuer la généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerPolyligneErreurGeneralisation(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometryBag,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Function qui permet de créer la polyligne d'erreur de généralisation d'une géométrie.
+ </summary>
+	<param name="pSquelette">Interface contenant le squelette de la géométrie.</param>
+	<param name="pBagLignesTriangles">Interface contenant les lignes des triangles.</param>
+	<param name="dLargMin">Contient la largeur de généralisation minimum.</param>
+	<param name="dLongMin">Contient la longueur de généralisation minimum.</param>
+	<param name="pPolylineErr">Interface contenant la polyligne d'erreur de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerPolyligneGeneralisation(ESRI.ArcGIS.Geometry.IPolyline,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud},ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de créer et retourner la polyligne de généralisation.
+ </summary>
+	<param name="pPolyline">Interface contenant la polyligne à généraliser.</param>
+	<param name="pDictLiens">Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
+	<param name="pBagDroites">Interface contenant les droites de Delaunay.</param>
+	<param name="pPolylineErr">Interface contenant la polyligne d'erreurs de généralisation.</param>
+	<param name="pPolylineGen">Interface contenant la polyligne de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerPolygoneGeneralisation(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolygon@)">
+	<summary>
+ Routine qui permet de créer et retourner le polygone de généralisation.
+ </summary>
+	<param name="pPolygon">Interface contenant le polygone à traiter.</param>
+	<param name="pBagDroites">Interface contenant les droites de Delaunay.</param>
+	<param name="dLargMin">Contient la largeur de généralisation minimum.</param>
+	<param name="dLongMin">Contient la longueur de généralisation minimum.</param>
+	<param name="dSupMin">Contient la superficie de généralisation minimum.</param>
+	<param name="pPolylineErr">Interface contenant la polyligne d'erreur de généralisation.</param>
+	<param name="pPolygonGen">Interface contenant le polygone de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerAnneauGeneralisation(ESRI.ArcGIS.Geometry.IRing,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud},System.Collections.Generic.Dictionary{System.Int32,System.Int32},ESRI.ArcGIS.Geometry.IPolygon@)">
+	<summary>
+ Routine qui permet de créer et retourner le polygone de généralisation d'un anneau.
+ </summary>
+	<param name="pRing">Interface contenant l'anneau à généraliser.</param>
+	<param name="pDictLiens">Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
+	<param name="pDictDroites">Interface contenant la polyligne d'erreurs de généralisation.</param>
+	<param name="pPolygonGen">Interface contenant le polygone de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerDictDroiteGeneralisation(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometryBag,System.Collections.Generic.Dictionary{System.Int32,System.Int32}@)">
+	<summary>
+ Function qui permet de créer et retourner le dictionnaire des droites des triangles de Delaunay à utiliser pour effectuer la généralisation.
+ </summary>
+	<param name="pPolylineErr">Interface contenant la polyligne d'erreur de généralisation.</param>
+	<param name="pBagLignesTriangles">Interface contenant les les droites des triangles de Delaunay.</param>
+	<param name="pDictDroites">Dictionnaire contenant les droites des triangles de Delaunay à traiter.</param>
+</member><member name="T:BarreGeometrieTravail.clsGeneraliserGeometrie">
+	<summary>
+ Classe qui permet d'identifier et corriger la généralisation d'une géométrie.
+ </summary>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ConnecterLignesPolyligne(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet d'ajouter les sommets de connexion des lignes des triangles de Delaunay à la polyligne.
+ </summary>
+	<param name="pLignes">Interface contenant les lignes des triangles de Delaunay.</param>
+	<param name="pPolyline">Polyligne utilisée pour effectuer la généralisation de ligne.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerSqueletteLigneDelaunay(ESRI.ArcGIS.Geometry.IPolyline,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud}@,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer le squelette d'une ligne en utilisant les lignes des triangles de Delaunay.
+ </summary>
+	<param name="pPolyline"> Polyligne utilisée pour créer le squelette.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour créer le squelette.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour créer le squelette.</param>
+	<param name="pSquelette"> Interface contenant le squelette de la ligne.</param>
+	<param name="pDictLiens"> Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
+	<param name="pBagDroitesEnv"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne avec son enveloppe.</param>
+	<param name="pBagDroites"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerSquelettePolygoneDelaunay(ESRI.ArcGIS.Geometry.IPolygon4,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer et retourner les lignes du squelette d'un polygone dans une Polyline.
+ Le squelette est créé à partir des lignes des triangles de Delaunay.
+ La liste des triangles de Delaunay est créée à partir de tous les sommets non duppliqués et triés de la géométrie spécifiée.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour créer le squelette.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre le polygon et les éléments en relation.</param>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dDistMin"> Distance minimum utilisée pour ajouter des sommets.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour éliminer des lignes du squelette trop petites.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerPolygoneExterieur(ESRI.ArcGIS.Geometry.IPolygon,System.Double)">
+	<summary>
+ Fonction qui permet de retourner le Polygone extérieur d'un Polygon à partir d'une largeur minimum.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour effectuer la généralisation.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour créer le polygone.</param>
+	<returns>Polygon contenant le polygone extérieur à un polygone.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.AjouterEnveloppePolyligne(ESRI.ArcGIS.Geometry.IPolyline,System.Double)">
+	<summary>
+ Fonction qui permet de retourner la polyligne dans laquelle l'enveloppe a été ajoutée à partir d'une largeur minimum.
+ </summary>
+	<param name="pPolyline">Polyligne utilisée pour ajouter son enveloppe.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour créer la polyligne avec son enveloppe.</param>
+	<returns>Polyline contenant la polyligne et son enveloppe.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.IdentifierLimiteSquelette(ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Fonction qui permet d'identifier les limites du squelette qui correspondent aux sommets du squelettes qui sont non connectés entre eux.
+ </summary>
+	<param name="pSquelette">IPolyline contenant le squelette à traiter.</param>
+	<returns>IMultiPoint contenant les limites du squelette.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerBagTrianglesDelaunay(ESRI.ArcGIS.Geometry.IGeometry,System.Boolean)">
+	<summary>
+ Function qui permet de créer et retourner le GeometryBag contenant les polygones des triangles de Delaunay.
+ La liste des triangles de Delaunay est créée à partir de tous les sommets non duppliqués et triés de la géométrie spécifiée.
+ </summary>
+	<param name="pGeometry">Géométrie utilisée pour créer le diagramme de Voronoi à partir de ses sommets.</param>
+	<param name="bDecouper">Indique si on doit découper les lignes du diagramme de Voronoi selon la zone de traitement.</param>
+	<returns>IGeometryBag contenant les polygones des triangles de Delaunay.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Function qui permet de créer et retourner la polyligne des triangles de Delaunay.
+ </summary>
+	<param name="pGeometry">Géométrie utilisée pour trouver les lignes des triangles de Delaunay.</param>
+	<returns>IPolyline contenant les lignes des triangles de Delaunay.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de créer et retourner les lignes des triangles de Delaunay.
+ </summary>
+	<param name="pGeometry">Géométrie utilisée pour trouver les lignes des triangles de Delaunay.</param>
+	<param name="pLignesTriangles">Interface contenant les lignes des triangles de Delaunay.</param>
+	<remarks>Les lignes des triangles de Delaunay ne sont pas découpées.</remarks>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de créer et retourner les lignes des triangles de Delaunay qui sont à l'intérieure et l'extérieure de la géométrie.
+ </summary>
+	<param name="pGeometry">Géométrie utilisée pour trouver les lignes des triangles de Delaunay.</param>
+	<param name="pLignesInt">Interface contenant les lignes des triangles de Delaunay qui sont à l'intérieure de la géométrie.</param>
+	<param name="pLignesExt">Interface contenant les lignes des triangles de Delaunay qui sont à l'extérieure de la géométrie.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerListeSommets(ESRI.ArcGIS.Geometry.IGeometry)">
+	<summary>
+ Function qui permet de créer et retourner la liste des sommets d'une géométrie.
+ </summary>
+	<param name="pGeometry">Géométrie utilisée pour créer la liste des sommets.</param>
+	<returns>List(Of SimplePoint) contenant les sommets d'une géométrie, Nothing sinon.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerListeTriangles(ESRI.ArcGIS.Geometry.IEnvelope,System.Collections.Generic.IList{BarreGeometrieTravail.TriangulationDelaunay.SimplePoint})">
+	<summary>
+ Function qui permet de créer et retourner la liste des triangles de Delaunay d'une géométrie.
+ </summary>
+	<param name="pEnvelope">Enveloppe de la liste des sommets non dupliqués.</param>
+	<param name="pListeSommets">Liste des sommets non dupliqués pour créer la liste des triangles de Delaunay.</param>
+	<returns>List(Of SimpleTriangle) contenant les triangles de Delaunay d'une géométrie, Nothing sinon.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerSqueletteBaseDelaunay(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer et retourner les lignes du squelette de base d'un polygone dans une Polyline.
+ La fonction utilise les lignes des triangles de Delaunay pour créer le squelette de base.
+ Le squelette de base est créé à partir d'un squelette primaire.
+ </summary>
+	<param name="pPolygon">Interface contenant le polygone utilisée pour trouver son squelette.</param>
+	<param name="pLignesTriangles">Interface contenant les lignes des triangles de Delaunay.</param>
+	<param name="pSquelette">Interface contenant les lignes du squelette du polygone.</param>
+	<param name="pBagDroites">Interface contenant le Bag des droites des triangles de Delaunay.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerBagSommetsLigne(ESRI.ArcGIS.Geometry.IPath,ESRI.ArcGIS.Geometry.IGeometryBag@,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud}@)">
+	<summary>
+ Routine qui permet de créer et retourner le Bag et le dictionnaire des sommets d'une ligne ou d'un anneau à traiter.
+ Le dictionnaire des sommets contient les numéros de sommets précédents et suivants dans des noeuds de sommets.
+ </summary>
+	<param name="pPath">Interface contenant la ligne ou l'anneau à traiter.</param>
+	<param name="pBagSommetsLigne">Interface contenant le Bag des sommets de la ligne à traiter.</param>
+	<param name="pDictSommetsLigne">Dictionnaire contenant l'information de base pour chaque sommet de la ligne.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerBagLignesTriangles(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer et retourner le Bag des lignes des triangles de Delaunay.
+ </summary>
+	<param name="pPolyline">Interface contenant les lignes des triangles de Delaunay.</param>
+	<param name="pBagLignesTriangles">Interface contenant les lignes des triangles de Delaunay.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerDictLiensSommetsLignes(ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IGeometryBag,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud}@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer et retourner le dictionnaire contenant l'information des liens entre les sommets d'une ligne ou d'un anneau et les lignes de Delaunay.
+ </summary>
+	<param name="pBagSommetsLigne">Interface contenant les sommets de la ligne à traiter.</param>
+	<param name="pBagLignesTriangles">Interface contenant les lignes des triangles de Delaunay.</param>
+	<param name="pDictLiens">Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
+	<param name="pBagDroites">Interface contenant les lignes des triangles de Delaunay utilisées.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerBagLignesSquelettePrimaire(ESRI.ArcGIS.Geometry.IPath,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud},ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer et retourner le Bag des lignes du squelette primaire d'une ligne ou d'un anneau.
+ </summary>
+	<param name="pPath">Interface contenant la ligne ou d'un anneau à traiter.</param>
+	<param name="pDictLiens">Dictionnaire contenant l'information des liens entre les sommets de la géométrie et les droites de Delaunay.</param>
+	<param name="pBagLignesPrimaire">Interface contenant les lignes du squelette primaire de la polyligne.</param>
+	<param name="pBagDroites">Interface contenant les droites de Delaunay utilisées.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerBagLignesSimplesDoubles(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer et retourner le Bag des lignes de jonction (non doublées) du squelette primaire d'un polygone.
+ </summary>
+	<param name="pPolygon">Interface contenant le polygone à traiter.</param>
+	<param name="pBagLignesPrimaire">Interface contenant les lignes du squelette primaire.</param>
+	<param name="pBagLignesSimples">Interface contenant les lignes simples du squelette primaire.</param>
+	<param name="pBagLignesDoubles">Interface contenant les lignes doubles du squelette de base.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerBagLignesSimplesDoubles(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer et retourner le Bag des lignes de jonction (non doublées) du squelette primaire d'une polyligne.
+ </summary>
+	<param name="pPolyline">Interface contenant la polyligne à traiter.</param>
+	<param name="pBagLignesPrimaire">Interface contenant les lignes du squelette primaire.</param>
+	<param name="pBagLignesSimples">Interface contenant les lignes simples du squelette primaire.</param>
+	<param name="pBagLignesDoubles">Interface contenant les lignes doubles du squelette de base.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.TraiterLignesSimples(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de traiter les lignes simples et les ajouter dans les lignes du squelette de base d'un polygone.
+ </summary>
+	<param name="pPolygon">Interface contenant le polygone à traiter.</param>
+	<param name="pBagLignesSimples">Interface contenant les lignes simples du squelette primaire.</param>
+	<param name="pBagLignesBase">Interface contenant les lignes en double du squelette de base.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.TraiterLignesSimples(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de traiter les lignes simples et les ajouter dans les lignes du squelette de base d'une polyligne.
+ </summary>
+	<param name="pPolyligne">Interface contenant la polyligne à traiter.</param>
+	<param name="pBagLignesSimples">Interface contenant les lignes simples du squelette primaire.</param>
+	<param name="pBagLignesBase">Interface contenant les lignes en double du squelette de base.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.TraiterLongueurTriangle(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet d'ajouter les deux plus petites lignes d'un triangle dans le Bag des lignes du squelette de base.
+ </summary>
+	<param name="pTriangle">Interface contenant un triangle.</param>
+	<param name="pBagLignesBase">Interface contenant les lignes du squelette de base.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.TraiterCentreTriangle(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet d'ajouter 3 lignes à partir du centre d'un triangle dans le Bag des lignes du squelette de base.
+ </summary>
+	<param name="pTriangle">Interface contenant un triangle.</param>
+	<param name="pBagLignesBase">Interface contenant les lignes du squelette de base.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.TraiterCentreDroites(ESRI.ArcGIS.Geometry.IPolyline)">
+	<summary>
+ Function qui permet de créer une nouvelle Polyline à partir des centres des droites de la polyligne d'entrée.
+ </summary>
+	<param name="pPolyline">Interface contenant les lignes des triangles de Delaunay.</param>
+	<returns>IPolyline contenant le squelette de base du polygone.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.EnleverExtremiteLigne(ESRI.ArcGIS.Geometry.IMultipoint,ESRI.ArcGIS.Geometry.IPolyline@,System.Double)">
+	<summary>
+ Routine qui permet d'enlever les lignes inutiles d'un squelette et retourner les extrémités non connectés.
+ Les extrémités de ligne qui possède une longueur inférieure à la longueur minimale seront enlever du squelette s'ils ne sont pas connectés. 
+ </summary>
+	<param name="pMultiPoint">Sommets pour lesquels le squelette doit être connecté.</param>
+	<param name="pSquelette">Lignes contenant le squelette de départ.</param>
+	<param name="dLongMin">Contient la longueur minimale des lignes à conserver dans le squelette.</param>
+	<returns>IMultipoint contenant les extrémités du squelette non connectées.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ExtraireSommetsRelation(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag)">
+	<summary>
+ Function qui permet de retourner les sommets pour lesquels le squelette du polygone doit être connecté.
+ </summary>
+	<param name="pPolygon">Polygone utilisé pour créer le squelette.</param>
+	<param name="pGeometryBagRel">Sommets pour lesquels le squelette doit être connecté.</param>
+	<returns>IMultipoint contenant les sommets pour lesquels le squelette doit être connecté.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ExtrairePointsIntersection(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag)">
+	<summary>
+ Function qui permet de retourner les points d'intersection entre les composantes du polygone et entre le polygone et ses géométries en relation.
+ </summary>
+	<param name="pPolygon">Polygone utilisé pour créer le squelette.</param>
+	<param name="pGeometryBagRel">Sommets pour lesquels le squelette doit être connecté.</param>
+	<returns>IMultipoint contenant les sommets pour lesquels le squelette doit être connecté.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ExtrairePointsIntersection(ESRI.ArcGIS.Geodatabase.IFeature,ESRI.ArcGIS.Geodatabase.ITopologyGraph)">
+	<summary>
+ Function qui permet de retourner les points d'intersection entre un élément et ses éléments en relation.
+ </summary>
+	<param name="pFeature">Interface contenant l'élément pour lequel on veut extraire ses points de connexion.</param>
+	<param name="pTopologyGraph">Interface contenant la topologie d'un élément et ses éléments en relation.</param>
+	<returns>IMultipoint contenant les sommets pour lesquels le squelette doit être connecté.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ConnecterSquelettePointsConnexion(ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de connecter le squelette aux points de connexion des éléments en relation selon les points les plus proche du squelette simplifier.
+ </summary>
+	<param name="pPointsConnexion">Points pour lesquels le squelette doit être connecté.</param>
+	<param name="dLargMin">Largeur minimun de connexion utilisé pour éliminer les extrémité du squelette temporaire.</param>
+	<param name="dLongMin">Contient la longueur minimale des lignes à conserver dans le squelette.</param>
+	<param name="pSquelette">Polyline contenant le squelette utilisé pour se connecter aux points des éléments en relation.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ConnecterSquelettePointsConnexion(ESRI.ArcGIS.Geometry.IMultipoint,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de connecter le squelette aux points de connexion des éléments en relation selon les points les plus proche du squelette non simplifier.
+ </summary>
+	<param name="pPointsConnexion">Points pour lesquels le squelette doit être connecté.</param>
+	<param name="pSquelette">Polyline contenant le squelette utilisé pour se connecter aux points des éléments en relation.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ConnecterSquelettePointsConnexion(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IMultipoint,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de connecter le squelette aux points de connexion des éléments en relation en fonction de l'angle des points de connexion du polygone.
+ </summary>
+	<param name="pPolygon">Interface contenant le polygone à traiter.</param>
+	<param name="pPointsConnexion">Interface contenant les points pour lesquels le squelette doit être connecté.</param>
+	<param name="pSquelette">Polyline contenant le squelette utilisé pour se connecter aux points des éléments en relation.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.PointConstructAngleDistance(ESRI.ArcGIS.Geometry.IPoint,System.Double,System.Double)">
+	<summary>
+ Fonction qui permet de créer un nouveau point à partir d'un point de départ d'un angle et d'une distance.
+ </summary>
+	<param name="pPoint">Interface contenant le point de départ.</param>
+	<param name="dAngle">Angle en degrés.</param>
+	<param name="dDist">Distance utilisé pour construire le nouveau point.</param>
+	<returns>IPoint contenant le nouveau point calculé.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ConnecterSquelettePolygone(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IMultipoint,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de connecter les extrémités des lignes du squelette en les prolongeant jusqu'au polygone.
+ </summary>
+	<param name="pPolygon">Polygone utilisé pour créer le squelette de départ.</param>
+	<param name="pMultipoint">Interface contenant les sommets des extrémités de ligne du squelette.</param>
+	<param name="pSquelette">Polyline contenant le squelette utilisé pour connecter ses extrémités de ligne au polygone.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.ConnecterSquelettePolyline(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IMultipoint,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de connecter les extrémités des lignes du squelette en les prolongeant jusqu'à une polyligne.
+ </summary>
+	<param name="pPolyline">Polyligne utilisé pour créer le squelette de départ.</param>
+	<param name="pMultipoint">Interface contenant les sommets des extrémités de ligne du squelette.</param>
+	<param name="pSquelette">Polyline contenant le squelette utilisé pour connecter ses extrémités de ligne au polygone.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerLigneConnexion(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IPoint,System.Double,System.Double)">
+	<summary>
+ Fonction qui permet de retourner la ligne de connexion jusqu'à la limite d'un polygone.
+ </summary>
+	<param name="pPolygon">Polygone utiliser pour prolonger la ligne.</param>
+	<param name="pPoint">Extremité de la ligne à prolonger.</param>
+	<param name="dAngle">Contient l'angle en radiant de l'extrémité de la ligne.</param>
+	<param name="dDist">Contient la distance utilisée pour créer la ligne de connexion.</param>
+	<returns>IPath contenant la ligne de connexion jusqu'à la limite d'un polygone, Nothing sinon.</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerLigneConnexion(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPoint,System.Double,System.Double)">
+	<summary>
+ Fonction qui permet de retourner la ligne de connexion jusqu'au sommet le prus proche de la ligne.
+ </summary>
+	<param name="pPolyline">Polyligone utiliser pour prolonger la ligne.</param>
+	<param name="pPoint">Extremité de la ligne à prolonger.</param>
+	<param name="dAngle">Contient l'angle en radiant de l'extrémité de la ligne.</param>
+	<param name="dDist">Contient la distance utilisée pour créer la ligne de connexion.</param>
+	<returns>IPath contenant la ligne de connexion jusqu'à la limite d'un polygone, Nothing sinon.</returns>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Noeud.No">
+	<summary>
+ Numéro du sommet/noeud
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Noeud.NoPrec">
+	<summary>
+ Numéro du sommet précédent
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Noeud.NoSuiv">
+	<summary>
+ Numéro du sommet suivant
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Noeud.AngleMin">
+	<summary>
+ Angle minimum de la droite du noeud
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Noeud.AngleMax">
+	<summary>
+ Angle maximum de la droite du noeud
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Noeud.Liens">
+	<summary>
+ Liste des numéros de points en lien
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Noeud.Droites">
+	<summary>
+ Liste des droites en lien
+ </summary>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Noeud.#ctor(System.Int32)">
+	<summary>
+ Initialiser le noeud
+ </summary>
+	<param name="no">Numéro du sommet/noeud</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Noeud.Add(System.Int32)">
+	<summary>
+ Ajouter un numéro de point en lien avec le point du noeud.
+ </summary>
+	<param name="lien">Numéro du point en lien</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Noeud.Add(System.Int32,System.Int32,System.Int32,System.Double,System.Boolean)">
+	<summary>
+ Ajouter une droite en lien avec le point du noeud.
+ </summary>
+	<param name="no">Numéro de la droite</param>
+	<param name="deb">Numéro du point de début de la droite</param>
+	<param name="fin">Numéro du point de fin de la droite</param>
+	<param name="angle">Angle de la droite en lien</param>
+	<param name="traiter">Indiquer si la droite a déjà été traitée</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Noeud.Add(System.Int32,ESRI.ArcGIS.Geometry.IPoint,ESRI.ArcGIS.Geometry.IPoint,System.Double,System.Boolean)">
+	<summary>
+ Ajouter une droite en lien avec le point du noeud.
+ </summary>
+	<param name="no">Numéro de la droite</param>
+	<param name="deb">Point de début de la droite</param>
+	<param name="fin">Point de fin de la droite</param>
+	<param name="angle">Angle de la droite en lien</param>
+	<param name="traiter">Indiquer si la droite a déjà été traitée</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Noeud.IComparable_CompareTo(System.Object)">
+	<summary>
+ Implement IComparable CompareTo method to enable sorting
+ </summary>
+	<param name="obj">object Noeud</param>
+	<returns>value of compare</returns>
+</member><member name="T:BarreGeometrieTravail.TriangulationDelaunay.Noeud">
+	<summary>
+ Structure d'un noeud contenant le numéro de point et ses liens avec les autres numéros de point.
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Droite.No">
+	<summary>
+ Numéro de la droite en lien
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Droite.Deb">
+	<summary>
+ Numéro du point de début de la droite
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Droite.Fin">
+	<summary>
+ Numéro du point de fin de la droite
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Droite.PointDeb">
+	<summary>
+ Point de début de la droite
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Droite.PointFin">
+	<summary>
+ Point de fin de la droite
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Droite.Angle">
+	<summary>
+ Angle de la droite
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.Droite.Traiter">
+	<summary>
+ Indique si la droite a été traitée
+ </summary>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Droite.#ctor(System.Int32,System.Int32,System.Int32,System.Double,System.Boolean)">
+	<summary>
+ Initialiser la structure de la droite <see cref="T:BarreGeometrieTravail.TriangulationDelaunay.Droite"/> struct
+ </summary>
+	<param name="no">Numéro de la droite</param>
+	<param name="deb">Numéro du point de début de la droite</param>
+	<param name="fin">Numéro du point de fin de la droite</param>
+	<param name="angle">Angle de la droite</param>
+	<param name="traiter">Indique si la droite a été traitée</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Droite.#ctor(System.Int32,ESRI.ArcGIS.Geometry.IPoint,ESRI.ArcGIS.Geometry.IPoint,System.Double,System.Boolean)">
+	<summary>
+ Initialiser la structure de la droite <see cref="T:BarreGeometrieTravail.TriangulationDelaunay.Droite"/> struct
+ </summary>
+	<param name="no">Numéro de la droite</param>
+	<param name="deb">Numéro du point de début de la droite</param>
+	<param name="fin">Numéro du point de fin de la droite</param>
+	<param name="angle">Angle de la droite</param>
+	<param name="traiter">Indique si la droite a été traitée</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Droite.IComparable_CompareTo(System.Object)">
+	<summary>
+ Implémenter la méthode IComparable_CompareTo afin de pouvoir trier les droites.
+ </summary>
+	<param name="obj">Objet Droite</param>
+	<returns>valeur de comparaison</returns>
+</member><member name="T:BarreGeometrieTravail.TriangulationDelaunay.Droite">
+	<summary>
+ Déclarer la structure d'une droite.
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.SimplePoint.X">
+	<summary>
+ Coordonnées X et Y du point
+ </summary>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.SimplePoint.#ctor(System.Double,System.Double)">
+	<summary>
+ Initialiser la structure du point <see cref="T:BarreGeometrieTravail.TriangulationDelaunay.SimplePoint"/> struct
+ </summary>
+	<param name="x">Coordinnée X du point</param>
+	<param name="y">Coordonnée Y du point</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.SimplePoint.IComparable_CompareTo(System.Object)">
+	<summary>
+ Implémenter la méthode IComparable_CompareTo afin de pouvoir trier les points.
+ </summary>
+	<param name="obj">object simple point</param>
+	<returns>value of compare</returns>
+</member><member name="T:BarreGeometrieTravail.TriangulationDelaunay.SimplePoint">
+	<summary>
+ Déclarer la structure d'un point
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.SimpleTriangle.A">
+	<summary>
+ Index des trois points
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.SimpleTriangle.CircumCentre">
+	<summary>
+ Point du centre d'un cercle
+ </summary>
+</member><member name="F:BarreGeometrieTravail.TriangulationDelaunay.SimpleTriangle.Radius">
+	<summary>
+ Rayon du cercle
+ </summary>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.SimpleTriangle.#ctor(System.Int32,System.Int32,System.Int32,BarreGeometrieTravail.TriangulationDelaunay.SimplePoint,System.Double)">
+	<summary>
+ Initialiser la structure du traingle <see cref="T:BarreGeometrieTravail.TriangulationDelaunay.SimpleTriangle"/> struct
+ </summary>
+	<param name="a">index vertex a</param>
+	<param name="b">index vertex b</param>
+	<param name="c">index vertex c</param>
+	<param name="circumcentre">center of triangle</param>
+	<param name="radius">radius of triangle</param>
+</member><member name="T:BarreGeometrieTravail.TriangulationDelaunay.SimpleTriangle">
+	<summary>
+ Déclarer la structure d'un triangle
+ </summary>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CalculateCircumcircle(BarreGeometrieTravail.TriangulationDelaunay.SimplePoint,BarreGeometrieTravail.TriangulationDelaunay.SimplePoint,BarreGeometrieTravail.TriangulationDelaunay.SimplePoint,BarreGeometrieTravail.TriangulationDelaunay.SimplePoint@,System.Double@)">
+	<summary>
+ Calculer le centre d'un cercle et son rayon à partir de troix points.
+ </summary>
+	<param name="p1">Premier point</param>
+	<param name="p2">Deuxième point</param>
+	<param name="p3">Troisième point</param>
+	<param name="circumCentre">center of circle</param>
+	<param name="radius">value of radius</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Distance(BarreGeometrieTravail.TriangulationDelaunay.SimplePoint,BarreGeometrieTravail.TriangulationDelaunay.SimplePoint)">
+	<summary>
+ Calculer la distance entre deux points.
+ </summary>
+	<param name="p1">Premier point</param>
+	<param name="p2">Deuxième point</param>
+	<returns>Distance entre les deux points</returns>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.Angle(ESRI.ArcGIS.Geometry.IPoint,ESRI.ArcGIS.Geometry.IPoint,System.Double)">
+	<summary>
+ Calculer l'angle en degrés entre deux points selon l'axe des X.
+ L'angle calculé doit être supérieure à l'angle de base.
+ </summary>
+	<param name="p1">Premier point</param>
+	<param name="p2">Deuxième point</param>
+	<param name="angleBase">Angle de base utilisée pour calculer l'angle résultant</param>
+	<returns>Angle en degrés entre deux points</returns>
+</member><member name="T:BarreGeometrieTravail.TriangulationDelaunay">
+	<summary>
+ Classe qui permet de créer et gérer la triangulation de Delaunay.
+ </summary>
+</member><member name="M:BarreGeometrieTravail.DiagrammeVoronoi.CreerSquelettePolygoneVoronoi(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double)">
+	<summary>
+ Function qui permet de créer et retourner les lignes du squelette d'un polygone dans une Polyline.
+ Le squelette est créé à partir des lignes du diagramme de Voronoi du Polygone
+ Le diagramme de Voronoi est créé à partir de la liste des triangles de Delaunay.
+ La liste des triangles de Delaunay est créée à partir de tous les sommets non duppliqués et triés de la géométrie spécifiée.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour créer le squelette.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre le polygon et les éléments en relation.</param>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dDistMin"> Distance minimum utilisée pour ajouter des sommets.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour éliminer des lignes du squelette trop petites.</param>
+	<returns>IPolyline contenant les lignes du diagramme de Voronoi.</returns>
+</member><member name="M:BarreGeometrieTravail.DiagrammeVoronoi.CreerListeLignes(ESRI.ArcGIS.Geometry.IGeometry,System.Boolean)">
+	<summary>
+ Function qui permet de créer et retourner les lignes du diagramme de Voronoi dans une Polyline pour une géométrie.
+ Le diagramme de Voronoi est créé à partir de la liste des triangles de Delaunay.
+ La liste des triangles de Delaunay est créée à partir de tous les sommets non duppliqués et triés de la géométrie spécifiée.
+ </summary>
+	<param name="pGeometry">Géométrie utilisée pour créer le diagramme de Voronoi à partir de ses sommets.</param>
+	<param name="bDecouper">Indique si on doit découper les lignes du diagramme de Voronoi selon la zone de traitement.</param>
+	<returns>IPolyline contenant les lignes du diagramme de Voronoi, Nothing sinon.</returns>
+</member><member name="M:BarreGeometrieTravail.DiagrammeVoronoi.CreerBagPolygonesDiagrammeVoronoi(ESRI.ArcGIS.Geometry.IGeometry,System.Boolean)">
+	<summary>
+ Function qui permet de créer et retourner les polygones du diagramme de Voronoi dans un GeometryBag pour une géométrie.
+ Le diagramme de Voronoi est créé à partir de la liste des triangles de Delaunay.
+ La liste des triangles de Delaunay est créée à partir de tous les sommets non duppliqués et triés de la géométrie spécifiée.
+ </summary>
+	<param name="pGeometry">Géométrie utilisée pour créer le diagramme de Voronoi à partir de ses sommets.</param>
+	<param name="bDecouper">Indique si on doit découper les lignes du diagramme de Voronoi selon la zone de traitement.</param>
+	<returns>IGeometryBag contenant les polygones du diagramme de Voronoi, Nothing sinon.</returns>
+</member><member name="M:BarreGeometrieTravail.DiagrammeVoronoi.CreerSqueletteBaseVoronoi(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IPolyline)">
+	<summary>
+ Function qui permet de créer et retourner les lignes du squelette de base d'un polygone dans une Polyline.
+ La fonction utilise les lignes du diagramme de Voronoi pour créer le squelette.
+ </summary>
+	<param name="pPolygon">Polygone utilisée pour créer le squelette.</param>
+	<param name="pPolyligne">Interface contenant les lignes du diagramme de Voronoi.</param>
+	<returns>IPolyline contenant le squelette de base du polyone.</returns>
+</member><member name="M:BarreGeometrieTravail.DiagrammeVoronoi.EnleverExtremiteLigneVoronoi(ESRI.ArcGIS.Geometry.IMultipoint@,ESRI.ArcGIS.Geometry.IPolyline@,System.Double,System.Double)">
+	<summary>
+ Routine qui permet d'enlever les lignes inutiles du squelette d'un polygone créé à partir du diagramme de Voronoi.
+ Les extrémités qui possède seulement 2 sommets ou qui possède une longueur inférieure à la longueur minimale seront enlever du squelette. 
+ </summary>
+	<param name="pMultiPoint">Sommets pour lesquels le squelette doit être connecté.</param>
+	<param name="pSquelette">Lignes contenant le squelette de départ.</param>
+	<param name="dDistLat">Contient la distance latérale filtrer les sommets superflux.</param>
+	<param name="dLongMin">Contient la longueur minimale des lignes à conserver dans le squelette.</param>
+</member><member name="M:BarreGeometrieTravail.DiagrammeVoronoi.IdentifierExtremitesLignes(ESRI.ArcGIS.Geometry.IMultipoint@,ESRI.ArcGIS.Geometry.IPolyline@,System.Collections.Generic.List{System.Int32}@,System.Collections.Generic.List{System.Int32}@,System.Collections.Generic.List{BarreGeometrieTravail.TriangulationDelaunay.SimplePoint}@)">
+	<summary>
+ Routine qui permet d'identifier tous les sommets qui sont une extrémité de ligne du squelette.
+ </summary>
+	<param name="pMultiPoint">Sommets pour lesquels le squelette doit être connecté.</param>
+	<param name="pSquelette">Lignes contenant le squelette de départ.</param>
+	<param name="pListeNo">Contient la liste des numéros de sommet non dupliqués de la géométrie.</param>
+	<param name="pListeNb">Contient la liste du nombre de sommets dupliqués de la géométrie.</param>
+	<param name="pListeSommets">Contient la liste des sommets qui sont une extrémité de ligne du squelette.</param>
+</member><member name="T:BarreGeometrieTravail.DiagrammeVoronoi">
+	<summary>
+ Classe qui permet de créer et gérer un Diagramme de Voronoi.
+ </summary>
+</member><member name="T:BarreGeometrieTravail.cmdSymetrie">
+	<summary>
+Commande qui permet d'effectuer la symétrie (XOR) entre les géométries de travail en mémoire et
+les éléments sélectionnés.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdCouperDroite">
+	<summary>
+Commande qui permet de couper les éléments sélectionnés selon les géométries de travail
+de type ligne en mémoire et conserver seulement la partie droite.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdZoomGeometrie">
+	<summary>
+Commande qui permet d'effectuer un Zoom dans le fenêtre graphique à partir de l'étendue des
+géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdIdentifierGeometrie">
+	<summary>
+Commande qui permet d'identifier les géométries de travail en mémoire à partir des éléments
+sélectionnés de la fenêtre active.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdTrianguler">
+	<summary>
+Commande qui permet de trianguler les éléments sélectionnés de la fenêtre active et de mettre les lignes de triangulation dans la géométrie de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.tooConstruirePoint">
+	<summary>
+Tool qui permet de construire des nouveaux points dans les géométries de travail.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member><member name="T:BarreGeometrieTravail.cmdTamponGeometrie">
+	<summary>
+Commande qui permet de créer un buffer autour des géométries de travail en mémoire.
+</summary>
+	<remarks>
+Ce traitement est utilisable en mode interactif à l'aide de ses interfaces graphiques et doit être
+utilisé dans ArcMap (ArcGisESRI).
+
+Auteur : Michel Pothier
+</remarks>
+</member>
+</members>
+</doc>
