@@ -1,0 +1,917 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+MpoGeometrieTravail
+</name>
+</assembly>
+<members>
+<member name="T:MpoGeometrieTravail.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:MpoGeometrieTravail.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:MpoGeometrieTravail.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="T:MpoGeometrieTravail.cboActiverDessinerGeometrie">
+ <summary>
+ Represents the ComboBox
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MpoGeometrieTravail.cboActiverDessinerGeometrie.#ctor">
+<summary>
+ Constructeur
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.cboActiverDessinerGeometrie.UpdateCombo">
+<summary>
+ Mise à jour des items du combobox
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.cboActiverDessinerGeometrie.OnSelectionChange(ArcGIS.Desktop.Framework.Contracts.ComboBoxItem)">
+ <summary>
+ Événement activé lorsque la sélection d'un item du combobox change
+ </summary>
+ <param name="item">Contient le nouvel item sélectionné.</param>
+</member>
+<member name="T:MpoGeometrieTravail.cboNumeroSNRC">
+ <summary>
+ Represents the ComboBox
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MpoGeometrieTravail.cboNumeroSNRC.#ctor">
+<summary>
+ Combo Box constructor
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.cboNumeroSNRC.UpdateCombo">
+<summary>
+ 'Mettre à jour le comboBox
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.cboNumeroSNRC.OnSelectionChange(ArcGIS.Desktop.Framework.Contracts.ComboBoxItem)">
+ <summary>
+ The on comboBox selection change event. 
+ </summary>
+ <param name="item">The newly selected combo box item</param>
+</member>
+<member name="T:MpoGeometrieTravail.clsSNRC">
+<summary>
+ Classe qui contient l'information de l'unité de travail du SNRC (Système National de Référence Cartographique du Canada). 
+ Le SNRC est utilisé sous deux échelle 50000 et 250000.
+ Le numéro du SNRC au 50000 se divise en trois parties, tandis que celui au 250000 se divise seulement en deux parties. 
+ La longueur du numéro SNRC au 50000 est de six lettres et celui du 250000 est de quatres lettres. 
+ Les deux premières parties du numéro de ses deux échelles sont identiques. 
+ La première partie comprend trois chiffres entre 001 et 520. 
+ La deuxième partie comprend une lettre de A à P.
+ La troisième partie qui s'applique seulement à l'échelle du 50000 comprend deux chiffres de 01 à 16.
+</summary>
+
+<remarks>
+Auteur : Michel Pothier
+Date : 8 décembre 2009
+</remarks>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.DeltaLatitude(System.Double,System.Int32)">
+<summary>
+ Retourner le Delta de la latitude pour n'importe lequel SNRC.
+</summary>
+ 
+<returns>Delat de la latitude pour n'importe lequel SNRC.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.DeltaLongitude(System.Double,System.Int32)">
+<summary>
+ Retourner le Delta de la longitude pour n'importe lequel SNRC.
+</summary>
+ 
+<returns>Delta de la longitude pour n'importe lequel SNRC.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.LatitudeMinimum">
+<summary>
+ Retourner la latitude minimum pour n'importe lequel SNRC.
+</summary>
+ 
+<returns>Latitude minimum pour n'importe lequel SNRC</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.LatitudeMaximum">
+<summary>
+ Retourner la latitude maximum pour n'importe lequel SNRC.
+</summary>
+ 
+<returns>Latitude maximum pour n'importe lequel SNRC</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.LongitudeMinimum">
+<summary>
+ Retourner la longitude minimum pour n'importe lequel SNRC.
+</summary>
+ 
+<returns>Longitude minimum pour n'importe lequel SNRC</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.LongitudeMaximum">
+<summary>
+ Retourner la longitude maximum pour n'importe lequel SNRC.
+</summary>
+ 
+<returns>Longitude maximum pour n'importe lequel SNRC</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.ZoneUtmEst">
+<summary>
+Retourner le numéro de zone UTM Est du SNRC.
+</summary>
+ 
+<returns> Numéro de zone UTM Est du SNRC</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.ZoneUtmOuest">
+<summary>
+Retourner le numéro de zone UTM Ouest du SNRC.
+</summary>
+
+<returns> Numéro de zone UTM Ouest du SNRC.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.DeuxZones">
+<summary>
+Indiquer si le SNRC est présent dans deux zones.
+</summary>
+ 
+<returns>Vrai si le SNRC est présent dans deux zones, faux sinon</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsSNRC.Information">
+<summary>
+Retourner l'information pour le SNRC.
+</summary>
+ 
+<returns>Information pour le SNRC.</returns>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.#ctor(System.String)">
+<summary>
+Définir un nouveau SNRC lors de l'instanciation à partir d'un numéro.
+</summary>
+ 
+<param name="sNumero">Numéro du SNRC à définir.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.Definir(System.String)">
+<summary>
+Fonction qui permet de définir le numéro de l'unité de travail correspondant à un SNRC. 
+Le numéro SNRC est décomposer en trois parties et chaque partie est validé. 
+À partir de chaque partie, on détermine certaine information nécessaire 
+pour le calcul du polygone et son système de coordonnées.
+</summary>
+
+<param name="sNumero">Numéro du SNRC à définir.</param>
+ 
+<returns>Vrai si le SNRC est valide, faux sinon.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.#ctor(ArcGIS.Core.Geometry.MapPoint,System.Int32)">
+<summary>
+Définir un nouveau SNRC lors de l'instanciation à partir d'un point et d'une échelle.
+</summary>
+ 
+<param name="pPoint">Point utilisé pour définir le SNRC.</param>
+<param name="nEchelle">Échelle utilisée pour définir le SNRC.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.Definir(ArcGIS.Core.Geometry.MapPoint,System.Int32)">
+<summary>
+Fonction qui permet de définir le numéro de l'unité de travail correspondant à un SNRC. 
+Le numéro SNRC est décomposer en trois parties et chaque partie est validé. 
+À partir de chaque partie, on détermine certaine information nécessaire 
+pour le calcul du polygone et son système de coordonnées.
+</summary>
+
+<param name="pPoint">Point utilisé pour définir le SNRC.</param>
+<param name="nEchelle">Échelle utilisée pour définir le SNRC.</param>
+ 
+<returns>Vrai si le SNRC est valide, faux sinon.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.DecomposerNumero">
+<summary>
+Routine qui permet de décomposer le numero SNRC en trois parties. La première lettre trouvée dans le numéro SNRC 
+est utilisée pour décomposer le numéro. Tout ce qui vient avant la lettre trouvée est placé dans la partie un.
+</summary>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.ValiderPartieUn">
+<summary>
+Routine qui permet de valider la première partie du numéro SNRC. On vérifie que la valeur de la première partie est
+entre 1 et 120, ou 340 ou 520. On ajoute un zéro au début si le chiffre est inférieur à 100.
+</summary>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.ValiderPartieDeux">
+<summary>
+Routine qui permet de valider la deuxième partie du Numero SNRC. On vérifie si la lettre est entre A et P inclusivement.
+</summary>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.ValiderPartieTrois">
+<summary>
+Routine qui permet de valider la troisième partie du numéro SNRC et définir son échelle. 
+On vérifie que la valeur est entre 1 et 16 inclusivement. On ajoute un zéro si la valeur est inférieur à 10.
+</summary>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.CalculCoin_SE_NW">
+<summary>
+Routine qui permet de calculer du coin SE et NW en géographique selon l'échelle 50K ou 250K et la Zone UTM.
+</summary>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.CoinBasGauche(System.Int32,System.Double,System.Double)">
+
+<summary>
+Riutine qui permet de calculer la Latitude et la Longitude du coin en bas à gauche pour le polygone du SNRC.
+</summary>
+
+<param name="position">Numéro de position de la lettre (Partie #2).</param>
+<param name="DeltaLatitude">Distance en degrés entre les points pour la latitude.</param>
+<param name="DeltaLongitude">Distance en degrés entre les points pour la longtude.</param>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.Coin68et80(System.Int32,System.Double,System.Double)">
+<summary>
+Riutine qui permet de calculer la Latitude et la Longitude du coin selon la latitude 68 et 80.
+</summary>
+
+<param name="position">Numéro de position de la lettre (Partie #2).</param>
+<param name="DeltaLatitude">Distance en degrés entre les points pour la latitude.</param>
+<param name="DeltaLongitude">Distance en degrés entre les points pour la longtude.</param>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.GET_SHEET_GEOG(ArcGIS.Core.Geometry.MapPoint,System.Int32)">
+<summary>
+ ROUTINE PERMETTANT DE DONNER LE NUMERO SNRC D'UN FEUILLET CARTOGRAPHIQUE AU 1:20000, 1:50000, 1:250000, 1:1000000 
+ A PARTIR D'UNE COORDONNEE GEOGRAPHIQUE ET L'ECHELLE DE LA CARTE.
+</summary>
+
+<param name="pPoint">COORDONNEES GEOGRAPHIQUE D'UN POINT (LAT. LONG.).</param>
+<param name="ECHELLE">FACTEUR ECHELLE DU FEUILLET.</param>
+ 
+<returns>"String" contenant le numéro SNRC si le point et l'échelle sont valident, sinon "".</returns>
+ 
+<remarks>
+ SNRC : AAABCCD
+        |  || |
+        |  || Partie du SNRC au 20000 (A-D)
+        |  |Partie du SNRC au 50000 (1-16)
+        |  Partie du SNRC au 250000 (A-P)
+        Partie du SNRC au 1000000 (1-116)
+</remarks>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.SECTEUR(ArcGIS.Core.Geometry.MapPoint,System.Int32[]@,System.Int32[]@,System.Int32[]@,System.Int32[]@)">
+<summary>
+ ROUTINE PERMETTANT DE DONNER LES SECTEURS EN LAT. ET LONG. POUR LES FEUILLETS CARTOGRAPHIQUE DU SNRC.
+</summary>
+
+<param name="pPoint">Coordonnee geographique (latitude et longitude).</param>
+<param name="NTSA">Secteur en lat.(0-6) et long.(1-11) pour la partie A (1000000) du SNRC.</param>
+<param name="NTSB">Secteur de 0-3 en lat. et long pour la partie B (250000) du SNRC.</param>
+<param name="NTSC">Secteur de 0-3 en lat. et long pour la partie C (50000) du SNRC.</param>
+<param name="NTSD">Secteur de 0-1 en lat. et long pour la partie D (20000) du SNRC.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.NTS1000K(System.String@,System.Int32[])">
+<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 1000000.
+</summary>
+
+<param name="NTS">Nom de la carte selon le SNRC.</param>
+<param name="NTSA">Secteur en lat.(0-6) et long.(1-11) pour la partie A (1000000) du SNRC.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.NTS250K(System.String@,System.Int32[],ArcGIS.Core.Geometry.MapPoint)">
+<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 250000.
+</summary>
+
+<param name="NTS">Nom de la carte selon le SNRC.</param>
+<param name="NTSB">Secteur de 0-3 en lat. et long pour la partie B (250000) du SNRC.</param>
+<param name="pPoint">Coordonnée géographique (latitude et longitude).</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.NTS50K(System.String@,System.Int32[])">
+<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 50000.
+</summary>
+
+<param name="NTS">Nom de la carte selon le SNRC.</param>
+<param name="NTSC">Secteur de 0-3 en lat. et long pour la partie C (50000) du SNRC.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsSNRC.NTS20K(System.String@,System.Int32[])">
+<summary>
+ ROUTINE PERMETTANT DE DONNER LA PARTIE DU NUMERO SNRC POUR LES FEUILLETS CARTOGRAPHIQUE AU 20000.
+</summary>
+
+<param name="NTS">Nom de la carte selon le SNRC.</param>
+<param name="NTSD">Secteur de 0-1 en lat. et long pour la partie D (20000) du SNRC.</param>
+ 
+</member>
+<member name="T:MpoGeometrieTravail.clsUniteTravail">
+<summary>
+ Classe qui contient l'information sur l'unité de travail. Cette information est calculée complètement.
+ Une unité de travail peut être de différente catégorie. Il peut être de catégorie CANADA, 
+ SNRC (Système National de Référence Cartographique du Canada) ou autres. 
+ Par défaut, la catégorie est CANADA.
+</summary>
+
+<remarks>
+Auteur : Michel Pothier
+Date : 16 décembre 2009
+</remarks>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.Categorie">
+<summary>
+Retourner la catégorie de l'unité de travail.
+</summary>
+ 
+<returns>Catégorie de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.Numero">
+<summary>
+Retourner le numéro de l'unité de travail.
+</summary>
+ 
+<returns>Numéro de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.ZoneUTM">
+<summary>
+Retourner la zone UTM de l'unité de travail.
+</summary>
+ 
+<returns>Zone UTM de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.Echelle">
+<summary>
+Retourner l'échelle de l'unité de travail.
+</summary>
+ 
+<returns>Échelle de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.MeridienCentral">
+<summary>
+Retourner le méridien central de l'unité de travail.
+</summary>
+ 
+<returns>Méridien central de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.LatitudeSE">
+<summary>
+Retourner la latitude SE de l'unité de travail.
+</summary>
+ 
+<returns>Latitude SE de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.LongitudeSE">
+<summary>
+Retourner la longitude SE de l'unité de travail.
+</summary>
+ 
+<returns>Longitude SE de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.LatitudeNW">
+<summary>
+Retourner la latitude NW de l'unité de travail.
+</summary>
+ 
+<returns>Latitude NW de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.EstValide">
+<summary>
+Retourner l'indice de validité de l'unité de travail.
+</summary>
+ 
+<returns>Indice de validité de l'unité de travail de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.LongitudeNW">
+<summary>
+Retourner la longitude NW de l'unité de travail.
+</summary>
+ 
+<returns>Longitude NW de l'unité de travail.</returns>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.clsUniteTravail.Information">
+<summary>
+Retourner l'information de l'unité de travail.
+</summary>
+ 
+<returns>Information de l'unité de travail.</returns>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.PolygoneGeo(System.Int32)">
+<summary>
+Fonction qui permet de retourner la géométrie de type surface de l'unité de travail en coordonnées géographiques.
+</summary>
+
+<param name="iDeltaMinute">Distance entre chaque sommet du polygone en minute.</param>
+ 
+<returns>IPolygon correspondant à la géométrie de type surface de l'unité de travail, Nothing sinon.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.LimiteSud(System.Int32)">
+<summary>
+Fonction qui permet de retourner la limite SUD de l'unité de travail en coordonnées géographiques.
+</summary>
+
+<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+ 
+<returns>IPolyline correspondant à la géométrie de type ligne de la limite SUD, Nothing sinon.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.LimiteOuest(System.Int32)">
+<summary>
+Fonction qui permet de retourner la limite OUEST de l'unité de travail en coordonnées géographiques.
+</summary>
+
+<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+ 
+<returns>IPolyline correspondant à la géométrie de type ligne de la limite OUEST, Nothing sinon.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.LimiteNord(System.Int32)">
+<summary>
+Fonction qui permet de retourner la limite NORD de l'unité de travail en coordonnées géographiques.
+</summary>
+
+<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+ 
+<returns>IPolyline correspondant à la géométrie de type ligne de la limite NORD, Nothing sinon.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.LimiteEst(System.Int32)">
+<summary>
+Fonction qui permet de retourner la limite EST de l'unité de travail en coordonnées géographiques.
+</summary>
+
+<param name="iDeltaMinute">Distance entre chaque sommet de la ligne en minute.</param>
+ 
+<returns>IPolyline correspondant à la géométrie de type ligne de la limite EST, Nothing sinon.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.ProjectionUtmNad83(System.Byte)">
+<summary>
+Fonction qui permet de retourner une référence spatiale en coordonnées UTM avec le datum Nad83 
+et selon le numéro ESRI de la projection.
+</summary>
+
+<param name="ZoneUTM">Numéro de la zone UTM désiré. Par défaut, la zone UTM sera celle calculé du SNRC.</param>
+ 
+<returns>ISpatialReference si la zone UTM est valide, sinon "Nothing"</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.NumeroProjectionUtmESRI(System.Byte)">
+<summary>
+Fonction qui permet de retourner le numéro de projection UTM de ESRI selon la zone spécifiée.
+</summary>
+
+<param name="ZoneUTM">Numéro de la zone UTM désiré.</param>
+ 
+<returns>Numéro de projection UTM de ESRI selon la zone spécifiée, ou 0 si la zone n'est pas entre 6 et 22</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.clsUniteTravail.ReferenceSpatialeGeoNad83">
+<summary>
+Fonction qui permet de retourner la référence spatiale en coordonnées géographique avec le datum Nad83 GCS.
+</summary>
+ 
+<returns>ISpatialReference correspondant au système de coordonnées géographique Nad83, Nothing sinon.</returns>
+
+</member>
+<member name="T:MpoGeometrieTravail.cboActiverDetruireGeometrie">
+ <summary>
+ Represents the ComboBox
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:MpoGeometrieTravail.cboActiverDetruireGeometrie.#ctor">
+<summary>
+ Constructeur
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.cboActiverDetruireGeometrie.UpdateCombo">
+<summary>
+ Mise à jour des items du combobox
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.cboActiverDetruireGeometrie.OnSelectionChange(ArcGIS.Desktop.Framework.Contracts.ComboBoxItem)">
+ <summary>
+ Événement activé lorsque la sélection d'un item du combobox change
+ </summary>
+ <param name="item">Contient le nouvel item sélectionné.</param>
+</member>
+<member name="T:MpoGeometrieTravail.dckGeometrieTravailView">
+<summary>
+dckGeometrieTravailView
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.dckGeometrieTravailView.#ctor">
+ <summary>
+ Default constructor
+ </summary>
+</member>
+<member name="M:MpoGeometrieTravail.dckGeometrieTravailView.InitializeComponent">
+<summary>
+InitializeComponent
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.dckGeometrieTravailViewModel.InitializeAsync">
+ <summary>
+ Called when the pane is first created to give it the opportunity to initialize itself asynchronously.
+ </summary>
+ 
+ <returns>A task that represents the work queued to execute in the ThreadPool.</returns>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.dckGeometrieTravailViewModel.Show">
+ <summary>
+ Permet d'afficher le DockPane des Géométries.
+ </summary>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.dckGeometrieTravailViewModel.Current">
+ <summary>
+ Retrieve the singleton instance to this module here
+ </summary>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.dckGeometrieTravailViewModel.Information">
+ <summary>
+ Texte à afficher dans le TextBox nommé 'txtInformation'
+ </summary>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.dckGeometrieTravailViewModel.TreeViewItems">
+ <summary>
+ Treeview à afficher nommé 'TreeViewItems'
+ </summary>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.dckGeometrieTravailViewModel.ActionToolTip">
+ <summary>
+ Permet de définir et retourner le ToolTip de l'action.
+ </summary>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.dckGeometrieTravailViewModel.InformationToolTip">
+ <summary>
+ Permet de définir et retourner le ToolTip de l'information.
+ </summary>
+ 
+</member>
+<member name="P:MpoGeometrieTravail.dckGeometrieTravailViewModel.GeometrieToolTip">
+ <summary>
+ Permet de définir et retourner le ToolTip des géométries.
+ </summary>
+ 
+</member>
+<member name="T:MpoGeometrieTravail.dckGeometrieTravail_ShowButton">
+ <summary>
+ Button implementation to create a new instance of the pane and activate it.
+ </summary>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.tooConstruireMultipoint.OnSketchCompleteAsync(ArcGIS.Core.Geometry.Geometry)">
+ <summary>
+ Called when the sketch finishes. This is where we will create the sketch operation and then execute it.
+ </summary>
+ <param name="geometry">The geometry created by the sketch.</param>
+ <returns>A Task returning a Boolean indicating if the sketch complete event was successfully handled.</returns>
+</member>
+<member name="M:MpoGeometrieTravail.tooConstruirePolygone.OnSketchCompleteAsync(ArcGIS.Core.Geometry.Geometry)">
+ <summary>
+ Called when the sketch finishes. This is where we will create the sketch operation and then execute it.
+ </summary>
+ <param name="geometry">The geometry created by the sketch.</param>
+ <returns>A Task returning a Boolean indicating if the sketch complete event was successfully handled.</returns>
+</member>
+<member name="M:MpoGeometrieTravail.tooConstruireLigne.OnSketchCompleteAsync(ArcGIS.Core.Geometry.Geometry)">
+ <summary>
+ Called when the sketch finishes. This is where we will create the sketch operation and then execute it.
+ </summary>
+ <param name="geometry">The geometry created by the sketch.</param>
+ <returns>A Task returning a Boolean indicating if the sketch complete event was successfully handled.</returns>
+</member>
+<member name="M:MpoGeometrieTravail.tooConstruirePoint.OnSketchCompleteAsync(ArcGIS.Core.Geometry.Geometry)">
+ <summary>
+ Called when the sketch finishes. This is where we will create the sketch operation and then execute it.
+ </summary>
+ <param name="geometry">The geometry created by the sketch.</param>
+ <returns>A Task returning a Boolean indicating if the sketch complete event was successfully handled.</returns>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.Current">
+ <summary>
+ Retourner l'instance unique du module courant
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.ActiverDetruireGeometrie">
+ <summary>
+ Définir et retourner si on doit détruire les géométries avant d'en ajouter des nouveaux.
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.ActiverDessinerGeometrie">
+ <summary>
+ Définir et retourner si on doit dessiner les géométries.
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.ActionVisualisation">
+ <summary>
+ Définir et retourner l'action de visualisation
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.GeometrieTravail">
+ <summary>
+ Définir et retourner la liste des géométries de travail
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.VertexSymbolSymbol">
+ <summary>
+ Définir et retourner le symbole pour les sommets des géométries
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.PointSymbol">
+ <summary>
+ Définir et retourner le symbole pour les points
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.LineSymbol">
+ <summary>
+ Définir et retourner le symbole pour les lignes
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.PolygonSymbol">
+ <summary>
+ Définir et retourner le symbole pour les surfaces
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.VertexOverlay">
+ <summary>
+ Définir et retourner l'affichage des géométries de type point ou multipoint.
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.PointOverlay">
+ <summary>
+ Définir et retourner l'affichage des géométries de type point ou multipoint.
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.LineOverlay">
+ <summary>
+ Définir et retourner l'affichage des géométries de type polyline.
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.PolygonOverlay">
+ <summary>
+ Définir et retourner l'affichage des géométries de type polygon.
+ </summary>
+</member>
+<member name="P:MpoGeometrieTravail.modGeometrieTravail.TreeViewGeometrieTravail">
+ <summary>
+ Définir et retourner la liste des géométries de travail
+ </summary>
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.CanUnload">
+ <summary>
+ Called by Framework when ArcGIS Pro is closing
+ </summary>
+ <returns>False to prevent Pro from closing, otherwise True</returns>
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.BufferListeGeometries(System.Collections.Generic.List{ArcGIS.Core.Geometry.Geometry},System.Double)">
+<summary>
+ Fonction qui permet de modifier toutes les géométries d'une liste selon une distance de tampon (buffer).
+ Une géométrie de type point ou ligne sera transformée en surface. Une surface sera agrandit.
+</summary>
+
+<param name="geometries">Liste des géométries à traiter.</param>
+<param name="distance">Distance utilisée pour créer le tampon (buffer) d'une géométrie.</param>
+
+<returns>List(Of Geometry) contenant les géométries pour lesquelles un tampon (buffer) a été appliqué.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.UnionListeGeometries(System.Collections.Generic.List{ArcGIS.Core.Geometry.Geometry},System.Boolean)">
+<summary>
+ Fonction qui permet l'union des géométries de même type à partir d'une liste de géométries.
+</summary>
+
+<param name="geometries">Liste des géométries à traiter.</param>
+<param name="dessiner">Indique si on doit dessiner les géométries.</param>
+
+<returns>List(Of Geometry) contenant les géométries de même type fusionnées dans trois géométries Multipoint, Polyline et Polygon.</returns>
+
+<remarks>Si un type de géométrie est vide, il sera absent de la liste des géométries résultante.</remarks>
+
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.RegrouperListeGeometries(System.Collections.Generic.List{ArcGIS.Core.Geometry.Geometry},System.Boolean)">
+<summary>
+ Fonction qui permet le regroupement des géométries de même type à partir d'une liste de géométries.
+</summary>
+
+<param name="geometries">Liste des géométries à traiter.</param>
+<param name="dessiner">Indique si on doit dessiner les géométries.</param>
+
+<returns>List(Of Geometry) contenant les géométries de même type fusionnées dans trois géométries Multipoint,Polyline et Polygon.</returns>
+
+<remarks>Si un type de géométrie est vide, il sera absent de la liste des géométries résultante.</remarks>
+
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.SeparerListeGeometries(System.Collections.Generic.List{ArcGIS.Core.Geometry.Geometry})">
+<summary>
+ Fonction qui permet de séparer les parties de chaque gémétrie d'une liste de géométries.
+ Un polygone contenant deux parties extérieures sera transformée en deux polygones. 
+ Une polyligne contenant deux lignes sera transformée en deux polylignes. 
+ Un multipoint contenant deux points sera transformé en deux points.
+</summary>
+
+<param name="geometries">Liste des géométries à traiter.</param>
+
+<returns>List(Of Geometry) contenant les parties des géométries séparées.</returns>
+
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DessinerListeGeometries(System.Collections.Generic.List{ArcGIS.Core.Geometry.Geometry},System.Boolean,System.Boolean)">
+<summary>
+ Routine qui permet de dessiner la liste de géométries dans la Map active.
+ 
+ La fenêtre de la Map active peut être déplacée ou recadrée avant de dessiner les géométries selon les paramètres de visualisation.
+</summary>
+
+<param name="geometries">Liste des géométries à afficher.</param>
+<param name="dessiner">Indique si on veut forcer pour dessiner les géométries.</param>
+<param name="zoomer">Indique si on veut forcer le zoom des géométries.</param>
+
+<remarks>
+Si le paramètre pour centrer les géométries est actif, la fenêtre de la Map active sera déplacée selon le centre de l'enveloppe des géométries.
+Si le paramètre pour zoomer les géométries est actif, la fenêtre de la Map active sera recadrée selon l'enveloppe des géométries.
+Les géométries seront dessinées si un des paramètres pour dessiner est actif.
+</remarks> 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DessinerGeometrie(ArcGIS.Core.Geometry.Geometry)">
+<summary>
+ Routine qui permet de dessiner une géométrie dans la Map active.  
+</summary>
+
+<param name="geometrie">Géométrie à afficher.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DessinerGeometrieSommet(ArcGIS.Core.Geometry.Geometry,ArcGIS.Core.CIM.CIMPointSymbol)">
+<summary>
+ Routine qui permet de dessiner les sommets des géométries de travail dans la Map active. 
+</summary>
+
+<param name="geometrie">Géométrie pour lequel on veut afficher ses sommets.</param>
+<param name="symbol">Symbole utilisé pour afficher les sommets des géométries.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DessinerGeometriePoint(ArcGIS.Core.Geometry.Geometry,ArcGIS.Core.CIM.CIMPointSymbol)">
+<summary>
+ Routine qui permet de dessiner une géométrie de type point ou multipoint dans la Map active. 
+</summary>
+
+<param name="point">Géométrie de type point ou multipoint à afficher.</param>
+<param name="symbol">Symbole utilisé pour afficher la géométrie de type point ou multipoint.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DessinerGeometrieLigne(ArcGIS.Core.Geometry.Polyline,ArcGIS.Core.CIM.CIMLineSymbol)">
+<summary>
+ Routine qui permet de dessiner une géométrie de type polyline dans la Map active. 
+</summary>
+
+<param name="polyline">Géométrie de type polyline à afficher.</param>
+<param name="symbol">Symbole utilisé pour afficher la géométrie de type polyline.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DessinerGeometrieSurface(ArcGIS.Core.Geometry.Polygon,ArcGIS.Core.CIM.CIMPolygonSymbol)">
+<summary>
+ Routine qui permet de dessiner une géométrie de type polygon dans la Map active. 
+</summary>
+
+<param name="polygon">Géométrie de type polygon à afficher.</param>
+<param name="symbol">Symbole utilisé pour afficher la géométrie de type polygon.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DetruireAffichage">
+<summary>
+ Routine qui permet de détruire l'affichage des géométries de travail dans la Map active.
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DetruireAffichageSommet">
+<summary>
+ Routine qui permet de détruire l'affichage des sommets des géométries de travail dans la Map active.
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DetruireAffichagePoint">
+<summary>
+ Routine qui permet de détruire l'affichage des points et multipoints dans la Map active.
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DetruireAffichageLigne">
+<summary>
+ Routine qui permet de détruire l'affichage des lignes dans la Map active.
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.DetruireAffichageSurface">
+<summary>
+ Routine qui permet de détruire l'affichage des surfaces dans la Map active.
+</summary>
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.CalculerEnveloppe(System.Collections.Generic.List{ArcGIS.Core.Geometry.Geometry})">
+<summary>
+ Fonction qui permet de calculer et retourner l'enveloppe d'une liste de géométries. 
+</summary>
+
+<param name="geometries">Objet contenant une liste de géométries</param>
+ 
+<returns>Envelope de la liste des géométries. Nothing si aucune géométrie.</returns>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.RemplirTreeViewItemGeometrie(System.Object,System.Windows.Controls.TreeViewItem@)">
+<summary>
+ Routine qui permet de remplir un item d'un TreeView à partir d'une liste de géométries, d'une géométrie ou une de ses composantes. 
+</summary>
+
+<param name="geometrie">Objet contenant une liste de géométries, une géométrie ou une de ses composantes.</param>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.InfoListeGeometries(System.Collections.Generic.List{ArcGIS.Core.Geometry.Geometry})">
+<summary>
+ Fonction qui permet de retourner l'information d'une liste de géométries. 
+ L'information retournée est le nombre totale de géométries, le nombre de points, le nombre de lignes, 
+ la longueur totale des lignes, le nombre de surfaces, la superficie totale des surfaces.
+</summary>
+
+<param name="geometries"> Liste de géométries.</param>
+
+<returns>La fonction va retourner un "String". Si le traitement n'a pas réussi le "String" est vide. </returns>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.InfoGeometrie(ArcGIS.Core.Geometry.Geometry)">
+<summary>
+ Fonction qui permet de retourner l'information d'une seule géométrie. 
+ L'information retournée est le nombre totale de géométries, le nombre de points, le nombre de lignes, 
+ la longueur totale des lignes, le nombre de surfaces, la superficie totale des surfaces.
+</summary>
+
+<param name="geometry"> Géométrie pour laquelle on veut retourne l'information.</param>
+
+<returns>La fonction va retourner un "String". Si le traitement n'a pas réussi le "String" est vide. </returns>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.InfoComposante(ArcGIS.Core.Geometry.Geometry,System.Int32)">
+<summary>
+ Fonction qui permet de retourner l'information d'une seule composante de géométrie. 
+ L'information retournée est le numéro de composante, le nombre de sommets, la longueur et/ou la superficie.
+</summary>
+
+<param name="geometry"> Géométrie pour laquelle on veut retourner l'information d'une composante.</param>
+<param name="index"> Numéro de la composante.</param>
+
+<returns>La fonction va retourner un "String". Si le traitement n'a pas réussi le "String" est vide. </returns>
+ 
+</member>
+<member name="M:MpoGeometrieTravail.modGeometrieTravail.InfoSegment(ArcGIS.Core.Geometry.Geometry,System.Int32,System.Int32)">
+<summary>
+ Fonction qui permet de retourner l'information d'un seul segment d'une composante de géométrie. 
+ L'information retournée est le numéro de composanteméro de segment, le nombre de sommets, la longueur et/ou la superficie.
+</summary>
+
+<param name="geometry"> Géométrie pour laquelle on veut retourner l'information d'une composante.</param>
+<param name="index"> Numéro de la composante.</param>
+
+<returns>La fonction va retourner un "String". Si le traitement n'a pas réussi le "String" est vide. </returns>
+ 
+</member>
+</members>
+</doc>

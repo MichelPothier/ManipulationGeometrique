@@ -1,0 +1,251 @@
+﻿<ArcGIS defaultAssembly="MpoGeometrieTravail.dll" defaultNamespace="MpoGeometrieTravail" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro2.0/bin/ArcGIS.Desktop.Framework.xsd">
+  <AddInInfo id="{35cde1f7-21ae-4430-9188-cf06f137c69f}" version="1.0" desktopVersion="2.0.8933">
+    <Name>MpoGeometrieTravail</Name>
+    <Description>MpoGeometrieTravail description</Description>
+    <Image>Images\AddinDesktop32.png</Image>
+    <Author>mpothier</Author>
+    <Company>Acme</Company>
+    <Date>10/30/2017 5:04:34 PM, 2017</Date>
+    <Subject>Framework</Subject>
+    <!-- Add-in qui permet différents traitements entre les géométries de travail et les éléments sélectionnés -->
+  </AddInInfo>
+  <modules>
+    <insertModule id="MpoGeometrieTravail_Module" className="modGeometrieTravail" autoLoad="true" caption="modGeometrieTravail">
+      <tabs>
+        <!-- Onglet des géométries de travail-->
+        <tab id="MpoGeometrieTravail_GeometrieTravail" caption="Geométries" keytip="G">
+          <group refID="MpoGeometrieTravail_Menu" />
+          <group refID="MpoGeometrieTravail_SNRC" />
+          <group refID="MpoGeometrieTravail_Identifier" />
+          <group refID="MpoGeometrieTravail_Construire" />
+          <group refID="MpoGeometrieTravail_Dessiner" />
+          <group refID="MpoGeometrieTravail_Selectionner" />
+          <group refID="MpoGeometrieTravail_Geometrie" />
+          <group refID="MpoGeometrieTravail_Element" />
+        </tab>
+      </tabs>
+      <groups>
+        <!-- Groupe contenant les commandes pour afficher le menu des géométries de travail-->
+        <group id="MpoGeometrieTravail_Menu" caption="Menu" appearsOnAddInTab="false" launcherButtonID="MpoGeometrieTravail_dckGeometrieTravail_ShowButton" keytip="GM">
+          <!-- Commandes contenues dans le groupe -->
+          <button refID="MpoGeometrieTravail_dckGeometrieTravail_ShowButton" size="large" />
+          <comboBox refID="MpoGeometrieTravail_cboActiverDetruireGeometrie" size="small" />
+          <comboBox refID="MpoGeometrieTravail_cboActiverDessinerGeometrie" size="small" />
+        </group>
+        <!-- Groupe contenant les commandes pour identifier les SNRC dans les géométries de travail-->
+        <group id="MpoGeometrieTravail_SNRC" caption="SNRC" appearsOnAddInTab="false" keytip="GN">
+          <!-- Commandes contenues dans le groupe -->
+          <comboBox refID="MpoGeometrieTravail_cboNumeroSNRC" size="small" />
+          <tool refID="MpoGeometrieTravail_tooIdentifierSnrc50K" size="small" />
+          <tool refID="MpoGeometrieTravail_tooIdentifierSnrc250K" size="small" />
+        </group>
+        <!-- Groupe contenant les commandes pour identifier les géométries de travail-->
+        <group id="MpoGeometrieTravail_Identifier" caption="Identifier" appearsOnAddInTab="false" keytip="GI">
+          <!-- Commandes contenues dans le groupe -->
+          <button refID="MpoGeometrieTravail_cmdIdentifierSelection" size="large" />
+          <tool refID="MpoGeometrieTravail_tooIdentifierGeometrie" size="large" />
+          <tool refID="MpoGeometrieTravail_tooIdentifierLimite" size="small" />
+          <tool refID="MpoGeometrieTravail_tooIdentifierSommet" size="small" />
+          <button refID="MpoGeometrieTravail_cmdIdentifierSurfaceLigne" size="small" />
+        </group>
+        <!-- Groupe contenant les commandes pour construire les géométries de travail-->
+        <group id="MpoGeometrieTravail_Construire" caption="Construire" appearsOnAddInTab="false" keytip="GC">
+          <!-- Commandes contenues dans le groupe -->
+          <tool refID="MpoGeometrieTravail_tooConstruirePoint" size="small" />
+          <tool refID="MpoGeometrieTravail_tooConstruireMultipoint" size="small" />
+          <tool refID="MpoGeometrieTravail_tooConstruireLigne" size="small" />
+          <tool refID="MpoGeometrieTravail_tooConstruirePolygone" size="small" />
+        </group>
+        <!-- Groupe contenant les commandes pour dessiner les géométries de travail-->
+        <group id="MpoGeometrieTravail_Dessiner" caption="Dessiner" appearsOnAddInTab="false" keytip="GD">
+          <!-- Commandes contenues dans le groupe -->
+          <button refID="MpoGeometrieTravail_cmdDessinerGeometries" size="large" />
+          <button refID="MpoGeometrieTravail_cmdZoomGeometries" size="small" />
+          <button refID="MpoGeometrieTravail_cmdDetruireDessin" size="small" />
+        </group>
+        <!-- Groupe contenant les commandes pour sélectionner les géométries de travail-->
+        <group id="MpoGeometrieTravail_Selectionner" caption="Sélectionner" appearsOnAddInTab="false" keytip="GS">
+          <!-- Commandes contenues dans le groupe -->
+          <button refID="MpoGeometrieTravail_cmdSelectionnerElement" size="large" />
+          <button refID="MpoGeometrieTravail_cmdZoomSelection" size="small" />
+          <button refID="MpoGeometrieTravail_cmdEffacerSelection" size="small" />
+        </group>
+        <!-- Groupe contenant les commandes pour modifier les géométries de travail-->
+        <group id="MpoGeometrieTravail_Geometrie" caption="Géométries" appearsOnAddInTab="false" keytip="GG">
+          <!-- Commandes contenues dans le groupe -->
+          <button refID="MpoGeometrieTravail_cmdSimplifierGeometries" size="large" />
+          <button refID="MpoGeometrieTravail_cmdUnionGeometries" size="small" />
+          <button refID="MpoGeometrieTravail_cmdRegrouperGeometries" size="small" />
+          <button refID="MpoGeometrieTravail_cmdSeparerGeometries" size="small" />
+          <button refID="MpoGeometrieTravail_cmdBufferGeometries" size="small" />
+          <button refID="MpoGeometrieTravail_cmdDetruireGeometries" size="small" />
+        </group>
+        <!-- Groupe contenant les commandes pour modifier les éléments à partir des géométries de travail-->
+        <group id="MpoGeometrieTravail_Element" caption="Éléments" appearsOnAddInTab="false" keytip="GE">
+          <!-- Commandes contenues dans le groupe -->
+          <button refID="MpoGeometrieTravail_cmdCreerElement" size="large" />
+          <button refID="MpoGeometrieTravail_cmdRemplacerGeometrieElement" size="large" />
+          <button refID="MpoGeometrieTravail_cmdCouperGeometrieElement" size="small" />
+          <button refID="MpoGeometrieTravail_cmdRemodelerGeometrieElement" size="small" />
+          <button refID="MpoGeometrieTravail_cmdIntersectionGeometrieElement" size="small" />
+          <button refID="MpoGeometrieTravail_cmdDifferenceGeometrieElement" size="small" />
+          <button refID="MpoGeometrieTravail_cmdDifferenceInverseGeometrieElement" size="small" />
+          <button refID="MpoGeometrieTravail_cmdSymetrieGeometrieElement" size="small" />
+          <button refID="MpoGeometrieTravail_cmdUnionGeometrieElement" size="small" />
+        </group>
+      </groups>
+      <controls>
+        <!-- Liste des commandes  relatives aux géométries de travail -->
+        <button id="MpoGeometrieTravail_dckGeometrieTravail_ShowButton" caption="Afficher le menu" className="dckGeometrieTravail_ShowButton" loadOnClick="false" smallImage="Images\cmdActiverMenu16.png" largeImage="Images\cmdActiverMenu32.png" keytip="GMS">
+          <tooltip heading="Afficher le menu des géométries de travail.">
+            Le menu des géométries de travail permet d'afficher l'information et dessiner en partie ou en totalité les géométries de travail conservées en mémoire.<disabledText /></tooltip>
+        </button>
+        <comboBox id="MpoGeometrieTravail_cboActiverDetruireGeometrie" caption="Activer détruire géométries" className="cboActiverDetruireGeometrie" itemWidth="77" isEditable="false" isReadOnly="true" resizable="true" keytip="GMA">
+          <tooltip heading="Permet d'indiquer si les géométries existantes doivent être détruites ou conservées">
+            Les géométries de travail existantes en mémoire sont détruites ou conservées avant d'ajouter de nouvelles géométries.<disabledText /></tooltip>
+        </comboBox>
+        <comboBox id="MpoGeometrieTravail_cboActiverDessinerGeometrie" caption="Activer dessiner géométries" className="cboActiverDessinerGeometrie" itemWidth="77" isEditable="false" isReadOnly="true" resizable="true" keytip="GMD">
+          <tooltip heading="Permet d'indiquer si les géométries doivent être dessinées ou non.">
+            Les géométries sont dessinées ou non dans la map active après l'exécution d'une action sur ces dernières.<disabledText /></tooltip>
+        </comboBox>
+        <comboBox id="MpoGeometrieTravail_cboNumeroSNRC" caption="Numéro SNRC" className="cboNumeroSNRC" itemWidth="65" isEditable="true" isReadOnly="false" resizable="true" keytip="GNN">
+          <tooltip heading="Numéro SNRC au 50k ou au 250k">
+            L'information de la géométrie du numéro SNRC au 50K ou au 250K spécifié est affichée dans la description.<disabledText /></tooltip>
+        </comboBox>
+        <tool id="MpoGeometrieTravail_tooIdentifierSnrc50K" caption="Identifier SNRC 50K" className="tooIdentifierSnrc50K" loadOnClick="false" smallImage="Images\tooIdentifierSnrc50K16.png" largeImage="Images\tooIdentifierSnrc50K32.png" condition="esri_mapping_mapPane" keytip="GN1">
+          <tooltip heading="Identifier les SNRC au 50K">
+            Les géométries des SNRC au 250K sont conservées en mémoire dans une liste de géométries de travail.<disabledText /></tooltip>
+        </tool>
+        <tool id="MpoGeometrieTravail_tooIdentifierSnrc250K" caption="Identifier SNRC 250K" className="tooIdentifierSnrc250K" loadOnClick="false" smallImage="Images\tooIdentifierSnrc250K16.png" largeImage="Images\tooIdentifierSnrc250K32.png" condition="esri_mapping_mapPane" keytip="GN2">
+          <tooltip heading="Identifier les SNRC au 250K">
+            Les géométries des SNRC au 250K sont conservées en mémoire dans une liste de géométries de travail.<disabledText /></tooltip>
+        </tool>
+        <button id="MpoGeometrieTravail_cmdIdentifierSelection" caption="Identifier la sélection" className="cmdIdentifierSelection" loadOnClick="false" smallImage="Images\cmdIdentifierSelection16.png" largeImage="Images\cmdIdentifierSelection32.png" keytip="GIS">
+          <tooltip heading="Identifier les géométries des éléments déjà sélectionnés">
+            Les géométries des éléments déjà sélectionnés sont conservées en mémoire dans une liste de géométrie de travail.<disabledText /></tooltip>
+        </button>
+        <tool id="MpoGeometrieTravail_tooIdentifierGeometrie" caption="Identifier les géométries" className="tooIdentifierGeometrie" loadOnClick="false" smallImage="Images\tooIdentifierGeometrie16.png" largeImage="Images\tooIdentifierGeometrie32.png" condition="esri_mapping_mapPane" keytip="GIG">
+          <tooltip heading="Identifier les géométries des éléments sélectionnés">
+            Les géométries des éléments sélectionnés sont conservées en mémoire dans une liste de géométrie de travail.<disabledText /></tooltip>
+        </tool>
+        <tool id="MpoGeometrieTravail_tooIdentifierLimite" caption="Identifier les limites" className="tooIdentifierLimite" loadOnClick="false" smallImage="Images\tooIdentifierLimite16.png" largeImage="Images\tooIdentifierLimite32.png" condition="esri_mapping_mapPane" keytip="GIL">
+          <tooltip heading="Identifier les limites des géométries des éléments sélectionnés">
+            Les limites des géométries des éléments sélectionnés sont conservées en mémoire dans une liste de géométrie de travail.<disabledText /></tooltip>
+        </tool>
+        <tool id="MpoGeometrieTravail_tooIdentifierSommet" caption="Identifier les sommets" className="tooIdentifierSommet" loadOnClick="false" smallImage="Images\tooIdentifierSommet16.png" largeImage="Images\tooIdentifierSommet32.png" condition="esri_mapping_mapPane" keytip="GIP">
+          <tooltip heading="Identifier les sommets des géométries des éléments sélectionnés">
+            Les sommets des géométries des éléments sélectionnés sont conservées en mémoire dans une liste de géométrie de travail.<disabledText /></tooltip>
+        </tool>
+        <button id="MpoGeometrieTravail_cmdIdentifierSurfaceLigne" caption="Identifier Surfaces/Lignes" className="cmdIdentifierSurfaceLigne" loadOnClick="false" smallImage="Images\cmdIdentifierSurfaceLigne16.png" largeImage="Images\cmdIdentifierSurfaceLigne32.png" keytip="GIF">
+          <tooltip heading="Identifier les surfaces à partir des lignes déjà sélectionnées">
+            Seules les lignes déjà sélectionnées qui forment des lignes fermées seront transformées en surfaces et ajouter à la liste des géométries de travail<disabledText /></tooltip>
+        </button>
+        <tool id="MpoGeometrieTravail_tooConstruirePoint" categoryRefID="esri_editing_construction_point" caption="Construire un point" className="tooConstruirePoint" loadOnClick="false" smallImage="Images\tooConstruirePoint16.png" largeImage="Images\tooConstruirePoint32.png" keytip="GCP">
+          <tooltip heading="Construire un point dans les géométries de travail">
+            Le point construit est ajouté dans les géométries de travail en mémoire.<disabledText /></tooltip>
+        </tool>
+        <tool id="MpoGeometrieTravail_tooConstruireMultipoint" categoryRefID="esri_editing_construction_multipoint" caption="Construire un multipoint" className="tooConstruireMultipoint" loadOnClick="false" smallImage="Images\tooConstruireMultiPoint16.png" largeImage="Images\tooConstruireMultiPoint32.png" keytip="GCM">
+          <tooltip heading="Construire un multipoint dans les géométries de travail">
+            Le multipoint construit est ajouté dans les géométries de travail en mémoire.<disabledText /></tooltip>
+        </tool>
+        <tool id="MpoGeometrieTravail_tooConstruireLigne" categoryRefID="esri_editing_construction_polyline" caption="Construire une ligne" className="tooConstruireLigne" loadOnClick="false" smallImage="Images\tooConstruireLigne16.png" largeImage="Images\tooConstruireLigne32.png" keytip="GCL">
+          <tooltip heading="Construire une ligne dans les géométries de travail">
+            La ligne construite est ajoutée dans les géométries de travail en mémoire.<disabledText /></tooltip>
+        </tool>
+        <tool id="MpoGeometrieTravail_tooConstruirePolygone" categoryRefID="esri_editing_construction_polygon" caption="Construire un polygone" className="tooConstruirePolygone" loadOnClick="false" smallImage="Images\tooConstruirePolygone16.png" largeImage="Images\tooConstruirePolygone32.png" keytip="GCS">
+          <tooltip heading="Construire un polygone dans les géométries de travail">
+            Le polygone construit est ajouté dans les géométries de travail en mémoire.<disabledText /></tooltip>
+        </tool>
+        <button id="MpoGeometrieTravail_cmdDessinerGeometries" caption="Dessiner les géométries" className="cmdDessinerGeometries" loadOnClick="false" smallImage="Images\cmdDessinerGeometries16.png" largeImage="Images\cmdDessinerGeometries32.png" keytip="GDE">
+          <tooltip heading="Dessiner la liste des géométries de travail en mémoire.">
+            Les géométries de travail en mémoire seront dessiner dans la Map active.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdDetruireDessin" caption="Detruire les dessins" className="cmdDetruireDessin" loadOnClick="false" smallImage="Images\cmdDetruireDessin16.png" largeImage="Images\cmdDetruireDessin32.png" keytip="GDD">
+          <tooltip heading="Détruire les dessins des géométries de travail en mémoire.">
+            Les dessins des géométries de travail dessinés dans la Map active seront détruits.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdZoomGeometries" caption="Zoom des géométries" className="cmdZoomGeometries" loadOnClick="false" smallImage="Images\cmdZoomGeometries16.png" largeImage="Images\cmdZoomGeometries32.png" keytip="GDZ">
+          <tooltip heading="Zoom selon la liste des géométries de travail en mémoire">
+            Le zoom est effectué selon l'enveloppe de la liste des géométries de travail dans la map active.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdSelectionnerElement" caption="Sélectionner les éléments" className="cmdSelectionnerElement" loadOnClick="false" smallImage="Images\cmdSelectionnerElement16.png" largeImage="Images\cmdSelectionnerElement32.png" keytip="GSE">
+          <tooltip heading="Sélectionner les éléments à partir des géométries de travail">
+            Les géométries de travail conservées en mémoire sont utilisées pour sélectionner les éléments dans la Map active.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdEffacerSelection" caption="Effacer la sélection" className="cmdEffacerSelection" loadOnClick="false" smallImage="Images\cmdEffacerSelection16.png" largeImage="Images\cmdEffacerSelection32.png" keytip="GSC">
+          <tooltip heading="Effacer la sélection des éléments">
+            La sélection des éléments contenus dans tous les FeatureLayer seront tous effacés.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdZoomSelection" caption="Zoom selon la sélection" className="cmdZoomSelection" loadOnClick="false" smallImage="Images\cmdZoomSelection16.png" largeImage="Images\cmdZoomSelection32.png" keytip="GSZ">
+          <tooltip heading="Zoom selon la sélection des éléments">
+            Le Zoom sera effectué selon les éléments sélectionnés dans la map active.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdDetruireGeometries" caption="Detruire les géometries" className="cmdDetruireGeometries" loadOnClick="false" smallImage="Images\cmdDetruireGeometries16.png" largeImage="Images\cmdDetruireGeometries32.png" keytip="GGD">
+          <tooltip heading="Détruire toutes les géométries de travail">
+            Toutes les géométries de la liste des géométries de travail seront éliminées.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdSimplifierGeometries" caption="Simplifier les géometries" className="cmdSimplifierGeometries" loadOnClick="false" smallImage="Images\cmdSimplifierGeometries16.png" largeImage="Images\cmdSimplifierGeometries32.png" keytip="GGS">
+          <tooltip heading="Simplifier toutes les géométries de travail">
+            Une géométrie simple est une géométrie topologiquement valide.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdUnionGeometries" caption="Union des géometries" className="cmdUnionGeometries" loadOnClick="false" smallImage="Images\cmdUnionGeometries16.png" largeImage="Images\cmdUnionGeometries32.png" keytip="GGU">
+          <tooltip heading="Union des géométries de même type de la liste des géométries">
+            Une nouvelle liste des géométries sera créée mais contiendra au maximum trois géométries, soit un Multipoint, une Polyline et un Polygon mais fusionnées entres elles.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdRegrouperGeometries" caption="Regrouper les géometries" className="cmdRegrouperGeometries" loadOnClick="true" smallImage="Images\cmdRegrouperGeometries16.png" largeImage="Images\cmdRegrouperGeometries32.png" keytip="GGR">
+          <tooltip heading="Regrouper les géométries de même type de la liste des géométries">
+            Une nouvelle liste des géométries sera créée mais contiendra au maximum trois géométries, soit un Multipoint, une Polyline et un Polygon mais sans être fusionnées entres elles.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdSeparerGeometries" caption="Séparer les géométries" className="cmdSeparerGeometries" loadOnClick="false" smallImage="Images\cmdSeparerGeometries16.png" largeImage="Images\cmdSeparerGeometries32.png" keytip="GGP">
+          <tooltip heading="Séparer chaque partie d'une géométrie de la liste des géométries">
+            Un polygone contenant deux parties extérieures sera transformée en deux polygones. Une polyligne contenant deux lignes sera transformée en deux polylignes. Un multipoint contenant deux points sera transformé en deux points.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdBufferGeometries" caption="Buffer des géométries" className="cmdBufferGeometries" loadOnClick="false" smallImage="Images\cmdBufferGeometries16.png" largeImage="Images\cmdBufferGeometries32.png" keytip="GGB">
+          <tooltip heading="Modifier chaque géométrie de la liste des géométries selon une valeur de tampon (buffer)">
+            Si la valeur spécifié est positive, les géométries de type point et ligne seront transformées en surface et les géométries de type surface seront agrandit.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdCreerElement" caption="Créer éléments" className="cmdCreerElement" loadOnClick="false" smallImage="Images\cmdCreerElement16.png" largeImage="Images\cmdCreerElement32.png" keytip="GEC">
+          <tooltip heading="Créer un ou plusieurs éléments selon le Layer sélectionné et la liste des géométries">
+            Un élément sera créé pour toutes les géométries de la liste qui possèdent le même type de géométrie que celle du Layer sélectionné.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdRemplacerGeometrieElement" caption="Remplacer géométrie" className="cmdRemplacerGeometrieElement" loadOnClick="false" smallImage="Images\cmdRemplacerGeometrieElement16.png" largeImage="Images\cmdRemplacerGeometrieElement32.png" keytip="GER">
+          <tooltip heading="Remplacer la géométrie d'un seul élément sélectionné">
+            La géométrie de l'élément sélectionné sera remplacé par la première géométrie de même type que de la liste des géométries.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdCouperGeometrieElement" caption="Couper éléments" className="cmdCouperGeometrieElement" loadOnClick="false" smallImage="Images\cmdCouperGeometrieElement16.png" largeImage="Images\cmdCouperGeometrieElement32.png" keytip="GEC">
+          <tooltip heading="Couper la géométrie des éléments sélectionnés à partir des géométries de travail de type ligne">
+            Seules les géométries des éléments sélectionnées dont les géométries de travail les croise complètement seront coupées.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdRemodelerGeometrieElement" caption="Remodeler éléments" className="cmdRemodelerGeometrieElement" loadOnClick="false" smallImage="Images\cmdRemodelerGeometrieElement16.png" largeImage="Images\cmdRemodelerGeometrieElement32.png" keytip="GEM">
+          <tooltip heading="Remodeler les géométries des éléments sélectionnés selon les géométries de travail de type ligne">
+            Seules les géométries des éléments sélectionnées qui intersectent les géométries de travail de type ligne seront remodelées.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdIntersectionGeometrieElement" caption="Intersection éléments" className="cmdIntersectionGeometrieElement" loadOnClick="false" smallImage="Images\cmdIntersectionGeometrieElement16.png" largeImage="Images\cmdIntersectionGeometrieElement32.png" keytip="GEI">
+          <tooltip heading="Intersection entre les géométries des éléments sélectionnés et les géométries de travail">
+            Seules les géométries des éléments sélectionnées qui intersectent les géométries de travail seront modifiées selon l'intersection de même type.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdDifferenceGeometrieElement" caption="Différence éléments" className="cmdDifferenceGeometrieElement" loadOnClick="false" smallImage="Images\cmdDifferenceGeometrieElement16.png" largeImage="Images\cmdDifferenceGeometrieElement32.png" keytip="GED">
+          <tooltip heading="Différence entre les géométries des éléments sélectionnés et les géométries de travail.">
+            Seules les géométries des éléments sélectionnées qui intersectent les géométries de travail seront modifiées selon la différence de même type.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdDifferenceInverseGeometrieElement" caption="Différence inverse" className="cmdDifferenceInverseGeometrieElement" loadOnClick="false" smallImage="Images\cmdDifferenceInverseGeometrieElement16.png" largeImage="Images\cmdDifferenceInverseGeometrieElement32.png" keytip="GEV">
+          <tooltip heading="Différence inverse entre la géométrie de l'élément sélectionné et les géométries de travail">
+            La géométrie de l'éléments sélectionnée qui intersecte les géométries de travail sera modifiée selon la différence inverse de même type.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdSymetrieGeometrieElement" caption="Symétrie éléments" className="cmdSymetrieGeometrieElement" loadOnClick="false" smallImage="Images\cmdSymetrieGeometrieElement16.png" largeImage="Images\cmdSymetrieGeometrieElement32.png" keytip="GES">
+          <tooltip heading="Symétrie entre les géométries des éléments sélectionnés et les géométries de travail">
+            La géométrie de l'élément sélectionnée qui intersect les géométries de travail sera modifiée selon la symétrie de même type.<disabledText /></tooltip>
+        </button>
+        <button id="MpoGeometrieTravail_cmdUnionGeometrieElement" caption="Union éléments" className="cmdUnionGeometrieElement" loadOnClick="false" smallImage="Images\cmdUnionGeometrieElement16.png" largeImage="Images\cmdUnionGeometrieElement32.png" keytip="GEU">
+          <tooltip heading="Union entre la géométrie de l'élément sélectionné et les géométries de travail">
+            La géométrie de l'élément sélectionnée fusionnera avec les géométries de travail de même type.<disabledText /></tooltip>
+        </button>
+      </controls>
+      <dockPanes>
+        <dockPane id="MpoGeometrieTravail_dckGeometrieTravail" caption="Géometries" className="dckGeometrieTravailViewModel" dock="group" dockWith="esri_editing_AttributesDockPane">
+          <content className="dckGeometrieTravailView" />
+        </dockPane>
+      </dockPanes>
+    </insertModule>
+  </modules>
+</ArcGIS>
