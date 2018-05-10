@@ -308,8 +308,14 @@ Public Class dckMenuGeometrieTravail
                 pTrackCancel.CancelOnKeyPress = True
                 pTrackCancel.CancelOnClick = False
 
-                'Dessiner la géométrie de la géométrie de travail
-                Call bDessinerGeometrie(pGeometry, True, chkDessinerGeometrie.Checked, chkDessinerSommet.Checked, chkDessinerNumero.Checked, pTrackCancel)
+                'Vérifier si le clic a été effectué avec le bouton de droite
+                If e.Button = Windows.Forms.MouseButtons.Right Then
+                    'Dessiner la géométrie de la géométrie de travail sans rafraichir
+                    Call bDessinerGeometrie(pGeometry, False, chkDessinerGeometrie.Checked, chkDessinerSommet.Checked, chkDessinerNumero.Checked, pTrackCancel)
+                Else
+                    'Rafraichir et dessiner la géométrie de la géométrie de travail
+                    Call bDessinerGeometrie(pGeometry, True, chkDessinerGeometrie.Checked, chkDessinerSommet.Checked, chkDessinerNumero.Checked, pTrackCancel)
+                End If
             End If
 
         Catch erreur As Exception

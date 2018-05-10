@@ -6,7 +6,7 @@
   <Image>Images\mpoBarreGeometrieTravail.png</Image>
   <Author>Michel Pothier</Author>
   <Company>MPO</Company>
-  <Date>2017-07-12</Date>
+  <Date>2018-03-27</Date>
   <Targets>
     <Target name="Desktop" version="10.5" />
   </Targets>
@@ -103,6 +103,7 @@
         <Button id="MPO_BarreGeometrieTravail_cmdExporter" class="cmdExporter" message="Exporter les géométries de travail dans les éléments graphique de la fenêtre active." caption="Exporter les géométries de travail" tip="Exporter les géométries de travail." category="MPO-BarreGeometrieTravail" image="Images\cmdExporter.png" onDemand="false">
           <Help source="BarreGeometrieTravail.chm" topicID="cmdExporter" />
         </Button>
+        <Button id="MPO_BarreGeometrieTravail_cmdGeneraliserLigneFractionnee" class="cmdGeneraliserLigneFractionnee" message="Généraliser une ligne fractionnée" caption="Généraliser une ligne fractionnée" tip="Généraliser une ligne fractionnée." category="MPO-BarreGeometrieTravail" image="Images\cmdGeneraliserLigneFractionnee.png" onDemand="false" />
         <Button id="MPO_BarreGeometrieTravail_cmdGeneraliserLigne" class="cmdGeneraliserLigne" message="Généraliser un ou plusieurs éléments de type ligne selon une largeur et une longueur minimum." caption="Généraliser une ligne" tip="Généraliser un ou plusieurs éléments de type ligne." category="MPO-BarreGeometrieTravail" image="Images\cmdGeneraliserLigne.png" onDemand="false" />
         <Button id="MPO_BarreGeometrieTravail_cmdGeneraliserInterieur" class="cmdGeneraliserInterieur" message="Généraliser l'intérieur d'un ou plusieurs éléments de type surface selon une largeur et une longueur minimum." caption="Generaliser l'intérieur d'une surface" tip="Généraliser l'intérieur d'un ou plusieurs éléments de type surface." category="MPO-BarreGeometrieTravail" image="Images\cmdGeneraliserInterieur.png" onDemand="false" />
         <Button id="MPO_BarreGeometrieTravail_cmdGeneraliserExterieur" class="cmdGeneraliserExterieur" message="Généraliser l'extérieur d'un ou plusieurs éléments de type surface selon une largeur et une longueur minimum." caption="Généraliser l'extérieur d'une surface" tip="Généraliser l'extérieur d'un ou plusieurs éléments de type surface." category="MPO-BarreGeometrieTravail" image="Images\cmdGeneraliserExterieur.png" onDemand="false" />
@@ -110,7 +111,7 @@
         <Button id="MPO_BarreGeometrieTravail_cmdModifierDebutSommet" class="cmdModifierDebutSommet" message="Modifier le début des sommets des composantes d'un polygone." caption="Modifier le début des sommets" tip="Modifier le début des sommets des composantes" category="MPO-BarreGeometrieTravail" image="Images\cmdModifierDebutSommet.png" onDemand="false" />
       </Commands>
       <Toolbars>
-        <Toolbar id="MPO_BarreGeometrieTravail_My_Toolbar" caption="MPO-BarreGeometrieTravail (28 Septembre 2017)" showInitially="false">
+        <Toolbar id="MPO_BarreGeometrieTravail_My_Toolbar" caption="MPO-BarreGeometrieTravail (10 Mai 2018)" showInitially="false">
           <Items>
             <Button refID="MPO_BarreGeometrieTravail_cmdActiverMenu" />
             <Button refID="MPO_BarreGeometrieTravail_cmdIdentifierGeometrie" />
@@ -144,7 +145,8 @@
             <Button refID="MPO_BarreGeometrieTravail_cmdReshape" />
             <Button refID="MPO_BarreGeometrieTravail_cmdImporter" separator="true" />
             <Button refID="MPO_BarreGeometrieTravail_cmdExporter" />
-            <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserLigne" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserLigneFractionnee" separator="true" />
+            <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserLigne" />
             <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserInterieur" />
             <Button refID="MPO_BarreGeometrieTravail_cmdGeneraliserExterieur" />
             <Button refID="MPO_BarreGeometrieTravail_cmdTrianguler" />

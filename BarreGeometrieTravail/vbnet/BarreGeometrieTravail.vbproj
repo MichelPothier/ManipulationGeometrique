@@ -121,6 +121,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cmdGeneraliserLigneFractionnee.vb" />
     <Compile Include="clsGererMapLayer.vb" />
     <Compile Include="cmdModifierDebutSommet.vb" />
     <Compile Include="cmdTrianguler.vb" />
@@ -352,6 +353,9 @@
     <AddInContent Include="Images\cmdIntersection.png" />
     <AddInContent Include="Images\cmdModifierDebutSommet.png" />
     <AddInContent Include="Images\cmdTrianguler.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AddInContent Include="Images\cmdGeneraliserLigneFractionnee.png" />
   </ItemGroup>
   <PropertyGroup>
     <ZipFileExtension>esriAddIn</ZipFileExtension>

@@ -1553,6 +1553,12 @@ Module modGeometrieTravail
         Dim pFeature As IFeature = Nothing              'Interface ESRI contenant un élément en sélection.
         Dim pGeometryBag As IGeometryBag = Nothing      'Interface ESRI contenant des géométries en mémoire.
         Dim pGeometry As IGeometry = Nothing            'Interface contenant une géométrie.
+        Dim pGeomColl As IGeometryCollection = Nothing  'Interface pour ajouter des géométries.
+        Dim pTriangles As IPolyline = Nothing
+        Dim pPolyline As IPolyline = Nothing
+        Dim pPolylineExt As IPolyline = Nothing
+        Dim pPolygon As IPolygon = Nothing
+        Dim pPolygonExt As IPolygon = Nothing
         Dim pLignesTriangles As IPolyline = Nothing     'Interface contenant les lignes des triangles.
         Dim pLignesInt As IPolyline = Nothing           'Interface contenant les lignes des triangles intérieures.
         Dim pLignesExt As IPolyline = Nothing           'Interface contenant les lignes des triangles intérieures.
@@ -1596,9 +1602,6 @@ Module modGeometrieTravail
 
                     'Si la géométrie est une surface
                     If pGeometry.GeometryType = esriGeometryType.esriGeometryPolygon Then
-                        Dim pPolygon As IPolygon = Nothing
-                        Dim pPolygonExt As IPolygon = Nothing
-
                         'Définir le polygone
                         pPolygon = CType(pGeometry, IPolygon)
 
@@ -1613,7 +1616,7 @@ Module modGeometrieTravail
                         mpGeometrieTravail.AddGeometry(pPolygonExt)
 
                         'Créer les lignes intérieures et extérieures des triangles
-                        Call TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(pPolygonExt, pLignesTriangles)
+                        pTriangles = TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(pPolygonExt, pLignesTriangles)
 
                         'Interface pour couper les lignes
                         pTopoOp = CType(pLignesTriangles, ITopologicalOperator2)
@@ -1628,20 +1631,50 @@ Module modGeometrieTravail
                         'Ajouter les lignes des triangles extérieures
                         mpGeometrieTravail.AddGeometry(pLignesExt)
 
+                        'Ajouter les lignes des triangles extérieures
+                        mpGeometrieTravail.AddGeometry(pTriangles)
+
                         'Si la géométrie est une ligne
                     ElseIf pGeometry.GeometryType = esriGeometryType.esriGeometryPolyline Then
-                        Dim pPolyline As IPolyline = Nothing
-
                         'Définir la polyligne
                         pPolyline = CType(pGeometry, IPolyline)
 
                         'Enlever les sommets en trop afin d'enlever les extrémités en ligne droite
                         'pPolyline.Generalize(dDistLat)
                         'Densifier les sommets
-                        'pPolyline.Densify(dLargMin / 2, 0)
+                        pPolyline.Densify(dDistMin, 0)
+
+                        'Définir le polygone extérieur
+                        pPolygonExt = TriangulationDelaunay.CreerPolygoneExterieur(pPolyline, dDistMin)
+                        'Ajouter le polygone extérieure
+                        mpGeometrieTravail.AddGeometry(pPolygonExt)
+
+                        'Interface pour extraire la limite du polygone extérieur
+                        pTopoOp = CType(pPolygonExt, ITopologicalOperator2)
+                        'Extraire la limite du polygone extérieur
+                        pPolylineExt = CType(pTopoOp.Boundary, IPolyline)
+                        'Interface pour ajouter des géométries
+                        pGeomColl = CType(pPolylineExt, IGeometryCollection)
+                        'Ajouter des géométries
+                        pGeomColl.AddGeometryCollection(CType(pPolyline, IGeometryCollection))
+
+                        'Ajouter la polyligne extérieure
+                        mpGeometrieTravail.AddGeometry(pPolylineExt)
 
                         'Ajouter les lignes des triangles
-                        mpGeometrieTravail.AddGeometry(TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(pPolyline))
+                        'mpGeometrieTravail.AddGeometry(TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(pPolylineExt))
+
+                        'Créer les lignes intérieures et extérieures des triangles
+                        pTriangles = TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(pPolylineExt, pLignesTriangles)
+
+                        'Extraire la limite du polygone extérieur
+                        pLignesTriangles = CType(pTopoOp.Intersect(pLignesTriangles, esriGeometryDimension.esriGeometry1Dimension), IPolyline)
+
+                        'Ajouter les lignes des triangles extérieures
+                        mpGeometrieTravail.AddGeometry(pLignesTriangles)
+
+                        'Ajouter les lignes des triangles extérieures
+                        mpGeometrieTravail.AddGeometry(pTriangles)
                     End If
                 End If
 
@@ -1953,10 +1986,12 @@ Module modGeometrieTravail
                 mpGeometrieTravail.AddGeometry(pSquelette)
 
                 'Ajouter le polygone de généralisation
-                'mpGeometrieTravail.AddGeometry(pPointsConnexion)
+                mpGeometrieTravail.AddGeometry(pPointsConnexion)
 
                 'Ajouter les lignes de Delaunay
-                'mpGeometrieTravail.AddGeometry(pBagDroites)
+                mpGeometrieTravail.AddGeometry(pBagDroites)
+
+                'mpGeometrieTravail = CType(pBagDroites, IGeometryCollection)
             End If
 
         Catch erreur As Exception
@@ -2237,6 +2272,8 @@ Module modGeometrieTravail
                 Call clsGeneraliserGeometrie.GeneraliserExterieurPolygone(pPolygon, pPointsConnexion, dDistLat, dLargMin, dLongMin, dSupMin,
                                                                           pPolygonGen, pPolylineErr, pSquelette, pBagDroites)
 
+                'mpGeometrieTravail = CType(pBagDroites, IGeometryCollection)
+
                 'Ajouter le polygone de généralisation
                 mpGeometrieTravail.AddGeometry(pPolygonGen)
 
@@ -2244,13 +2281,34 @@ Module modGeometrieTravail
                 mpGeometrieTravail.AddGeometry(pPolylineErr)
 
                 'Ajouter le squelette du polygone
-                'mpGeometrieTravail.AddGeometry(pSquelette)
+                mpGeometrieTravail.AddGeometry(pSquelette)
 
                 'Ajouter le polygone de généralisation
-                'mpGeometrieTravail.AddGeometry(pPointsConnexion)
+                mpGeometrieTravail.AddGeometry(pPointsConnexion)
+
+                ''-----------------------------------------
+                ''Enlever les droites dont les 2 extrémités ne touchent pas à la ligne à traiter
+                ''du Bag des droites de la ligne-côté droit
+                ''-----------------------------------------
+                'Dim pDroite As IPolyline = Nothing
+                'pTopoOp = CType(pPolygon, ITopologicalOperator2)
+                ''Interface pour vérifier la connexion avec la ligne à traiter
+                'Dim pRelOp As IRelationalOperator = CType(pTopoOp.Boundary, IRelationalOperator)
+                ''Interface pour extraire les lignes du Bag
+                'Dim pGeomCollD As IGeometryCollection = CType(pBagDroites, IGeometryCollection)
+                ''Traiter toutes les droites du Bag
+                'For j = pGeomCollD.GeometryCount - 1 To 0 Step -1
+                '    'Définir une droite du Bag des droites
+                '    pDroite = CType(pGeomCollD.Geometry(j), IPolyline)
+                '    'Vérifier si une ou les 2 extrémités de la droite est disjoint de la ligne à traiter
+                '    If pRelOp.Disjoint(pDroite.FromPoint) Or pRelOp.Disjoint(pDroite.ToPoint) Then
+                '        'Enlever la droite du Bag
+                '        pGeomCollD.RemoveGeometries(j, 1)
+                '    End If
+                'Next
 
                 'Ajouter les lignes de Delaunay
-                'mpGeometrieTravail.AddGeometry(pBagDroites)
+                mpGeometrieTravail.AddGeometry(pBagDroites)
             End If
 
         Catch erreur As Exception
@@ -2268,16 +2326,15 @@ Module modGeometrieTravail
     End Sub
 
     '''<summary>
-    ''' Permet de créer la généralisation de ligne pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+    ''' Permet de créer la généralisation de ligne fractionnée pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
     '''</summary>
     '''
     '''<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
     '''<param name="dLargGenMin"> Largeur minimale de généralisation.</param>
     '''<param name="dLongGenMin"> Longueur minimale de généralisation.</param>
     '''<param name="dLongMin"> Longueur minimale d'une ligne.</param>
-    '''<param name="iMethode"> Méthode de généralisation (0Droite/1:Gauche).</param>
     ''' 
-    Public Sub GeneraliserLigne(ByVal dDistLat As Double, dLargGenMin As Double, ByVal dLongGenMin As Double, ByVal dLongMin As Double, ByVal iMethode As Integer)
+    Public Sub GeneraliserLigneFractionnee(ByVal dDistLat As Double, dLargGenMin As Double, ByVal dLongGenMin As Double, ByVal dLongMin As Double)
         'Déclarer les variables de travail
         Dim pMap As IMap = Nothing                      'Interface ESRI contenant la Map active.
         Dim pEnumFeature As IEnumFeature = Nothing      'Interface ESRI utilisé pour extraire les éléments de la sélection.
@@ -2288,7 +2345,9 @@ Module modGeometrieTravail
         Dim pPolylineGen As IPolyline = Nothing         'Interface contenant les lignes de généralisation.
         Dim pPolylineErr As IPolyline = Nothing         'Interface contenant les lignes de généralisation en erreur.
         Dim pSquelette As IPolyline = Nothing           'Interface contenant le squelette de la polyligne.
+        Dim pSqueletteEnv As IPolyline = Nothing        'Interface contenant le squelette de la polyligne avec son enveloppe.
         Dim pBagDroites As IGeometryBag = Nothing       'Interface contenant les droites de Delaunay.
+        Dim pBagDroitesEnv As IGeometryBag = Nothing    'Interface contenant les droites de Delaunay avec son enveloppe.
         Dim pGeomColl As IGeometryCollection = Nothing  'Interface pour ajouter les géométries à traiter.
         Dim pTopoOp As ITopologicalOperator2 = Nothing  'Interface pour fusionner les polygones à traiter.
         Dim pSpatialRefRes As ISpatialReferenceResolution = Nothing 'Interface qui permet d'initialiser la résolution XY.
@@ -2364,17 +2423,22 @@ Module modGeometrieTravail
 
             'Vérifier si le polyligne n'est pas vide
             If Not pPolyline.IsEmpty Then
-                'Vérifier si la méthode est 1:Gauche
-                If iMethode = 1 Then
-                    'Renverser l'odre des sommets
-                    pPolyline.ReverseOrientation()
-                End If
-
                 'Extraire les points d'intersection
                 pPointsConnexion = CType(pTopoOp.Boundary, IMultipoint)
 
+                'Filtre latérale
+                'dDistLat = 7.5
+                'pPolyline.Generalize(dDistLat)
+
+                'Fractionner une polyligne
+                Dim pLigneFractionnee As IPolyline = FractionnerPolyligne(pPolyline)
+
+                ''Ajouter la polyligne de généralisation en erreur
+                mpGeometrieTravail.AddGeometry(pLigneFractionnee)
+
                 'Généraliser la polyligne
-                Call clsGeneraliserGeometrie.GeneraliserPolyligne(pPolyline, pPointsConnexion, dDistLat, dLargGenMin, dLongGenMin, dLongMin, pPolylineGen, pPolylineErr, pSquelette, pBagDroites)
+                Call clsGeneraliserGeometrie.GeneraliserLigne(pLigneFractionnee, pPointsConnexion, dDistLat, dLargGenMin, dLongGenMin, dLongMin,
+                                                              pPolylineGen, pPolylineErr, pSquelette, pSqueletteEnv, pBagDroites, pBagDroitesEnv)
 
                 'Ajouter la polyligne de généralisation en erreur
                 mpGeometrieTravail.AddGeometry(pPolylineGen)
@@ -2382,14 +2446,22 @@ Module modGeometrieTravail
                 'Ajouter la polyligne généralisé
                 mpGeometrieTravail.AddGeometry(pPolylineErr)
 
-                'Ajouter le squelette de la polyligne
+                ''Ajouter le squelette de la polyligne
                 'mpGeometrieTravail.AddGeometry(pSquelette)
 
+                ''Ajouter le squelette de la polyligne avec son enveloppe
+                'mpGeometrieTravail.AddGeometry(pSqueletteEnv)
+
                 'Ajouter le Bag des droites de la polyligne
-                'mpGeometrieTravail.AddGeometry(pBagDroites)
+                mpGeometrieTravail.AddGeometry(pBagDroites)
+
+                'Ajouter le Bag des droites de la polyligne avec son enveloppe
+                'mpGeometrieTravail.AddGeometry(pBagDroitesEnv)
 
                 'Ajouter les points de connexion de la polyligne
                 'mpGeometrieTravail.AddGeometry(pPointsConnexion)
+
+                'mpGeometrieTravail = CType(pBagDroites, IGeometryCollection)
             End If
 
         Catch erreur As Exception
@@ -2406,7 +2478,372 @@ Module modGeometrieTravail
             pPolylineGen = Nothing
             pPolylineErr = Nothing
             pSquelette = Nothing
+            pSqueletteEnv = Nothing
             pBagDroites = Nothing
+            pBagDroitesEnv = Nothing
+            pGeomColl = Nothing
+            pTopoOp = Nothing
+            pSpatialRefRes = Nothing
+            pSpatialRefTol = Nothing
+            pPointsConnexion = Nothing
+        End Try
+    End Sub
+
+    '''<summary>
+    ''' Fonction qui permet de fractionner une polyligne selon les angles aigus et obtus.
+    ''' La polyligne résultante contiendra des lignes (Path) de sens inversé entre les changement d'angle aigu et obtu des droites consécutives.
+    '''</summary>
+    '''
+    '''<param name="pPolyline"> Interface contenant la polyligne à fractionner.</param>
+    ''' 
+    ''' <returns>IPolyline contenant la polyligne fractionnée.</returns>
+    ''' 
+    Public Function FractionnerPolyligne(ByVal pPolyline As IPolyline) As IPolyline
+        'Déclarer les variables de travail
+        Dim pLigneFractionnee As IPolyline = Nothing        'Interface contenant la ligne fractionnée.
+        Dim pPath As IPath = Nothing                        'Interface contenant une partie de la ligne fractionnée.
+        Dim pGeomColl As IGeometryCollection = Nothing      'Interface pour extraire les lignes.
+        Dim pGeomCollAdd As IGeometryCollection = Nothing   'Interface pour ajouter les lignes.
+        Dim pSegColl As ISegmentCollection = Nothing        'Interface pour extraire les segments.
+        Dim pSegCollAdd As ISegmentCollection = Nothing     'Interface pour ajouter les segments.
+        Dim pSegment As ISegment = Nothing                  'Interface contenant un segment.
+        Dim pDemiSegment As ISegment = Nothing              'Interface contenant un demi segment.
+        Dim pPoint As Point = Nothing                       'Interface contenant un point.
+        Dim dAngleDepart As Double = -1                     'Contient l'angle de départ.
+        Dim dAngle As Double = -1                           'Contient l'angle de la droite traitée.
+        Dim dDiffDepart As Double = -1                      'Contient la différence d'angle entre deux droites consécutives de départ.
+        Dim dDiff As Double = -1                            'Contient la différence d'angle entre deux droites consécutives.
+
+        'Par defaut, la ligne fractionnée est la même que la ligne à traiter
+        FractionnerPolyligne = pPolyline
+
+        Try
+            'Sortir si la polyligne est vide
+            If pPolyline.IsEmpty Then Exit Function
+
+            'Créer une ligne fractionnée vide
+            pLigneFractionnee = New Polyline
+            pLigneFractionnee.SpatialReference = pPolyline.SpatialReference
+            'Interface pour ajouter une ligne
+            pGeomCollAdd = CType(pLigneFractionnee, IGeometryCollection)
+
+            'Interface pour extraire les composantes
+            pGeomColl = CType(pPolyline, IGeometryCollection)
+            'Traiter toutes les composantes
+            For i = 0 To pGeomColl.GeometryCount - 1
+                'Initialiser les angles
+                dAngleDepart = -1
+                dAngle = -1
+
+                'Interface pour extraire les segments
+                pSegColl = CType(pGeomColl.Geometry(i), ISegmentCollection)
+                'Traiter tous les segments de la composante
+                For j = 1 To pSegColl.SegmentCount - 1
+                    'Définir le segment à traiter
+                    pSegment = pSegColl.Segment(j)
+
+                    'Vérifier si l'angle de départ n'est pas initialisée
+                    If dAngleDepart = -1 Then
+                        'Initialiser l'angle de départ
+                        dAngleDepart = clsGeneraliserGeometrie.Angle(pSegColl.Segment(j - 1).FromPoint, pSegColl.Segment(j - 1).ToPoint)
+                        'Initialiser l'angle selon l'angle de départ
+                        dAngle = clsGeneraliserGeometrie.Angle(pSegColl.Segment(j).FromPoint, pSegColl.Segment(j).ToPoint)
+
+                        'Définir la différence d'angle
+                        dDiff = dAngleDepart - dAngle
+                        'Définir l'angle entre les deux droites consécutives
+                        If dDiff > -180 And dDiff < 180 Then
+                            dDiff = 180 - dDiff
+                        ElseIf dDiff < -180 Then
+                            dDiff = Math.Abs(180 + dDiff)
+                        ElseIf dDiff > 180 Then
+                            dDiff = 540 - dDiff
+                        End If
+                        'Debug.Print(dAngleDepart.ToString + "-" + dAngle.ToString + "=" + dDiff.ToString + ">" + dDiff.ToString)
+
+                        'Créer une partie de ligne fractionnée vide
+                        pPath = New Path
+                        pPath.SpatialReference = pPolyline.SpatialReference
+
+                        'Interface pour ajouter un segment
+                        pSegCollAdd = CType(pPath, ISegmentCollection)
+                        'Ajouter un segment
+                        pSegCollAdd.AddSegment(pSegColl.Segment(j - 1))
+
+                        'Si l'angle de départ est initialisée
+                    Else
+                        'Initialiser l'angle selon l'angle de départ
+                        dAngle = clsGeneraliserGeometrie.Angle(pSegColl.Segment(j).FromPoint, pSegColl.Segment(j).ToPoint)
+
+                        'Définir la différence d'angle
+                        dDiff = dAngleDepart - dAngle
+                        'Définir l'angle entre les deux droites consécutives
+                        If dDiff > -180 And dDiff < 180 Then
+                            dDiff = 180 - dDiff
+                        ElseIf dDiff < -180 Then
+                            dDiff = Math.Abs(180 + dDiff)
+                        ElseIf dDiff > 180 Then
+                            dDiff = 540 - dDiff
+                        End If
+                        'Debug.Print(dAngleDepart.ToString + "-" + dAngle.ToString + "=" + dDiff.ToString + ">" + dDiff.ToString)
+
+                        'Vérifier si l'état (aigu ou obtu) de la différence d'angle est différent
+                        If (dDiff < 180 And dDiffDepart > 180) Or (dDiff > 180 And dDiffDepart < 180) Then
+                            'Définir le demi segment vide
+                            pDemiSegment = New Line
+                            pDemiSegment.SpatialReference = pPolyline.SpatialReference
+                            'Définir le point vide
+                            pPoint = New Point
+                            pPoint.SpatialReference = pPolyline.SpatialReference
+                            'Calculer la position du centre du segment
+                            pPoint.X = (pSegColl.Segment(j - 1).FromPoint.X + pSegColl.Segment(j - 1).ToPoint.X) / 2
+                            pPoint.Y = (pSegColl.Segment(j - 1).FromPoint.Y + pSegColl.Segment(j - 1).ToPoint.Y) / 2
+                            'Définir le premier point
+                            pDemiSegment.FromPoint = pSegColl.Segment(j - 1).FromPoint
+                            'Définir le deuxième point
+                            pDemiSegment.ToPoint = pPoint
+                            'Ajouter un demi segment
+                            pSegCollAdd.AddSegment(pDemiSegment)
+                            'Changer l'orientation si l'angle est obtu
+                            If dDiffDepart > 180 Then pPath.ReverseOrientation()
+                            'Ajouter une ligne fractionnée
+                            pGeomCollAdd.AddGeometry(pPath)
+
+                            'Créer une partie de ligne fractionnée vide
+                            pPath = New Path
+                            pPath.SpatialReference = pPolyline.SpatialReference
+                            'Définir le demi segment vide
+                            pDemiSegment = New Line
+                            pDemiSegment.SpatialReference = pPolyline.SpatialReference
+                            'Définir le point vide
+                            pPoint = New Point
+                            pPoint.SpatialReference = pPolyline.SpatialReference
+                            'Calculer la position du centre du segment
+                            pPoint.X = (pSegColl.Segment(j - 1).FromPoint.X + pSegColl.Segment(j - 1).ToPoint.X) / 2
+                            pPoint.Y = (pSegColl.Segment(j - 1).FromPoint.Y + pSegColl.Segment(j - 1).ToPoint.Y) / 2
+                            'Interface pour ajouter un segment
+                            pSegCollAdd = CType(pPath, ISegmentCollection)
+                            'Définir le premier point
+                            pDemiSegment.FromPoint = pPoint
+                            'Définir le premier point
+                            pDemiSegment.ToPoint = pSegColl.Segment(j - 1).ToPoint
+                            'Ajouter un demi segment
+                            pSegCollAdd.AddSegment(pDemiSegment)
+
+                            'Si l'état (aigu ou obtu) de la différence d'angle est le même
+                        Else
+                            'Ajouter un segment
+                            pSegCollAdd.AddSegment(pSegColl.Segment(j - 1))
+                        End If
+                    End If
+
+                    'Initialiser l'angle de départ
+                    dAngleDepart = dAngle
+                    'Initialiser l'angle de différence de départ
+                    dDiffDepart = dDiff
+                Next
+            Next
+
+            'Ajouter un segment
+            pSegCollAdd.AddSegment(pSegment)
+            'Changer l'orientation si l'angle est obtu
+            If dDiffDepart > 180 Then pPath.ReverseOrientation()
+            'Ajouter une ligne fractionnée
+            pGeomCollAdd.AddGeometry(pPath)
+
+            'Retourner la polyligne fractionnée
+            FractionnerPolyligne = pLigneFractionnee
+
+        Catch ex As Exception
+            Throw
+        Finally
+            'Vider la mémoire
+            pLigneFractionnee = Nothing
+            pPath = Nothing
+            pGeomColl = Nothing
+            pGeomCollAdd = Nothing
+            pSegColl = Nothing
+            pSegCollAdd = Nothing
+        End Try
+    End Function
+
+    '''<summary>
+    ''' Permet de créer la généralisation de ligne pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+    '''</summary>
+    '''
+    '''<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+    '''<param name="dLargGenMin"> Largeur minimale de généralisation.</param>
+    '''<param name="dLongGenMin"> Longueur minimale de généralisation.</param>
+    '''<param name="dLongMin"> Longueur minimale d'une ligne.</param>
+    '''<param name="iMethode"> Méthode de généralisation (0Droite/1:Gauche).</param>
+    ''' 
+    Public Sub GeneraliserLigne(ByVal dDistLat As Double, dLargGenMin As Double, ByVal dLongGenMin As Double, ByVal dLongMin As Double, ByVal iMethode As Integer)
+        'Déclarer les variables de travail
+        Dim pMap As IMap = Nothing                      'Interface ESRI contenant la Map active.
+        Dim pEnumFeature As IEnumFeature = Nothing      'Interface ESRI utilisé pour extraire les éléments de la sélection.
+        Dim pFeature As IFeature = Nothing              'Interface ESRI contenant un élément en sélection.
+        Dim pGeometryBag As IGeometryBag = Nothing      'Interface ESRI contenant les géométries à traiter.
+        Dim pGeometry As IGeometry = Nothing            'Interface contenant une géométrie.
+        Dim pPolyline As IPolyline = Nothing            'Interface contenant la super polyligne à traiter.
+        Dim pPolylineGen As IPolyline = Nothing         'Interface contenant les lignes de généralisation.
+        Dim pPolylineErr As IPolyline = Nothing         'Interface contenant les lignes de généralisation en erreur.
+        Dim pSquelette As IPolyline = Nothing           'Interface contenant le squelette de la polyligne.
+        Dim pSqueletteEnv As IPolyline = Nothing        'Interface contenant le squelette de la polyligne avec son enveloppe.
+        Dim pBagDroites As IGeometryBag = Nothing       'Interface contenant les droites de Delaunay.
+        Dim pBagDroitesEnv As IGeometryBag = Nothing    'Interface contenant les droites de Delaunay avec son enveloppe.
+        Dim pGeomColl As IGeometryCollection = Nothing  'Interface pour ajouter les géométries à traiter.
+        Dim pTopoOp As ITopologicalOperator2 = Nothing  'Interface pour fusionner les polygones à traiter.
+        Dim pSpatialRefRes As ISpatialReferenceResolution = Nothing 'Interface qui permet d'initialiser la résolution XY.
+        Dim pSpatialRefTol As ISpatialReferenceTolerance = Nothing  'Interface qui permet d'initialiser la tolérance XY.
+        Dim pPointsConnexion As IMultipoint = Nothing   'Interface contenant les points de connexion.
+
+        Try
+            'Définir le document de ArcMap
+            m_MxDocument = m_MxDocument
+
+            'Définir la Map courante
+            pMap = m_MxDocument.FocusMap
+
+            'Vider la mémoire
+            mpGeometrieTravail = Nothing
+            'Récupérer la mémoire
+            GC.Collect()
+
+            'Initialiser la résolution
+            pSpatialRefRes = CType(pMap.SpatialReference, ISpatialReferenceResolution)
+            pSpatialRefRes.SetDefaultXYResolution()
+            'Interface pour définir la tolérance XY
+            pSpatialRefTol = CType(pMap.SpatialReference, ISpatialReferenceTolerance)
+            pSpatialRefTol.XYTolerance = pSpatialRefRes.XYResolution(True) * 2
+            pSpatialRefTol.XYTolerance = 0.001
+
+            'Créer un nouveau GeometryBag vide pour les polygones à traiter
+            pGeometryBag = New GeometryBag
+            'Définir la référence spatiale
+            pGeometryBag.SpatialReference = pMap.SpatialReference
+            'Interface pour ajouter les polygones à traiter
+            pGeomColl = CType(pGeometryBag, IGeometryCollection)
+
+            'Interface pour extraire le premier élément de la sélection
+            pEnumFeature = CType(pMap.FeatureSelection, IEnumFeature)
+
+            'Extraire le premier élément de la sélection
+            pFeature = pEnumFeature.Next
+
+            'Traitre tous les éléments de la sélection
+            Do Until pFeature Is Nothing
+                'Interface pour projeter la géométrie
+                pGeometry = pFeature.Shape
+
+                'Projeter la géométrie
+                pGeometry.Project(m_MxDocument.FocusMap.SpatialReference)
+
+                'Vérifier si la géométrie est une ligne
+                If pFeature.Shape.GeometryType = esriGeometryType.esriGeometryPolyline Then
+                    'Ajouter le polygone à traiter
+                    pGeomColl.AddGeometry(pGeometry)
+                End If
+
+                'Extraire le prochain élément de la sélection
+                pFeature = pEnumFeature.Next
+            Loop
+
+            'Créer une nouvelle polyligne vide
+            pPolyline = New Polyline
+            'Définir la référence spatiale
+            pPolyline.SpatialReference = pMap.SpatialReference
+
+            'Simplifier la SuperPolyligne
+            pTopoOp = CType(pPolyline, ITopologicalOperator2)
+            pTopoOp.ConstructUnion(CType(pGeomColl, IEnumGeometry))
+
+            'Créer un nouveau GeometryBag vide
+            pGeometryBag = New GeometryBag
+            'Définir la référence spatiale
+            pGeometryBag.SpatialReference = pMap.SpatialReference
+            'Interface pour ajouter les géométrie du diagramme de Voronoi
+            mpGeometrieTravail = CType(pGeometryBag, IGeometryCollection)
+
+            'Vérifier si le polyligne n'est pas vide
+            If Not pPolyline.IsEmpty Then
+                'Vérifier si la méthode est 1:Gauche ou 3:Gauche-Droite
+                If iMethode = 1 Or iMethode = 3 Then
+                    'Renverser l'odre des sommets
+                    pPolyline.ReverseOrientation()
+                End If
+
+                'Extraire les points d'intersection
+                pPointsConnexion = CType(pTopoOp.Boundary, IMultipoint)
+
+                'Filtrer la géométrie
+                pPolyline.Generalize(dDistLat)
+                'Généraliser la polyligne
+                Call clsGeneraliserGeometrie.GeneraliserPolyligne(pPolyline, pPointsConnexion, dDistLat, dLargGenMin, dLongGenMin, dLongMin,
+                                                                  pPolylineGen, pPolylineErr, pSquelette, pSqueletteEnv, pBagDroites, pBagDroitesEnv)
+
+                'Vérifier si la méthode est 2:Droite/Gauche ou 3:Gauche-Droite
+                If iMethode = 2 Or iMethode = 3 Then
+                    'Redéfinir la polyligne
+                    pPolyline = pPolylineGen
+                    'Interface pour ajouter des géométries
+                    pGeomColl = CType(pPolylineErr, IGeometryCollection)
+                    'Renverser l'odre des sommets
+                    pPolyline.ReverseOrientation()
+                    'Filtre la géométrie
+                    pPolyline.Generalize(dDistLat)
+                    'Généraliser la polyligne
+                    Call clsGeneraliserGeometrie.GeneraliserPolyligne(pPolyline, pPointsConnexion, dDistLat, dLargGenMin, dLongGenMin, dLongMin,
+                                                                      pPolylineGen, pPolylineErr, pSquelette, pSqueletteEnv, pBagDroites, pBagDroitesEnv)
+                    'Ajouter les lignes en erreur
+                    pGeomColl.AddGeometryCollection(CType(pPolylineErr, IGeometryCollection))
+                    'Redéfinir les géométries en erreur
+                    pPolylineErr = CType(pGeomColl, IPolyline)
+                End If
+
+                'Ajouter la polyligne de généralisation en erreur
+                mpGeometrieTravail.AddGeometry(pPolylineGen)
+
+                'Ajouter la polyligne généralisé
+                mpGeometrieTravail.AddGeometry(pPolylineErr)
+
+                'Vérifier si la méthode est 2:Droite/Gauche ou 3:Gauche-Droite
+                If iMethode = 0 Or iMethode = 1 Then
+                    'Ajouter le squelette de la polyligne
+                    mpGeometrieTravail.AddGeometry(pSquelette)
+
+                    'Ajouter le squelette de la polyligne avec son enveloppe
+                    mpGeometrieTravail.AddGeometry(pSqueletteEnv)
+
+                    'Ajouter le Bag des droites de la polyligne
+                    mpGeometrieTravail.AddGeometry(pBagDroites)
+
+                    'Ajouter le Bag des droites de la polyligne avec son enveloppe
+                    mpGeometrieTravail.AddGeometry(pBagDroitesEnv)
+
+                    'Ajouter les points de connexion de la polyligne
+                    mpGeometrieTravail.AddGeometry(pPointsConnexion)
+                End If
+
+                'mpGeometrieTravail = CType(pBagDroites, IGeometryCollection)
+            End If
+
+        Catch erreur As Exception
+            'Retourner l'erreur
+            Throw erreur
+        Finally
+            'Vider la mémoire
+            pMap = Nothing
+            pEnumFeature = Nothing
+            pFeature = Nothing
+            pGeometryBag = Nothing
+            pGeometry = Nothing
+            pPolyline = Nothing
+            pPolylineGen = Nothing
+            pPolylineErr = Nothing
+            pSquelette = Nothing
+            pSqueletteEnv = Nothing
+            pBagDroites = Nothing
+            pBagDroitesEnv = Nothing
             pGeomColl = Nothing
             pTopoOp = Nothing
             pSpatialRefRes = Nothing

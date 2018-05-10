@@ -36,6 +36,7 @@ Public Class clsGeneraliserGeometrie
         'Déclarer les variables de travail
         Dim pGeomColl As IGeometryCollection = Nothing          'Interface pour extraire les anneaux extérieurs.
         Dim pGeomCollAdd As IGeometryCollection = Nothing       'Interface pour ajouter les lignes du squelette.
+        Dim pGeomCollAddD As IGeometryCollection = Nothing      'Interface pour ajouter les droites de Delaunay.
         Dim pGeomCollAddL As IGeometryCollection = Nothing      'Interface pour ajouter les lignes de généralisation intérieures.
         Dim pGeomCollAddS As IGeometryCollection = Nothing      'Interface pour ajouter les polygones de généralisation intérieures.
         Dim pRingExt As IRing = Nothing                         'Interface contenant l'anneau extérieur.
@@ -43,6 +44,7 @@ Public Class clsGeneraliserGeometrie
         Dim pPolygonGenTmp As IPolygon = Nothing                'Interface contenant le polygone de généralisation temporaire.
         Dim pPolylineErrTmp As IPolyline = Nothing              'Interface contenant la polyligne d'erreur de généralisation temporaire.
         Dim pSqueletteTmp As IPolyline = Nothing                'Interface contenant la polyligne du squelette temporaire.
+        Dim pBagDroitesTmp As IGeometryBag = Nothing            'Interface contenant les droites de Delaunay temporaires.
         Dim pGeomCollTmp As IGeometryCollection = Nothing       'Interface pour ajouter les anneaux extérieurs dans le polygone temporaire.
         Dim pPointsConnexionTmp As IMultipoint = Nothing        'Interface contenant les points de connexion temporaire.
         Dim pTopoOp As ITopologicalOperator2 = Nothing          'Interface utilisé pour extraire les points de connexion temporaire.
@@ -66,6 +68,10 @@ Public Class clsGeneraliserGeometrie
             pPolygonGen = New Polygon
             pPolygonGen.SpatialReference = pPolygon.SpatialReference
 
+            'Créer le Bag des droites de Delaunay vide
+            pBagDroites = New GeometryBag
+            pBagDroites.SpatialReference = pPolygon.SpatialReference
+
             'Vérifier si le polygone n'est pas vide
             If Not pPolygon.IsEmpty Then
                 'Interface pour ajouter les lignes du squelette
@@ -74,6 +80,8 @@ Public Class clsGeneraliserGeometrie
                 pGeomCollAddL = CType(pPolylineErr, IGeometryCollection)
                 'Interface pour ajouter les anneaux de généralisation
                 pGeomCollAddS = CType(pPolygonGen, IGeometryCollection)
+                'Interface pour ajouter les droites des lignes de Delaunay
+                pGeomCollAddD = CType(pBagDroites, IGeometryCollection)
                 'Interface pour extraire les anneaux extérieurs
                 pGeomColl = CType(pPolygon.ExteriorRingBag, IGeometryCollection)
 
@@ -99,7 +107,7 @@ Public Class clsGeneraliserGeometrie
                         pPointsConnexionTmp = CType(pTopoOp.Intersect(pPolygonTmp, esriGeometryDimension.esriGeometry0Dimension), IMultipoint)
 
                         'Généralisation intérieure des polygones temporaires
-                        Call GeneraliserAnneauInterieur(pPolygonTmp, pPointsConnexionTmp, dLargMin, dLongMin, dSupMin, pPolygonGenTmp, pPolylineErrTmp, pSqueletteTmp, pBagDroites)
+                        Call GeneraliserAnneauInterieur(pPolygonTmp, pPointsConnexionTmp, dLargMin, dLongMin, dSupMin, pPolygonGenTmp, pPolylineErrTmp, pSqueletteTmp, pBagDroitesTmp)
 
                         'Ajouter les lignes du squelette
                         pGeomCollAdd.AddGeometryCollection(CType(pSqueletteTmp, IGeometryCollection))
@@ -109,6 +117,9 @@ Public Class clsGeneraliserGeometrie
 
                         'Ajouter les polygones de généralisation
                         pGeomCollAddS.AddGeometryCollection(CType(pPolygonGenTmp, IGeometryCollection))
+
+                        'Ajouter les droites de Delaunay
+                        pGeomCollAddD.AddGeometryCollection(CType(pBagDroitesTmp, IGeometryCollection))
                     End If
                 Next
             End If
@@ -119,6 +130,7 @@ Public Class clsGeneraliserGeometrie
             'Vider la mémoire
             pGeomColl = Nothing
             pGeomCollAdd = Nothing
+            pGeomCollAddD = Nothing
             pGeomCollAddL = Nothing
             pGeomCollAddS = Nothing
             pRingExt = Nothing
@@ -127,6 +139,7 @@ Public Class clsGeneraliserGeometrie
             pPolygonGenTmp = Nothing
             pPolylineErrTmp = Nothing
             pSqueletteTmp = Nothing
+            pBagDroitesTmp = Nothing
             pGeomCollTmp = Nothing
             pPointsConnexionTmp = Nothing
             pTopoOp = Nothing
@@ -158,12 +171,16 @@ Public Class clsGeneraliserGeometrie
         Dim pPolygonExt As IPolygon4 = Nothing                  'Interface contenant le polygone extérieure générer à partir du polygone.
         Dim pTopoOp As ITopologicalOperator2 = Nothing          'Interface pour effectuer des opérations spatiales.
         Dim pGeomColl As IGeometryCollection = Nothing          'Interface pour extraire les anneaux extérieurs.
+        Dim pGeomCollAddD As IGeometryCollection = Nothing      'Interface pour ajouter les lignes des droites de Delaunay.
+        Dim pGeomCollAddQ As IGeometryCollection = Nothing      'Interface pour ajouter les lignes du squelette.
         Dim pGeomCollAddL As IGeometryCollection = Nothing      'Interface pour ajouter les lignes de généralisation extérieures.
         Dim pGeomCollAddS As IGeometryCollection = Nothing      'Interface pour ajouter les polygones de généralisation extérieures.
         Dim pRingExt As IRing = Nothing                         'Interface contenant l'anneau extérieur.
         Dim pPolygonTmp As IPolygon = Nothing                   'Interface contenant le polygone temporaire de traitement.
         Dim pPolygonGenTmp As IPolygon = Nothing                'Interface contenant le polygone de généralisation temporaire.
         Dim pPolylineErrTmp As IPolyline = Nothing              'Interface contenant la polyligne d'erreur de généralisation temporaire.
+        Dim pSqueletteTmp As IPolyline = Nothing                'Interface contenant le squelette temporaire.
+        Dim pBagDroitesTmp As IGeometryBag = Nothing            'Interface contenant les droites de Delaunay temporaires.
         Dim pGeomCollTmp As IGeometryCollection = Nothing       'Interface pour ajouter les anneaux extérieurs dans le polygone temporaire.
         Dim pPointsConnexionTmp As IMultipoint = Nothing        'Interface contenant les points de connexion temporaire.
         Dim pEnvelope As IPolygon = Nothing                     'Interface contenant le premier anneau du polygone extérieur.
@@ -174,6 +191,14 @@ Public Class clsGeneraliserGeometrie
 
             'Densifer les sommets du polygone
             pPolygon.Densify(dLargMin / 2, 0)
+
+            'Créer la polyligne de généralisation extérieure vide
+            pBagDroites = New GeometryBag
+            pBagDroites.SpatialReference = pPolygon.SpatialReference
+
+            'Créer la polyligne du squelette extérieure vide
+            pSquelette = New Polyline
+            pSquelette.SpatialReference = pPolygon.SpatialReference
 
             'Créer la polyligne de généralisation extérieure vide
             pPolylineErr = New Polyline
@@ -188,6 +213,10 @@ Public Class clsGeneraliserGeometrie
                 'Définir le polygone extérieur
                 pPolygonExt = CreerPolygoneExterieur(pPolygon, dLargMin)
 
+                'Interface pour ajouter les droites de Delaunay
+                pGeomCollAddD = CType(pBagDroites, IGeometryCollection)
+                'Interface pour ajouter les lignes du squelette
+                pGeomCollAddQ = CType(pSquelette, IGeometryCollection)
                 'Interface pour ajouter les lignes d'erreur de généralisation
                 pGeomCollAddL = CType(pPolylineErr, IGeometryCollection)
                 'Interface pour ajouter les anneaux de généralisation
@@ -217,7 +246,13 @@ Public Class clsGeneraliserGeometrie
                         pPointsConnexionTmp = CType(pTopoOp.Intersect(pPolygonTmp, esriGeometryDimension.esriGeometry0Dimension), IMultipoint)
 
                         'Généralisation extérieure des polygones temporaires
-                        Call GeneraliserAnneauExterieur(pPolygonTmp, pPointsConnexion, dLargMin, dLongMin, dSupMin, pPolygonGenTmp, pPolylineErrTmp, pSquelette, pBagDroites)
+                        Call GeneraliserAnneauExterieur(pPolygonTmp, pPointsConnexion, dLargMin, dLongMin, dSupMin, pPolygonGenTmp, pPolylineErrTmp, pSqueletteTmp, pBagDroitesTmp)
+
+                        'Ajouter les lignes de généralisation
+                        pGeomCollAddD.AddGeometryCollection(CType(pBagDroitesTmp, IGeometryCollection))
+
+                        'Ajouter les lignes du squelette
+                        pGeomCollAddQ.AddGeometryCollection(CType(pSqueletteTmp, IGeometryCollection))
 
                         'Ajouter les lignes de généralisation
                         pGeomCollAddL.AddGeometryCollection(CType(pPolylineErrTmp, IGeometryCollection))
@@ -260,12 +295,16 @@ Public Class clsGeneraliserGeometrie
             pPolygonExt = Nothing
             pTopoOp = Nothing
             pGeomColl = Nothing
+            pGeomCollAddD = Nothing
+            pGeomCollAddQ = Nothing
             pGeomCollAddL = Nothing
             pGeomCollAddS = Nothing
             pRingExt = Nothing
             pPolygonTmp = Nothing
             pPolygonGenTmp = Nothing
             pPolylineErrTmp = Nothing
+            pSqueletteTmp = Nothing
+            pBagDroitesTmp = Nothing
             pGeomCollTmp = Nothing
             pPointsConnexionTmp = Nothing
             pEnvelope = Nothing
@@ -286,21 +325,24 @@ Public Class clsGeneraliserGeometrie
     '''<param name="pPolylineGen"> Interface contenant les lignes de généralisation.</param>
     '''<param name="pPolylineErr"> Interface contenant les lignes de généralisation en erreur.</param>
     '''<param name="pSquelette"> Interface contenant le squelette de la polyligne.</param>
-    '''<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay utilisées pour effectuer la généralisation.</param>
+    '''<param name="pSqueletteEnv"> Interface contenant le squelette de la polyligne avec son enveloppe.</param>
+    '''<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay.</param>
+    '''<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
     ''' 
     Public Shared Sub GeneraliserPolyligne(ByVal pPolyline As IPolyline, ByVal pPointsConnexion As IMultipoint, ByVal dDistLat As Double,
                                            ByVal dLargGenMin As Double, ByVal dLongGenMin As Double, ByVal dLongMin As Double, _
-                                           ByRef pPolylineGen As IPolyline, ByRef pPolylineErr As IPolyline, ByRef pSquelette As IPolyline, ByRef pBagDroites As IGeometryBag)
+                                           ByRef pPolylineGen As IPolyline, ByRef pPolylineErr As IPolyline, ByRef pSquelette As IPolyline,
+                                           ByRef pSqueletteEnv As IPolyline, ByRef pBagDroites As IGeometryBag, ByRef pBagDroitesEnv As IGeometryBag)
         'Déclarer les variables de travail
         Dim pPath As IPath = Nothing                            'Interface contenant une ligne à généraliser.
         Dim pPolylineTmp As IPolyline = Nothing                 'Interface contenant une ligne temporaire.
         Dim pPolylineErrTmp As IPolyline = Nothing              'Interface contenant une ligne d'erreur de généralisation temporaire.
         Dim pPolylineGenTmp As IPolyline = Nothing              'Interface contenant une ligne généralisée temporaire.
-        Dim pBagDroitesEnv As IGeometryBag = Nothing            'Interface contenant le Bag des droites des triangles de Delaunay avec l'enveloppe.
         Dim pDictLiens As New Dictionary(Of Integer, Noeud)     'Dictionnaire contenant l'information des sommets de la polyligne à traiter.
         Dim pDictDroites As New Dictionary(Of Integer, Integer) 'Dictionnaire contenant les numéros des droites à utiliser pour effectuer la généralisation.
         Dim pGeomColl As IGeometryCollection = Nothing          'Interface pour extraire les composantes d'une polyligne.
         Dim pGeomCollAdd As IGeometryCollection = Nothing       'Interface pour ajouter les composantes d'une polyligne.
+        Dim pTopoOp As ITopologicalOperator2 = Nothing          'Interface pour soustraire une géométrie.
 
         Try
             'Enlever les sommets en trop
@@ -335,10 +377,13 @@ Public Class clsGeneraliserGeometrie
                     pGeomCollAdd.AddGeometry(pPath)
 
                     'Créer le squelette de la ligne selon la triangulation de Delaunay
-                    Call CreerSqueletteLigneDelaunay(pPolylineTmp, dLargGenMin, dLongGenMin, pSquelette, pDictLiens, pBagDroitesEnv, pBagDroites)
+                    Call CreerSqueletteLigneDelaunay(pPolylineTmp, dLargGenMin, dLongGenMin, pSquelette, pDictLiens,
+                                                     pSqueletteEnv, pBagDroites, pBagDroitesEnv)
+                    'Call CreerSqueletteLigneDelaunay(pPath, dLargGenMin, dLongGenMin, pSquelette, pDictLiens,
+                    '                                 pSqueletteEnv, pBagDroites, pBagDroitesEnv)
 
                     'Créer la polyligne d'erreur de généralisation
-                    Call CreerPolyligneErreurGeneralisation(pSquelette, pBagDroites, dLargGenMin, dLongGenMin, pPolylineErrTmp)
+                    Call CreerPolyligneErreurGeneralisation(pPolylineTmp, pSquelette, pBagDroites, dLargGenMin, dLongGenMin, pPolylineErrTmp)
 
                     'Créer la polyligne de généralisation
                     Call CreerPolyligneGeneralisation(pPolylineTmp, pDictLiens, pBagDroitesEnv, pPolylineErrTmp, pPolylineGenTmp)
@@ -365,8 +410,135 @@ Public Class clsGeneraliserGeometrie
             'Détruire les lignes non-connectées qui sont inférieures à la longueur minimale d'une ligne
             Call TraiterLongueurLigneMinimale(pPolylineGen, pPointsConnexion, dLongMin)
 
-            'Retourner le Bag des droites utilisées
-            pBagDroites = pBagDroitesEnv
+        Catch ex As Exception
+            Throw
+        Finally
+            'Vider la mémoire
+            pPath = Nothing
+            pPolylineTmp = Nothing
+            pPolylineErrTmp = Nothing
+            pPolylineGenTmp = Nothing
+            pDictLiens = Nothing
+            pDictDroites = Nothing
+            pGeomColl = Nothing
+            pGeomCollAdd = Nothing
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Routine qui permet de retourner la Polyligne de généralisation et la Polyline d'erreurs du résultat de la généralisation effectuée pour une polyligne.
+    ''' La généralisation est effectuée à partir des lignes des triangles de Delaunay.
+    ''' </summary>
+    ''' 
+    '''<param name="pPolyline"> Polyligne utilisée pour effectuer la généralisation.</param>
+    '''<param name="pPointsConnexion">Interface contenant les points de connexion entre la polyligne et les éléments en relation.</param>
+    '''<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+    '''<param name="dLargGenMin"> Largeur minimum utilisée pour généraliser.</param>
+    '''<param name="dLongGenMin"> Longueur minimale utilisée pour généraliser.</param>
+    '''<param name="dLongMin"> Longueur minimale d'une ligne.</param>
+    '''<param name="pPolylineGen"> Interface contenant les lignes de généralisation.</param>
+    '''<param name="pPolylineErr"> Interface contenant les lignes de généralisation en erreur.</param>
+    '''<param name="pSquelette"> Interface contenant le squelette de la polyligne.</param>
+    '''<param name="pSqueletteEnv"> Interface contenant le squelette de la polyligne avec son enveloppe.</param>
+    '''<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay.</param>
+    '''<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
+    ''' 
+    Public Shared Sub GeneraliserLigne(ByVal pPolyline As IPolyline, ByVal pPointsConnexion As IMultipoint, ByVal dDistLat As Double,
+                                       ByVal dLargGenMin As Double, ByVal dLongGenMin As Double, ByVal dLongMin As Double, _
+                                       ByRef pPolylineGen As IPolyline, ByRef pPolylineErr As IPolyline, ByRef pSquelette As IPolyline,
+                                       ByRef pSqueletteEnv As IPolyline, ByRef pBagDroites As IGeometryBag, ByRef pBagDroitesEnv As IGeometryBag)
+        'Déclarer les variables de travail
+        Dim pPath As IPath = Nothing                            'Interface contenant une ligne à généraliser.
+        Dim pPolylineTmp As IPolyline = Nothing                 'Interface contenant une ligne temporaire.
+        Dim pPolylineErrTmp As IPolyline = Nothing              'Interface contenant une ligne d'erreur de généralisation temporaire.
+        Dim pPolylineGenTmp As IPolyline = Nothing              'Interface contenant une ligne généralisée temporaire.
+        Dim pBagDroitesTmp As IGeometryBag = Nothing
+        Dim pBagDroitesEnvTmp As IGeometryBag = Nothing
+        Dim pDictLiens As New Dictionary(Of Integer, Noeud)     'Dictionnaire contenant l'information des sommets de la polyligne à traiter.
+        Dim pDictDroites As New Dictionary(Of Integer, Integer) 'Dictionnaire contenant les numéros des droites à utiliser pour effectuer la généralisation.
+        Dim pGeomColl As IGeometryCollection = Nothing          'Interface pour extraire les composantes d'une polyligne.
+        Dim pGeomCollAdd As IGeometryCollection = Nothing       'Interface pour ajouter les composantes d'une polyligne.
+        Dim pTopoOp As ITopologicalOperator2 = Nothing          'Interface pour soustraire une géométrie.
+
+        Try
+            'Enlever les sommets en trop
+            'pPolyline.Generalize(dDistLat)
+
+            'Densifer les sommets de la polyligne
+            pPolyline.Densify(dLargGenMin / 2, 0)
+
+            'Créer la ligne vide
+            pPolylineErr = New Polyline
+            pPolylineErr.SpatialReference = pPolyline.SpatialReference
+            'Créer la ligne vide
+            pPolylineGen = New Polyline
+            pPolylineGen.SpatialReference = pPolyline.SpatialReference
+            'Créer le Bag vide
+            pBagDroites = New GeometryBag
+            pBagDroites.SpatialReference = pPolyline.SpatialReference
+            'Créer le Bag vide
+            pBagDroitesEnv = New GeometryBag
+            pBagDroitesEnv.SpatialReference = pPolyline.SpatialReference
+
+            'Interface pour extraire les composantes d'une polyligne.
+            pGeomColl = CType(pPolyline, IGeometryCollection)
+
+            'Traiter toutes les composantes de la ligne
+            For i = 0 To pGeomColl.GeometryCount - 1
+                'Définir la ligne à généraliser
+                pPath = CType(pGeomColl.Geometry(i), IPath)
+
+                'Vérifier si la ligne est plus grande que la longueur minimum de généralisation
+                If pPath.Length > dLongGenMin Then
+                    'Créer la ligne vide
+                    pPolylineTmp = New Polyline
+                    pPolylineTmp.SpatialReference = pPolyline.SpatialReference
+                    'Interface pour ajouter les composantes d'une polyligne
+                    pGeomCollAdd = CType(pPolylineTmp, IGeometryCollection)
+                    'Ajouter la ligne à la polyligne temporaire
+                    pGeomCollAdd.AddGeometry(pPath)
+
+                    'Créer le squelette de la ligne selon la triangulation de Delaunay
+                    Call CreerSqueletteLigneDelaunay(pPath, dLargGenMin, dLongGenMin, pSquelette, pDictLiens,
+                                                     pSqueletteEnv, pBagDroitesTmp, pBagDroitesEnvTmp)
+
+                    'Créer la polyligne d'erreur de généralisation
+                    Call CreerPolyligneErreurGeneralisation(pPolylineTmp, pSquelette, pBagDroitesTmp, dLargGenMin, dLongGenMin, pPolylineErrTmp)
+
+                    'Créer la polyligne de généralisation
+                    Call CreerPolyligneGeneralisation(pPolylineTmp, pDictLiens, pBagDroitesEnvTmp, pPolylineErrTmp, pPolylineGenTmp)
+
+                    'Interface pour ajouter les composantes d'une polyligne
+                    pGeomCollAdd = CType(pPolylineErr, IGeometryCollection)
+                    'Ajouter la ligne à la polyligne d'erreur de généralisation
+                    pGeomCollAdd.AddGeometryCollection(CType(pPolylineErrTmp, IGeometryCollection))
+
+                    'Interface pour ajouter les composantes d'une polyligne
+                    pGeomCollAdd = CType(pPolylineGen, IGeometryCollection)
+                    'Ajouter la ligne à la polyligne de généralisation
+                    pGeomCollAdd.AddGeometryCollection(CType(pPolylineGenTmp, IGeometryCollection))
+
+                    'Interface pour ajouter les composantes des droites
+                    pGeomCollAdd = CType(pBagDroites, IGeometryCollection)
+                    'Ajouter les droites
+                    pGeomCollAdd.AddGeometryCollection(CType(pBagDroitesTmp, IGeometryCollection))
+
+                    'Interface pour ajouter les composantes des droites
+                    pGeomCollAdd = CType(pBagDroitesEnv, IGeometryCollection)
+                    'Ajouter les droites
+                    pGeomCollAdd.AddGeometryCollection(CType(pBagDroitesEnvTmp, IGeometryCollection))
+
+                    'Si la longueur est plus petite
+                Else
+                    'Interface pour ajouter la ligne à la polyligne de généralisation
+                    pGeomCollAdd = CType(pPolylineGen, IGeometryCollection)
+                    'Ajouter la ligne à la polyligne de généralisation
+                    pGeomCollAdd.AddGeometry(pPath)
+                End If
+            Next
+
+            'Détruire les lignes non-connectées qui sont inférieures à la longueur minimale d'une ligne
+            Call TraiterLongueurLigneMinimale(pPolylineGen, pPointsConnexion, dLongMin)
 
         Catch ex As Exception
             Throw
@@ -376,7 +548,6 @@ Public Class clsGeneraliserGeometrie
             pPolylineTmp = Nothing
             pPolylineErrTmp = Nothing
             pPolylineGenTmp = Nothing
-            pBagDroitesEnv = Nothing
             pDictLiens = Nothing
             pDictDroites = Nothing
             pGeomColl = Nothing
@@ -891,6 +1062,299 @@ Public Class clsGeneraliserGeometrie
     End Sub
 
     ''' <summary>
+    ''' Function qui permet de créer la polyligne d'erreur de généralisation d'une géométrie.
+    ''' </summary>
+    ''' 
+    ''' <param name="pPolyline">Interface contenant la polyligne à généraliser.</param>
+    ''' <param name="pSquelette">Interface contenant le squelette de la géométrie.</param>
+    ''' <param name="pBagLignesTriangles">Interface contenant les lignes des triangles.</param>
+    ''' <param name="dLargMin">Contient la largeur de généralisation minimum.</param>
+    ''' <param name="dLongMin">Contient la longueur de généralisation minimum.</param>
+    ''' <param name="pPolylineErr">Interface contenant la polyligne d'erreur de généralisation.</param>
+    ''' 
+    Private Shared Sub CreerPolyligneErreurGeneralisation(ByVal pPolyline As IPolyline, ByVal pSquelette As IPolyline, ByVal pBagLignesTriangles As IGeometryBag, _
+                                                          ByVal dLargMin As Double, ByVal dLongMin As Double, ByRef pPolylineErr As IPolyline)
+        'Déclarer les variables de travail
+        Dim pDictDroites As New Dictionary(Of Integer, Integer) 'Dictionnaire utilisé pour indiquer les droites à traiter.
+        Dim pSqueletteFil As IPolyline = Nothing           'Interface contenant le squelette filtré.
+        Dim pMultiPoint As IMultipoint = Nothing            'Interface contenant les points des lignes de généralisation.
+        Dim pBagPoints As IGeometryBag = Nothing            'Interface contenant les points des lignes de généralisation.
+        Dim pTopoOp As ITopologicalOperator2 = Nothing      'Interface utilisé pour simplifier.
+        Dim pRelOp As IRelationalOperator = Nothing         'Interface qui permet de vérifier une relation spatiale.
+        Dim pRelOpNxM As IRelationalOperatorNxM = Nothing   'Interface utilisé pour traiter une relation spatiale.
+        Dim pRelResult As IRelationResult = Nothing         'Interface contenant le résultat du traitement d'une relation spatiale.
+        Dim pGeomColl As IGeometryCollection = Nothing      'Interface utilisé pour extraire les composantes d'une géométrie.
+        Dim pGeomCollAdd As IGeometryCollection = Nothing   'Interface utilisé pour ajouter les composantes d'une géométrie.
+        Dim pPointColl As IPointCollection = Nothing        'Interface utilisé pour extraire les sommets d'une composante.
+        Dim pPointCollAdd As IPointCollection = Nothing     'Interface utilisé pour ajouter les sommets d'une composante.
+        Dim pDroiteColl As IGeometryCollection = Nothing    'Interface pour extraire les composantes des lignes des Triangles.
+        Dim pDroite As IPolyline = Nothing                  'Interface contenant une droite des lignes des Triangles.
+        Dim pPoint As IPoint = Nothing                      'Interface contenant un sommet d'une composante.
+        Dim pPath As IPath = Nothing                        'Interface contenant une composante de type ligne.
+        Dim pClone As IClone = Nothing                      'Interface utilisé pour cloner une géométrie.
+        Dim dLargeur As Double = 0                          'Contient la largeur du polygon à un point du squelette.
+        Dim iSel As Integer = -1                            'Numéro de séquence de la géométrie traitée.
+        Dim iRel As Integer = -1                            'Numéro de séquence de la géométrie en relation.
+        Dim iNo As Integer = 0      'Contient le numéro de la droite.
+        Dim k As Integer = 0        'Compteur de sommets.
+
+        Try
+            'Interface pour cloner une géométrie
+            pClone = CType(pSquelette, IClone)
+            'Définir le squelette filtré par défaut
+            pSqueletteFil = CType(pClone.Clone, IPolyline)
+            'Vérifier si la longueur minimale est supérieure à zéro
+            If dLongMin > 0 Then
+                'Définir le squelette filtré vide
+                pSqueletteFil = New Polyline
+                pSqueletteFil.SpatialReference = pSquelette.SpatialReference
+                'Interface pour construire le squelette filtré des réseaux plus grands que la longueur minimale
+                pTopoOp = CType(pSqueletteFil, ITopologicalOperator2)
+                'Construire le squelette filtré à partir de toutes les parties des réseaux plus grands que la longueur minimale
+                pTopoOp.ConstructUnion(CType(RegrouperReseauxPolyligne(pSquelette, dLongMin), IEnumGeometry))
+            End If
+
+            'Modifier la longueur minimale
+            dLongMin = 0
+
+            'Définir la valeur par défaut
+            pPolylineErr = New Polyline
+            pPolylineErr.SpatialReference = pSquelette.SpatialReference
+
+            'Créer un nouveau Bag vide des points de généralisation
+            pBagPoints = New GeometryBag
+            pBagPoints.SpatialReference = pPolylineErr.SpatialReference
+            'Interface pour ajouter les points dans le Bag
+            pGeomColl = CType(pBagPoints, IGeometryCollection)
+            'Interface pour extraire les sommets du squelette
+            pPointColl = CType(pSqueletteFil, IPointCollection)
+            'Traiter tous les sommets du squelette
+            For i = 0 To pPointColl.PointCount - 1
+                'Ajouter le point dans le Bag
+                pGeomColl.AddGeometry(pPointColl.Point(i))
+            Next
+
+            'Interface pour ajouter les lignes nulles dans le Bag des lignes des triangles
+            pGeomColl = CType(pBagLignesTriangles, IGeometryCollection)
+
+            'Interface pour traiter les relations spatiales entre les sommets du polygone et les lignes des triangles
+            pRelOpNxM = CType(pBagPoints, IRelationalOperatorNxM)
+
+            'Traiter la relation spatiale entre les sommets du polygone et les lignes des triangles
+            pRelResult = pRelOpNxM.Within(CType(pBagLignesTriangles, IGeometryBag))
+
+            '---------------------------------------------------
+            'Créer le dictionnaire des droites
+            '---------------------------------------------------
+            'Trier le résultat selon les sommets du squelette
+            pRelResult.SortLeft()
+
+            'Traiter toutes les relations Lignes-Sommets
+            For i = 0 To pRelResult.RelationElementCount - 1
+                'Extraire la géométrie traitée (left) et celle en relation (right) qui respectent la relation spatiale
+                pRelResult.RelationElement(i, iSel, iRel)
+
+                'Vérifier si la ligne existe
+                If Not pDictDroites.ContainsKey(iSel) Then
+                    'Ajouter la ligne dans le dictionnaire
+                    pDictDroites.Add(iSel, iRel)
+                End If
+            Next
+
+            'Interface pour extraire les composantes des Lignes des Triangles
+            pDroiteColl = CType(pBagLignesTriangles, IGeometryCollection)
+
+            'Interface pour extraire les composantes du squelette
+            pGeomColl = CType(pSqueletteFil, IGeometryCollection)
+
+            'Interface pour ajouter les composantes des lignes de généralisation
+            pGeomCollAdd = CType(pPolylineErr, IGeometryCollection)
+
+            'Interface qui permet de vérifier une relation spatiale
+            pRelOp = CType(pPolyline, IRelationalOperator)
+
+            'Traiter toutes les composantes du squelette
+            For i = 0 To pGeomColl.GeometryCount - 1
+                'Créer une nouvelle ligne d'erreur de généralisation vide
+                pPath = New Path
+                pPath.SpatialReference = pPolylineErr.SpatialReference
+                'Interface pour ajouter les sommets de la ligne de généralisation
+                pPointCollAdd = CType(pPath, IPointCollection)
+
+                'Interface pour extraire les sommets de la composante du squelette
+                pPointColl = CType(pGeomColl.Geometry(i), IPointCollection)
+
+                'Traiter tous les sommets de la composante du squelette
+                For j = 0 To pPointColl.PointCount - 1
+                    'Interface contenant le point du squelette
+                    pPoint = pPointColl.Point(j)
+
+                    'Vérifier si la droite est présente dans le dictionnaire
+                    If pDictDroites.ContainsKey(k) Then
+                        'Définir le noméro de la droite
+                        iNo = pDictDroites.Item(k)
+
+                        'Interface contenant la droite
+                        pDroite = CType(pDroiteColl.Geometry(iNo), IPolyline)
+
+                        'Vérifier si la largeur est inférieure ou égale la la largeur minimum
+                        If pDroite.Length <= dLargMin Then
+                            'Ajouter le sommet du squelette à la ligne de généralisation
+                            pPointCollAdd.AddPoint(pPoint)
+
+                            'Si la largeur est supérieure la la largeur minimum
+                        Else
+                            'Vérifier que la ligne est supérieure à 0
+                            If pPath.Length > 0 Then
+                                'Vérifier si la longueur de la ligne de généralisation est supérieures ou égale à la longueur minimum
+                                If pPath.Length >= dLongMin Or (pRelOp.Disjoint(pPath.FromPoint) And pRelOp.Disjoint(pPath.ToPoint)) Then
+                                    'Ajouter la ligne d'erreur de généralisation
+                                    pGeomCollAdd.AddGeometry(pPath)
+                                End If
+                            End If
+
+                            'Créer une nouvelle ligne d'erreur de généralisation vide
+                            pPath = New Path
+                            pPath.SpatialReference = pPolylineErr.SpatialReference
+                            'Interface pour ajouter les sommets de la ligne de généralisation
+                            pPointCollAdd = CType(pPath, IPointCollection)
+                        End If
+                    Else
+                        'Debug.Print("Erreur " & k.ToString)
+                        'Ajouter le sommet du squelette à la ligne de généralisation
+                        pPointCollAdd.AddPoint(pPoint)
+                    End If
+
+                    'Compter les sommets
+                    k = k + 1
+
+                    'Debug.Print((i + 1).ToString & "." & (j + 1).ToString & " = " & dLargeur.ToString)
+                Next
+
+                'Vérifier que la ligne est supérieure à 0
+                If pPath.Length > 0 Then
+                    'Vérifier si la longueur de la ligne de généralisation est supérieure ou égale à la longueur minimum
+                    If pPath.Length >= dLongMin Or (pRelOp.Disjoint(pPath.FromPoint) And pRelOp.Disjoint(pPath.ToPoint)) Then
+                        'Ajouter la ligne d'erreur de généralisation
+                        pGeomCollAdd.AddGeometry(pPath)
+                    End If
+                End If
+            Next
+
+        Catch ex As Exception
+            Throw
+        Finally
+            'Vider la mémoire
+            pDictDroites = Nothing
+            pSqueletteFil = Nothing
+            pMultiPoint = Nothing
+            pBagPoints = Nothing
+            pTopoOp = Nothing
+            pGeomColl = Nothing
+            pGeomCollAdd = Nothing
+            pPointColl = Nothing
+            pPointCollAdd = Nothing
+            pPoint = Nothing
+            pPath = Nothing
+            pDroiteColl = Nothing
+            pDroite = Nothing
+            pRelOp = Nothing
+            pRelOpNxM = Nothing
+            pRelResult = Nothing
+            pClone = Nothing
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Function qui permet de regrouper dans un BAG les réseaux d'un ensemble de lignes qui sont plus grand qu'une longueur minimale.
+    ''' </summary>
+    ''' 
+    ''' <remarks>Un réseau est un ensemble de lignes qui se touchent entre elles.</remarks>
+    ''' 
+    ''' <param name="pPolyline">Interface contenant un ou plusieurs réseaux linéaires.</param>
+    ''' <param name="dLongMin">Contient la longueur de minimale d'un réseau.</param>
+    ''' 
+    ''' <returns>GeometryBag contenant tous les réseaux linéaires plus grand que la longueur minimale</returns>
+    ''' 
+    Private Shared Function RegrouperReseauxPolyligne(ByVal pPolyline As IPolyline, Optional ByVal dLongMin As Double = 0) As IGeometryBag
+        'Déclarer les variables de travail
+        Dim pBuffer As IPolygon4 = Nothing                  'Interface contenant le tampon de la polyligne.
+        Dim pPolygon As IPolygon = Nothing                  'Interface contenant un polygone du tampon.
+        Dim pRingExt As IRing = Nothing                     'Interface contenant l'anneau extérieur
+        Dim pGeomColl As IGeometryCollection = Nothing      'Interface qui permet d'ajouter des géométries.
+        Dim pGeomCollRes As IGeometryCollection = Nothing   'Interface qui permet d'ajouter des réseaux.
+        Dim pGeomCollExt As IGeometryCollection = Nothing   'Interface qui permet d'extraire les polygones extérieurs.
+        Dim pReseau As IPolyline = Nothing                  'Interface contenant un réseau de lignes. 
+        Dim pTopoOp As ITopologicalOperator2 = Nothing      'Interface qui permet d'effectuer des opérations spatiales.
+        Dim pSpatialRefTol As ISpatialReferenceTolerance = Nothing  'Interface qui permet d'initialiser la tolérance XY.
+
+        'Par défaut, le squellete résultant est un clone
+        RegrouperReseauxPolyligne = New GeometryBag
+        RegrouperReseauxPolyligne.SpatialReference = pPolyline.SpatialReference
+
+        Try
+            'Vérifier si la polyligne n'est pas vide
+            If Not pPolyline.IsEmpty Then
+                'Interface pour ajouter les réseaux
+                pGeomCollRes = CType(RegrouperReseauxPolyligne, IGeometryCollection)
+
+                'Interface pour extraire la tolérance
+                pSpatialRefTol = CType(pPolyline.SpatialReference, ISpatialReferenceTolerance)
+
+                'Interface pour créer le tampon de la polyligne
+                pTopoOp = CType(pPolyline, ITopologicalOperator2)
+                'Créer le Tampon de la polyligne
+                pBuffer = CType(pTopoOp.Buffer(pSpatialRefTol.XYTolerance * 2), IPolygon4)
+
+                'Vérifier si plusieurs surfaces sont présentes
+                If pBuffer.ExteriorRingCount > 1 Then
+                    'Définir le polygon du tampon
+                    pGeomCollExt = CType(pBuffer.ExteriorRingBag(), IGeometryCollection)
+                    'Traiter toutes les surfaces extérieurs
+                    For i = 0 To pGeomCollExt.GeometryCount - 1
+                        'Créer un polygone vide
+                        pPolygon = New Polygon
+                        pPolygon.SpatialReference = pPolyline.SpatialReference
+                        'Définir le polygone extérieur
+                        pRingExt = CType(pGeomCollExt.Geometry(i), IRing)
+                        'Interface pour ajouter des géométries
+                        pGeomColl = CType(pPolygon, IGeometryCollection)
+                        'Ajouter les géométries du polygone
+                        pGeomColl.AddGeometry(pRingExt)
+                        pGeomColl.AddGeometryCollection(CType(pBuffer.InteriorRingBag(pRingExt), IGeometryCollection))
+                        'Extraire les lignes qui se retrouve à l'intérieur du polygone
+                        pReseau = CType(pTopoOp.Intersect(pPolygon, esriGeometryDimension.esriGeometry1Dimension), IPolyline)
+                        'Vérifier si le réseau est plus grand que la longueur minimale
+                        If pReseau.Length > dLongMin Then
+                            'Ajouter le réseau dans le Bag des réseaux
+                            pGeomCollRes.AddGeometry(pReseau)
+                        End If
+                    Next
+
+                    'Si une seule surface, alors un seul réseau
+                Else
+                    'Vérifier si le réseau est plus grand que la longueur minimale
+                    If pPolyline.Length > dLongMin Then
+                        'Ajouter le réseau dans le Bag des réseaux
+                        pGeomCollRes.AddGeometry(pPolyline)
+                    End If
+                End If
+            End If
+
+        Catch ex As Exception
+            Throw
+        Finally
+            'Vider la mémoire
+            pBuffer = Nothing
+            pPolygon = Nothing
+            pGeomCollRes = Nothing
+            pGeomCollExt = Nothing
+            pReseau = Nothing
+            pTopoOp = Nothing
+        End Try
+    End Function
+
+    ''' <summary>
     ''' Routine qui permet de créer et retourner la polyligne de généralisation.
     ''' </summary>
     ''' 
@@ -906,8 +1370,9 @@ Public Class clsGeneraliserGeometrie
         Dim pNoeudLien As Noeud = Nothing                       'Contient l'information d'un lien entre les sommets.
         Dim pPointColl As IPointCollection = Nothing            'Interface utilisé pour extraire les sommets d'une géométrie.
         Dim pPointCollAdd As IPointCollection = Nothing         'Interface utilisé pour ajouter les sommets d'une géométrie.
-        Dim pGeomCollAdd As IGeometryCollection = Nothing       'Interface qui permet d'ajouter des composantes de gémétrie.
+        Dim pGeomColl As IGeometryCollection = Nothing          'Interface qui permet d'extraire et ajouter des composantes de géométrie.
         Dim pPath As IPath = Nothing                            'Interface contenant une ligne. 
+        Dim pRelOp As IRelationalOperator = Nothing             'Interface qui permet de vérifier une relation spatiale.
         Dim pTopoOP As ITopologicalOperator2 = Nothing          'Interface qui permet d'effectuer des opérations spatiales.
         Dim pPoint As IPoint = Nothing                          'Interface contenant le point du centre de la droite.
         Dim pPointA As IPoint = Nothing                         'Interface contenant le premier sommet d'une droite.
@@ -930,7 +1395,7 @@ Public Class clsGeneraliserGeometrie
                 pPolylineGen = New Polyline
                 pPolylineGen.SpatialReference = pPolyline.SpatialReference
                 'Interface pour ajouter les lignes de généralisation
-                pGeomCollAdd = CType(pPolylineGen, IGeometryCollection)
+                pGeomColl = CType(pPolylineGen, IGeometryCollection)
 
                 'Créer une nouvelle ligne vide
                 pPath = New Path
@@ -996,12 +1461,17 @@ Public Class clsGeneraliserGeometrie
                 Next
 
                 'Ajouter la lignes la polyligne de généralisation
-                pGeomCollAdd.AddGeometry(pPath)
+                pGeomColl.AddGeometry(pPath)
 
                 'Simplifier la polyligne de généralisation
                 pTopoOP = CType(pPolylineGen, ITopologicalOperator2)
                 pTopoOP.IsKnownSimple_2 = False
                 pTopoOP.Simplify()
+
+                'Éliminer les triangles de la polyligne de généralisation.
+                'Call EliminerTrianglePolyligne(pPolyline, pPolylineErr, pPolylineGen)
+                'Éliminer les triangles de la polyligne de généralisation.
+                Call EliminerTrianglePolyligne(pPolyline, pPolylineGen)
             End If
 
         Catch ex As Exception
@@ -1009,8 +1479,9 @@ Public Class clsGeneraliserGeometrie
         Finally
             'Vider la mémoire
             pNoeudLien = Nothing
-            pGeomCollAdd = Nothing
+            pGeomColl = Nothing
             pPath = Nothing
+            pRelOp = Nothing
             pTopoOP = Nothing
             pPointColl = Nothing
             pPointCollAdd = Nothing
@@ -1019,6 +1490,261 @@ Public Class clsGeneraliserGeometrie
             pPointB = Nothing
             pDictDroites = Nothing
             pDroite = Nothing
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Routine qui permet d'éliminer les triangles de la polyligne de généralisation.
+    ''' La partie la plus longue de chaque triangle est éliminée.
+    ''' </summary>
+    ''' 
+    ''' <param name="pPolyline">Interface contenant la polyligne à généraliser.</param>
+    ''' <param name="pPolylineErr">Interface contenant la polyligne d'erreurs de généralisation.</param>
+    ''' <param name="pPolylineGen">Interface contenant la polyligne de généralisation.</param>
+    ''' 
+    Private Shared Sub EliminerTrianglePolyligne(ByVal pPolyline As IPolyline, ByVal pPolylineErr As IPolyline, ByRef pPolylineGen As IPolyline)
+        'Déclarer les variables de travail
+        Dim pGeomColl As IGeometryCollection = Nothing          'Interface qui permet d'extraire  des composantes de géométrie.
+        Dim pPath As IPath = Nothing                            'Interface contenant une ligne. 
+        Dim pRelOp As IRelationalOperator = Nothing             'Interface qui permet de vérifier une relation spatiale.
+        Dim pTopoOP As ITopologicalOperator2 = Nothing          'Interface qui permet d'effectuer des opérations spatiales.
+
+        Try
+            'Interface pour effectuer des opérations spatiales.
+            pTopoOP = CType(pPolylineGen, ITopologicalOperator2)
+            'Enlever la partie des lignes en erreur
+            pPolylineGen = CType(pTopoOP.Difference(pPolylineErr), IPolyline)
+
+            'Interface pour vérifier les relations spatiales
+            pRelOp = CType(pPolyline, IRelationalOperator)
+            'Interface pour extraire et ajouter des lignes dans la ligne généralisée
+            pGeomColl = CType(pPolylineGen, IGeometryCollection)
+            'Traiter tous les composantes de la ligne généralisée
+            For i = pGeomColl.GeometryCount - 1 To 0 Step -1
+                'Interface pour extraire la longueur de la ligne
+                pPath = CType(pGeomColl.Geometry(i), IPath)
+                'Vérifier si la ligne est disjoint de la ligne initiale - (Ligne à détruire)
+                If pRelOp.Disjoint(pPath.FromPoint) Then
+                    'Retirer la ligne à détruire de la ligne généralisée
+                    pGeomColl.RemoveGeometries(i, 1)
+                End If
+            Next
+            'Ajouter les lignes en erreur dans la ligne généralisée
+            pGeomColl.AddGeometryCollection(CType(pPolylineErr, IGeometryCollection))
+            'Simplifier la géométrie
+            pTopoOP = CType(pPolylineGen, ITopologicalOperator2)
+            pTopoOP.IsKnownSimple_2 = False
+            pTopoOP.Simplify()
+
+        Catch ex As Exception
+            Throw
+        Finally
+            'Vider la mémoire
+            pGeomColl = Nothing
+            pPath = Nothing
+            pRelOp = Nothing
+            pTopoOP = Nothing
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Routine qui permet de'éliminer les triangles de la polyligne de généralisation.
+    ''' La partie la plus longue de chaque triangle est éliminée.
+    ''' </summary>
+    ''' 
+    ''' <param name="pPolyline">Interface contenant la polyligne à généraliser.</param>
+    ''' <param name="pPolylineGen">Interface contenant la polyligne de généralisation.</param>
+    ''' 
+    Private Shared Sub EliminerTrianglePolyligne(ByVal pPolyline As IPolyline, ByRef pPolylineGen As IPolyline)
+        'Déclarer les variables de travail
+        Dim pTriangles As IPolyline = Nothing                   'Interface contenant les triangles.
+        Dim pLignes As IPolyline = Nothing                      'Interface contenant les lignes à détruire.
+        Dim pGeomColl As IGeometryCollection = Nothing          'Interface qui permet d'extraire  des composantes de géométrie.
+        Dim pGeomCollAdd As IGeometryCollection = Nothing       'Interface qui permet d'ajouter des composantes de géométrie.
+        Dim pPointColl As IPointCollection = Nothing            'Interface utilisé pour extraire les sommets d'une géométrie.
+        Dim pPointCollAdd As IPointCollection = Nothing         'Interface utilisé pour ajouter les sommets d'une géométrie.
+        Dim pSegColl As ISegmentCollection = Nothing            'Interface pour extraire les segments.
+        Dim pSegCollAdd As ISegmentCollection = Nothing         'Interface pour ajouter les segments.
+        Dim pPath As IPath = Nothing                            'Interface contenant une ligne. 
+        Dim pRelOp As IRelationalOperator = Nothing             'Interface qui permet de vérifier une relation spatiale.
+        Dim pTopoOP As ITopologicalOperator2 = Nothing          'Interface qui permet d'effectuer des opérations spatiales.
+        Dim pPoint As IPoint = Nothing                          'Interface contenant un point.
+        Dim bOk As Boolean = False                              'Indique si un triangle a été trouvé.
+
+        Try
+            'Interface pour vérifier la relation spatiale
+            pRelOp = CType(pPolyline, IRelationalOperator)
+
+            'Créer la polyligne des triangles vides
+            pTriangles = New Polyline
+            pTriangles.SpatialReference = pPolyline.SpatialReference
+
+            'Créer la polyligne des lignes vides
+            pLignes = New Polyline
+            pLignes.SpatialReference = pPolyline.SpatialReference
+
+            'Interface pour extraire des lignes
+            pGeomColl = CType(pPolylineGen, IGeometryCollection)
+            'Interface pour ajouter des lignes
+            pGeomCollAdd = CType(pLignes, IGeometryCollection)
+            'Traiter toutes les lignes
+            For i = 0 To pGeomColl.GeometryCount - 1
+                'Définir la ligne à traiter
+                pPath = CType(pGeomColl.Geometry(i), IPath)
+                pPointColl = CType(pGeomColl.Geometry(i), IPointCollection)
+                'Vérifier si seulement 2 sommets
+                If pPointColl.PointCount = 2 Then
+                    'Vérifier si la ligne ne touche pas à la polyligne
+                    If pRelOp.Disjoint(pPath.FromPoint) And pRelOp.Disjoint(pPath.ToPoint) Then
+                        'Ajouter la ligne dans les polylignes à détruire
+                        pGeomCollAdd.AddGeometry(pPath)
+                    End If
+                End If
+            Next
+
+            'Traiter tant que l'on trouve des triangles
+            Do
+                'Initialiser
+                bOk = False
+                'Simplifier les lignes
+                pTopoOP = CType(pLignes, ITopologicalOperator2)
+                pTopoOP.IsKnownSimple_2 = False
+                pTopoOP.Simplify()
+                'Interface pour extraire les lignes
+                pGeomColl = CType(pLignes, IGeometryCollection)
+                'Interface pour ajouter des triangles
+                pGeomCollAdd = CType(pTriangles, IGeometryCollection)
+                'Traiter toutes les lignes
+                For i = pGeomColl.GeometryCount - 1 To 0 Step -1
+                    'Définir une ligne
+                    pPath = CType(pGeomColl.Geometry(i), IPath)
+                    pPointColl = CType(pGeomColl.Geometry(i), IPointCollection)
+                    'Vérifier si la ligne est un triangle fermée
+                    If pPath.IsClosed And pPointColl.PointCount = 4 Then
+                        'Enlever le triangle
+                        pGeomColl.RemoveGeometries(i, 1)
+                        'Ajouter le triangle
+                        pGeomCollAdd.AddGeometry(pPath)
+                        'Indiquer qu'un triangle a été trouvé
+                        bOk = True
+                    End If
+                Next
+            Loop While bOk
+
+            'Simplifier les lignes
+            pTopoOP = CType(pLignes, ITopologicalOperator2)
+            pTopoOP.IsKnownSimple_2 = False
+            pTopoOP.Simplify()
+            'Interface pour extraire les lignes
+            pGeomColl = CType(pLignes, IGeometryCollection)
+            'Interface pour ajouter des triangles
+            pGeomCollAdd = CType(pTriangles, IGeometryCollection)
+            'Traiter toutes les lignes
+            For i = pGeomColl.GeometryCount - 1 To 0 Step -1
+                'Définir une ligne
+                pPath = CType(pGeomColl.Geometry(i), IPath)
+                pPointColl = CType(pGeomColl.Geometry(i), IPointCollection)
+                'Vérifier si la ligne est un triangle non fermée
+                If pPointColl.PointCount = 3 Then
+                    'Fermer le triangle
+                    pPointColl.AddPoint(pPointColl.Point(0))
+                    pPath = CType(pPointColl, IPath)
+                End If
+                'Vérifier si la ligne est fermée
+                If pPath.IsClosed Then
+                    'Ajouter le triangle
+                    pGeomCollAdd.AddGeometry(pPath)
+                End If
+            Next
+
+            'Créer la polyligne des lignes vides
+            pLignes = New Polyline
+            pLignes.SpatialReference = pPolyline.SpatialReference
+
+            'Interface pour extraire les triangles
+            pGeomColl = CType(pTriangles, IGeometryCollection)
+            'Interface pour ajouter des lignes
+            pGeomCollAdd = CType(pLignes, IGeometryCollection)
+
+            'Traiter tous les triangles
+            For i = pGeomColl.GeometryCount - 1 To 0 Step -1
+                'Définir une ligne vide
+                pPath = New Path
+                pPath.SpatialReference = pPolyline.SpatialReference
+                'Interface pour extraire un segment
+                pSegColl = CType(pGeomColl.Geometry(i), ISegmentCollection)
+                'Interface pour ajouter un segment
+                pSegCollAdd = CType(pPath, ISegmentCollection)
+                'Vérifier si le segment 0 est plus grand que le 1
+                If pSegColl.Segment(0).Length > pSegColl.Segment(1).Length Then
+                    'Vérifier si le segment 0 est plus grand que le 2
+                    If pSegColl.Segment(0).Length > pSegColl.Segment(2).Length Then
+                        'Ajouter le segment 0
+                        pSegCollAdd.AddSegment(pSegColl.Segment(0))
+                    Else
+                        'Ajouter le segment 2
+                        pSegCollAdd.AddSegment(pSegColl.Segment(2))
+                    End If
+                    'Si le segment 1 est plus grand que le 0
+                Else
+                    If pSegColl.Segment(1).Length > pSegColl.Segment(2).Length Then
+                        'Ajouter le segment 1
+                        pSegCollAdd.AddSegment(pSegColl.Segment(1))
+                    Else
+                        'Ajouter le segment 2
+                        pSegCollAdd.AddSegment(pSegColl.Segment(2))
+                    End If
+                End If
+                'Ajouter la ligne
+                pGeomCollAdd.AddGeometry(pPath)
+            Next
+
+            ''Interface pour traiter la topologie
+            'pTopoOP = CType(pPolylineGen, ITopologicalOperator2)
+            ''Éliminer les lignes des triangles de la polyligne de généralisation
+            'pPolylineGen = CType(pTopoOP.Difference(pLignes), IPolyline)
+
+            'Définir un nouveau point vide
+            pPoint = New Point
+            pPoint.SpatialReference = pPolyline.SpatialReference
+            'Interface pour vérifier une relation spatiale
+            pRelOp = CType(pLignes, IRelationalOperator)
+            'Interface pour extraire les lignes
+            pGeomColl = CType(pLignes, IGeometryCollection)
+            'Traiter toutes les lignes
+            For i = pGeomColl.GeometryCount - 1 To 0 Step -1
+                'Définir une ligne
+                pPath = CType(pGeomColl.Geometry(i), IPath)
+                pPointColl = CType(pGeomColl.Geometry(i), IPointCollection)
+                'Vérifier si la ligne est une droite
+                If pPointColl.PointCount = 2 Then
+                    'Définir le centre de la droite
+                    pPoint.X = (pPath.FromPoint.X + pPath.ToPoint.X) / 2
+                    pPoint.Y = (pPath.FromPoint.Y + pPath.ToPoint.Y) / 2
+                    'Vérifier si le point touche les lignes
+                    If Not pRelOp.Disjoint(pPoint) Then
+                        'Enlever la ligne
+                        pGeomColl.RemoveGeometries(i, 1)
+                    End If
+                End If
+            Next
+
+        Catch ex As Exception
+            Throw
+        Finally
+            'Vider la mémoire
+            pTriangles = Nothing
+            pLignes = Nothing
+            pGeomColl = Nothing
+            pGeomCollAdd = Nothing
+            pPointColl = Nothing
+            pPointCollAdd = Nothing
+            pSegColl = Nothing
+            pSegCollAdd = Nothing
+            pPath = Nothing
+            pRelOp = Nothing
+            pTopoOP = Nothing
+            pPoint = Nothing
         End Try
     End Sub
 
@@ -1423,24 +2149,190 @@ Public Class TriangulationDelaunay
     ''' Routine qui permet de créer le squelette d'une ligne en utilisant les lignes des triangles de Delaunay.
     ''' </summary>
     ''' 
+    '''<param name="pPath"> Ligne utilisée pour créer le squelette.</param>
+    '''<param name="dLargMin"> Largeur minimum utilisée pour créer le squelette.</param>
+    '''<param name="dLongMin"> Longueur minimale utilisée pour créer le squelette.</param>
+    '''<param name="pSquelette"> Interface contenant le squelette de la ligne.</param>
+    '''<param name="pSqueletteEnv"> Interface contenant le squelette de la ligne avec son enveloppe.</param>
+    '''<param name="pDictLiens"> Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
+    '''<param name="pBagDroites"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne.</param>
+    '''<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
+    ''' 
+    Public Shared Sub CreerSqueletteLigneDelaunay(ByVal pPath As IPath, ByVal dLargMin As Double, ByVal dLongMin As Double, _
+                                                  ByRef pSquelette As IPolyline, ByRef pDictLiens As Dictionary(Of Integer, Noeud), _
+                                                  ByRef pSqueletteEnv As IPolyline, ByRef pBagDroites As IGeometryBag, ByRef pBagDroitesEnv As IGeometryBag)
+        'Déclarer les variables de travail
+        Dim pPolyline As IPolyline = Nothing                    'Interface contenant la polyline de la ligne à traiter.
+        Dim pDroites As IPolyline = Nothing                     'Interface contenant les droites des triangles de Delaunay de la ligne à traiter.
+        Dim pBagDroitesCoteDroit As IGeometryBag = Nothing      'Interface contenant le Bag des droites des triangles de Delaunay du côté droit de la ligne à traiter.
+        Dim pBagSommets As IGeometryBag = Nothing               'Interface contenant le Bag des sommets de la ligne à traiter.
+        Dim pBagSquelette As IGeometryBag = Nothing             'Interface contenant le Bag des lignes du squelette de la polyligne.
+        Dim pBagSquelettePrimaire As IGeometryBag = Nothing     'Interface contenant le Bag des lignes du squelette primaire.
+        Dim pBagSqueletteSimple As IGeometryBag = Nothing       'Interface contenant le Bag des lignes simples du squelette primaire.
+        Dim pBagSqueletteBase As IGeometryBag = Nothing         'Interface contenant le Bag des lignes du squelette de base.
+        Dim pDictDroites As New Dictionary(Of Integer, Integer) 'Dictionnaire contenant les numéros des droites à utiliser pour effectuer la généralisation.
+        Dim pTopoOp As ITopologicalOperator5 = Nothing          'Interface pour effectuer des opérations spatiales.
+        Dim pGeomColl As IGeometryCollection = Nothing          'Interface pour extraire les lignes de la polyligne.
+        Dim pGeomCollAdd As IGeometryCollection = Nothing       'Interface pour ajouter les lignes du squelette de la polyligne.
+        Dim pRelOp As IRelationalOperator = Nothing             'Interface utiliser pour vérifier une relation spatiale.
+        Dim pDroite As IPolyline = Nothing                      'Interface contenant une droite du Bag des droites.
+        Dim pPointColl As IPointCollection = Nothing            'Interface pour traiter les sommets du squelette.
+        Dim pClone As IClone = Nothing                          'Interface pour cloner une géométrie.
+        Dim bIntersect As Boolean = False                       'Indiquer si un sommet du squelette intersecte le Bag des droites ou la ligne traitée.
+
+        Try
+            'Créer la polyligne vide
+            pPolyline = New Polyline
+            pPolyline.SpatialReference = pPath.SpatialReference
+            'Interface pour ajouter des lignes dans une polyligne
+            pGeomColl = CType(pPolyline, IGeometryCollection)
+            'Ajouter la ligne dans la polyligne
+            pGeomColl.AddGeometry(pPath)
+
+            'Créer les droites des triangles de Delaunay de la ligne à traiter
+            pDroites = CreerPolyligneTrianglesDelaunay(pPolyline)
+
+            'Connecter les droites des triangles avec la ligne à traiter
+            Call ConnecterLignesPolyligne(pDroites, pPolyline)
+
+            'Créer le Bag des droites des triangles de Delaunay de la polyligne
+            Call CreerBagLignesTriangles(pDroites, pBagDroitesEnv)
+
+            '-----------------------------------------
+            'Taiter la ligne-côté droit
+            '-----------------------------------------
+            'Créer le Bag des sommets et le dictionnaire des sommets contenant les sommets précédents et suivants de la ligne à traiter
+            Call CreerBagSommetsLigne(pPath, pBagSommets, pDictLiens)
+            'Créer le dictionnaire contenant l'information des liens entre les sommets de la ligne
+            Call CreerDictLiensSommetsLignes(pBagSommets, pBagDroitesEnv, pDictLiens, pBagDroites)
+            'Créer le Bag des lignes du squelette primaire et le Bag des droites du côté droit
+            Call CreerBagLignesSquelettePrimaire(pPath, pDictLiens, pBagSquelettePrimaire, pBagDroitesCoteDroit)
+            'Interface pour ajouter les lignes du squelette complet de la ligne à traiter
+            pGeomCollAdd = CType(pBagSquelettePrimaire, IGeometryCollection)
+
+            '-----------------------------------------
+            'Créer le squelette de base
+            '-----------------------------------------
+            'Créer le Bag des lignes simples et doubles du squelette primaire
+            'Le Bag des lignes doubles correspond aux lignes en double du squelette de base
+            Call CreerBagLignesSimplesDoubles(pPolyline, pBagSquelettePrimaire, pBagSqueletteSimple, pBagSqueletteBase)
+            'Traiter les lignes simples et les ajouter dans les lignes du squelette de base
+            Call TraiterLignesSimples(pPolyline, pBagSqueletteSimple, pBagSqueletteBase)
+            'Créer un nouveau squelette vide
+            pSqueletteEnv = New Polyline
+            pSqueletteEnv.SpatialReference = pPolyline.SpatialReference
+            'Interface pour construire le squelette de base selon Delaunay
+            pTopoOp = TryCast(pSqueletteEnv, ITopologicalOperator5)
+            'Construire le squelette de base selon Delaunay
+            pTopoOp.ConstructUnion(CType(pBagSqueletteBase, IEnumGeometry))
+
+            '-----------------------------------------
+            'Enlever les droites dont les 2 extrémités ne touchent pas à la ligne à traiter
+            'du Bag des droites de la ligne-côté droit
+            '-----------------------------------------
+            'Interface pour vérifier la connexion avec la ligne à traiter
+            pRelOp = CType(pPolyline, IRelationalOperator)
+            'Interface pour extraire les lignes du Bag
+            pGeomColl = CType(pBagDroites, IGeometryCollection)
+            'Traiter toutes les droites du Bag
+            For i = pGeomColl.GeometryCount - 1 To 0 Step -1
+                'Définir une droite du Bag des droites
+                pDroite = CType(pGeomColl.Geometry(i), IPolyline)
+                'Vérifier si une ou les 2 extrémités de la droite est disjoint de la ligne à traiter
+                If pRelOp.Disjoint(pDroite.FromPoint) Or pRelOp.Disjoint(pDroite.ToPoint) Then
+                    'Enlever la droite du Bag
+                    pGeomColl.RemoveGeometries(i, 1)
+                End If
+            Next
+
+            '-----------------------------------------
+            'Créer le squelette de la ligne-côté droit
+            '-----------------------------------------
+            'Interface pour cloner le squelette
+            pClone = CType(pSqueletteEnv, IClone)
+            'Cloner le squelette
+            pSquelette = CType(pClone.Clone, IPolyline)
+
+            'Interface pour extraire les lignes du Bag
+            pGeomColl = CType(pBagDroites, IGeometryCollection)
+            'Interface pour extraire les sommets du squelette
+            pPointColl = CType(pSquelette, IPointCollection)
+            'Traiter tous les sommets du squelette
+            For i = pPointColl.PointCount - 1 To 0 Step -1
+                'Interface pour vérifier la relation spatiale
+                pRelOp = CType(pPointColl.Point(i), IRelationalOperator)
+                'Initialiser la variable d'intersection
+                bIntersect = False
+                'Traiter toutes les géométries du Bag
+                For j = 0 To pGeomColl.GeometryCount - 1
+                    'Définir une droite du Bag des droites
+                    pDroite = CType(pGeomColl.Geometry(j), IPolyline)
+                    'Vérifier si le point intersect la droite ou la ligne traitée
+                    If Not (pRelOp.Disjoint(pDroite) And pRelOp.Disjoint(pPolyline)) Then
+                        'Indiquer si le sommet intersect le Bag des droites ou la ligne traitée
+                        bIntersect = True
+                        'Sortir de la boucle
+                        Exit For
+                    End If
+                Next
+                'si le point n'intersecte pas le Bag des droites ou la ligne traitée
+                If Not bIntersect Then
+                    'Enlever le sommet
+                    pPointColl.RemovePoints(i, 1)
+                End If
+            Next
+            'Enlever les géométries invalides
+            pTopoOp = CType(pSquelette, ITopologicalOperator5)
+            pTopoOp.IsKnownSimple_2 = False
+            pTopoOp.Simplify()
+            'Enlever les géométries invalides
+            pTopoOp = CType(pSqueletteEnv, ITopologicalOperator5)
+            pSquelette = CType(pTopoOp.Intersect(pSquelette, esriGeometryDimension.esriGeometry1Dimension), IPolyline)
+
+            'pBagDroitesEnv = pBagSquelettePrimaire
+
+        Catch ex As Exception
+            Throw
+        Finally
+            'Vider la mémoire
+            pBagDroitesCoteDroit = Nothing
+            pBagSommets = Nothing
+            pBagSquelette = Nothing
+            pBagSquelettePrimaire = Nothing
+            pBagSqueletteSimple = Nothing
+            pBagSqueletteBase = Nothing
+            pDictDroites = Nothing
+            pTopoOp = Nothing
+            pGeomColl = Nothing
+            pGeomCollAdd = Nothing
+            pPointColl = Nothing
+            pPath = Nothing
+            pRelOp = Nothing
+            pDroite = Nothing
+            pClone = Nothing
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Routine qui permet de créer le squelette d'une ligne en utilisant les lignes des triangles de Delaunay.
+    ''' </summary>
+    ''' 
     '''<param name="pPolyline"> Polyligne utilisée pour créer le squelette.</param>
     '''<param name="dLargMin"> Largeur minimum utilisée pour créer le squelette.</param>
     '''<param name="dLongMin"> Longueur minimale utilisée pour créer le squelette.</param>
     '''<param name="pSquelette"> Interface contenant le squelette de la ligne.</param>
+    '''<param name="pSqueletteEnv"> Interface contenant le squelette de la ligne avec son enveloppe.</param>
     '''<param name="pDictLiens"> Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
-    '''<param name="pBagDroitesEnv"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne avec son enveloppe.</param>
     '''<param name="pBagDroites"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne.</param>
+    '''<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
     ''' 
     Public Shared Sub CreerSqueletteLigneDelaunay(ByVal pPolyline As IPolyline, ByVal dLargMin As Double, ByVal dLongMin As Double, _
                                                   ByRef pSquelette As IPolyline, ByRef pDictLiens As Dictionary(Of Integer, Noeud), _
-                                                  ByRef pBagDroitesEnv As IGeometryBag, ByRef pBagDroites As IGeometryBag)
+                                                  ByRef pSqueletteEnv As IPolyline, ByRef pBagDroites As IGeometryBag, ByRef pBagDroitesEnv As IGeometryBag)
         'Déclarer les variables de travail
         Dim pPolylineEnv As IPolyline = Nothing                 'Interface contenant la polyline et l'enveloppe de la polyligne à généraliser.
-        Dim pSqueletteEnv As IPolyline = Nothing                'Interface contenant le squelette de la polyligne avec son enveloppe..
         Dim pSqueletteTmp As IPolyline = Nothing                'Interface contenant le squelette temporaire.
         Dim pLignesEnv As IPolyline = Nothing                   'Interface contenant les lignes des triangles de Delaunay pour la polyligne avec son enveloppe.
-        Dim pPointsConnexion As IMultipoint = Nothing           'Interface contenant les points pour lesquels le squelette doit être connecté.
-        Dim pPointsNonConnexion As IMultipoint = Nothing        'Interface contenant les points du squelette qui doivent être connectés.
         Dim pBagDroitesTmp As IGeometryBag = Nothing            'Interface contenant le Bag des droites des triangles de Delaunay temporaires.
         Dim pBagSommets As IGeometryBag = Nothing               'Interface contenant le Bag des sommets de la ligne à traiter.
         Dim pBagSommetsTmp As IGeometryBag = Nothing            'Interface contenant le Bag des sommets temporaires de la ligne à traiter.
@@ -1456,6 +2348,9 @@ Public Class TriangulationDelaunay
         Dim pGeomCollAdd As IGeometryCollection = Nothing       'Interface pour ajouter les lignes du squelette de la polyligne.
         Dim pPath As IPath = Nothing                            'Interface contenant une ligne de la polyligne à traiter.
         Dim pRelOp As IRelationalOperator = Nothing             'Interface utiliser pour vérifier une relation spatiale.
+        Dim pDroite As IPolyline = Nothing                      'Interface contenant une droite du Bag des droites.
+        Dim pPointColl As IPointCollection = Nothing            'Interface pour traiter les sommets du squelette.
+        Dim bIntersect As Boolean = False                       'Indiquer si un sommet du squelette intersecte le Bag des droites ou la ligne traitée.
 
         Try
             'Ajouter l'enveloppe à la polyligne à généraliser
@@ -1473,6 +2368,9 @@ Public Class TriangulationDelaunay
             'Créer le Bag des droites des triangles de Delaunay de la polyligne avec son enveloppe
             Call CreerBagLignesTriangles(pLignesEnv, pBagDroitesEnv)
 
+            '-----------------------------------------
+            'Traiter l'enveloppe de la ligne
+            '-----------------------------------------
             'Définir la ligne de l'enveloppe à traiter
             pPath = CType(pGeomColl.Geometry(0), IPath)
             'Créer le Bag des sommets et le dictionnaire des sommets contenant les sommets précédents et suivants de la ligne à traiter
@@ -1481,10 +2379,12 @@ Public Class TriangulationDelaunay
             Call CreerDictLiensSommetsLignes(pBagSommetsTmp, pBagDroitesEnv, pDictLiensTmp, pBagDroitesTmp)
             'Créer le Bag des lignes du squelette primaire
             Call CreerBagLignesSquelettePrimaire(pPath, pDictLiensTmp, pBagSquelettePrimaire, pBagDroitesTmp)
-
-            'Interface pour ajouter les lignes du squelette de la polyligne
+            'Interface pour ajouter les lignes du squelette complet de la ligne avec l'enveloppe
             pGeomCollAdd = CType(pBagSquelettePrimaire, IGeometryCollection)
 
+            '-----------------------------------------
+            'Taiter la ligne - droite
+            '-----------------------------------------
             'Définir la ligne à traiter
             pPath = CType(pGeomColl.Geometry(1), IPath)
             'Créer le Bag des sommets et le dictionnaire des sommets contenant les sommets précédents et suivants de la ligne à traiter
@@ -1496,6 +2396,27 @@ Public Class TriangulationDelaunay
             'Ajouter les lignes primaire temporaire
             pGeomCollAdd.AddGeometryCollection(CType(pBagSquelette, IGeometryCollection))
 
+            '-----------------------------------------
+            'Créer le Bag des droites de la ligne-droite
+            '-----------------------------------------
+            'Interface pour vérifier la connexion
+            pRelOp = CType(pPolyline, IRelationalOperator)
+            'Interface pour extraire les lignes du Bag
+            pGeomColl = CType(pBagDroites, IGeometryCollection)
+            'Traiter toutes les lignes du squelette
+            For i = pGeomColl.GeometryCount - 1 To 0 Step -1
+                'Définir une droite du Bag des droites
+                pDroite = CType(pGeomColl.Geometry(i), IPolyline)
+                'Vérifier si le squelette est disjoint de la polyline
+                If pRelOp.Disjoint(pDroite.FromPoint) Or pRelOp.Disjoint(pDroite.ToPoint) Then
+                    'Enlever la ligne du squelette
+                    pGeomColl.RemoveGeometries(i, 1)
+                End If
+            Next
+
+            '-----------------------------------------
+            'Traiter la ligne - gauche
+            '-----------------------------------------
             'Inverser la ligne à traiter
             pPath.ReverseOrientation()
             'Créer le Bag des sommets et le dictionnaire des sommets contenant les sommets précédents et suivants de la ligne à traiter
@@ -1507,12 +2428,14 @@ Public Class TriangulationDelaunay
             'Ajouter les lignes primaire temporaire
             pGeomCollAdd.AddGeometryCollection(CType(pBagSqueletteTmp, IGeometryCollection))
 
+            '-----------------------------------------
+            'Créer le squelette de base avec l'enveloppe
+            '-----------------------------------------
             'Créer le Bag des lignes simples et doubles du squelette primaire
             'Le Bag des lignes doubles correspond aux lignes en double du squelette de base
             Call CreerBagLignesSimplesDoubles(pPolylineEnv, pBagSquelettePrimaire, pBagSqueletteSimple, pBagSqueletteBase)
             'Traiter les lignes simples et les ajouter dans les lignes du squelette de base
             Call TraiterLignesSimples(pPolylineEnv, pBagSqueletteSimple, pBagSqueletteBase)
-
             'Créer un nouveau squelette vide
             pSqueletteEnv = New Polyline
             pSqueletteEnv.SpatialReference = pPolyline.SpatialReference
@@ -1521,17 +2444,9 @@ Public Class TriangulationDelaunay
             'Construire le squelette de base selon Delaunay
             pTopoOp.ConstructUnion(CType(pBagSqueletteBase, IEnumGeometry))
 
-            'Aucun point de connexion des éléments en relations
-            pPointsConnexion = New Multipoint
-            pPointsConnexion.SpatialReference = pPolyline.SpatialReference
-            'Connecter le squelette aux points de connexion des éléments en relation
-            'Call ConnecterSquelettePointsConnexion(pPointsConnexion, dLargMin, dLongMin, pSqueletteEnv)
-            Call ConnecterSquelettePointsConnexion(pPointsConnexion, pSqueletteEnv)
-            'Enlever les extrémités de lignes superflux dans le squelette
-            pPointsNonConnexion = EnleverExtremiteLigne(pPointsConnexion, pSqueletteEnv, dLongMin)
-            'Connecter les lignes non connectées du squelette avec la limite du polygone
-            Call ConnecterSquelettePolyline(pPolyline, pPointsNonConnexion, pSqueletteEnv)
-
+            '-----------------------------------------
+            'Créer le squelette de la ligne-droite
+            '-----------------------------------------
             'Créer un nouveau squelette vide
             pSqueletteTmp = New Polyline
             pSqueletteTmp.SpatialReference = pPolyline.SpatialReference
@@ -1545,34 +2460,55 @@ Public Class TriangulationDelaunay
             pTopoOp = TryCast(pSqueletteEnv, ITopologicalOperator2)
             pSquelette = CType(pTopoOp.Intersect(pSqueletteTmp, esriGeometryDimension.esriGeometry1Dimension), IPolyline)
 
-            'Interface pour vérifier la connexion
-            pRelOp = CType(pPolyline, IRelationalOperator)
-            'Interface pour extraire les lignes du squelette
-            pGeomColl = CType(pSquelette, IGeometryCollection)
-            'Traiter toutes les lignes du squelette
-            For i = pGeomColl.GeometryCount - 1 To 0 Step -1
-                'définir une ligne du squelette
-                pPath = CType(pGeomColl.Geometry(i), IPath)
-                'Vérifier si le squelette est disjoint de la polyline
-                If pRelOp.Disjoint(pPath.FromPoint) And pRelOp.Disjoint(pPath.ToPoint) Then
-                    'Enlever la ligne du squelette
-                    pGeomColl.RemoveGeometries(i, 1)
+            'Interface pour extraire les lignes du Bag
+            pGeomColl = CType(pBagDroites, IGeometryCollection)
+            'Interface pour extraire les sommets du squelette
+            pPointColl = CType(pSquelette, IPointCollection)
+            'Traiter tous les sommets du squelette
+            For i = pPointColl.PointCount - 1 To 0 Step -1
+                'Interface pour vérifier la relation spatiale
+                pRelOp = CType(pPointColl.Point(i), IRelationalOperator)
+                'Initialiser la variable d'intersection
+                bIntersect = False
+                'Traiter toutes les géométries du Bag
+                For j = 0 To pGeomColl.GeometryCount - 1
+                    'Définir une droite du Bag des droites
+                    pDroite = CType(pGeomColl.Geometry(j), IPolyline)
+                    'Vérifier si le point intersect la droite ou la ligne traitée
+                    If Not (pRelOp.Disjoint(pDroite) And pRelOp.Disjoint(pPolyline)) Then
+                        'Indiquer si le sommet intersect le Bag des droites ou la ligne traitée
+                        bIntersect = True
+                        'Sortir de la boucle
+                        Exit For
+                    End If
+                Next
+                'si le point n'intersecte pas le Bag des droites ou la ligne traitée
+                If Not bIntersect Then
+                    'Enlever le sommet
+                    pPointColl.RemovePoints(i, 1)
                 End If
             Next
+            'Enlever les géométries invalides
+            pTopoOp = CType(pSquelette, ITopologicalOperator2)
+            pTopoOp.IsKnownSimple_2 = False
+            pTopoOp.Simplify()
+            'Enlever les géométries invalides
+            pTopoOp = CType(pSqueletteEnv, ITopologicalOperator2)
+            pSquelette = CType(pTopoOp.Intersect(pSquelette, esriGeometryDimension.esriGeometry1Dimension), IPolyline)
 
-            'pBagDroitesEnv = pBagSquelette
+            'Tester
+            'pBagDroitesEnv = pBagSquelettePrimaire
+            'pBagDroites = pBagSqueletteBase
             'pSquelette = pSqueletteEnv
+            'pSquelette = pSqueletteTmp
 
         Catch ex As Exception
             Throw
         Finally
             'Vider la mémoire
             pPolylineEnv = Nothing
-            pSqueletteEnv = Nothing
             pSqueletteTmp = Nothing
             pLignesEnv = Nothing
-            pPointsConnexion = Nothing
-            pPointsNonConnexion = Nothing
             pBagDroitesTmp = Nothing
             pBagSommets = Nothing
             pBagSommetsTmp = Nothing
@@ -1586,8 +2522,10 @@ Public Class TriangulationDelaunay
             pTopoOp = Nothing
             pGeomColl = Nothing
             pGeomCollAdd = Nothing
+            pPointColl = Nothing
             pPath = Nothing
             pRelOp = Nothing
+            pDroite = Nothing
         End Try
     End Sub
 
@@ -1703,15 +2641,15 @@ Public Class TriangulationDelaunay
     End Sub
 
     ''' <summary>
-    ''' Fonction qui permet de retourner le Polygone extérieur d'un Polygon à partir d'une largeur minimum.
+    ''' Fonction qui permet de retourner le Polygone extérieur d'une géométrie à partir d'une largeur minimum.
     ''' </summary>
     ''' 
-    ''' <param name="pPolygon">Polygone utilisée pour effectuer la généralisation.</param>
+    ''' <param name="pGeometry">Géométrie utilisée pour créer un polygone extérieure.</param>
     ''' <param name="dLargMin"> Largeur minimum utilisée pour créer le polygone.</param>
     ''' 
-    ''' <returns>Polygon contenant le polygone extérieur à un polygone.</returns>
+    ''' <returns>Polygon contenant le polygone extérieur à un polygone ou à une ligne.</returns>
     ''' 
-    Public Shared Function CreerPolygoneExterieur(ByVal pPolygon As IPolygon, ByVal dLargMin As Double) As IPolygon4
+    Public Shared Function CreerPolygoneExterieur(ByVal pGeometry As IGeometry, ByVal dLargMin As Double) As IPolygon4
         'Déclarer les variables de travail
         Dim pEnvelope As IEnvelope = Nothing            'Interface contenant l'enveloppe du polygone extérieur.
         Dim pPointColl As IPointCollection = Nothing    'Interface pour ajouter les sommets dans le polygone.
@@ -1719,11 +2657,11 @@ Public Class TriangulationDelaunay
 
         'Créer le polygone extérieure vide
         CreerPolygoneExterieur = New Polygon
-        CreerPolygoneExterieur.SpatialReference = pPolygon.SpatialReference
+        CreerPolygoneExterieur.SpatialReference = pGeometry.SpatialReference
 
         Try
             'Définir l'enveloppe du polygone
-            pEnvelope = pPolygon.Envelope
+            pEnvelope = pGeometry.Envelope
 
             'Agrandir l'enveloppe du polygone selon la largeur minimum doublée
             pEnvelope.Expand(dLargMin * 2, dLargMin * 2, False)
@@ -1738,11 +2676,14 @@ Public Class TriangulationDelaunay
             pPointColl.AddPoint(pEnvelope.LowerRight)
             pPointColl.AddPoint(pEnvelope.LowerLeft)
 
-            'Interface pour créer le polygone extérieure du polygone
-            pTopoOp = CType(CreerPolygoneExterieur, ITopologicalOperator2)
+            'Vérifier si la géométrie est un polygone
+            If pGeometry.GeometryType = esriGeometryType.esriGeometryPolygon Then
+                'Interface pour créer le polygone extérieure du polygone
+                pTopoOp = CType(CreerPolygoneExterieur, ITopologicalOperator2)
 
-            'Créer le polygone extérieur
-            CreerPolygoneExterieur = CType(pTopoOp.Difference(pPolygon), IPolygon4)
+                'Créer le polygone extérieur
+                CreerPolygoneExterieur = CType(pTopoOp.Difference(pGeometry), IPolygon4)
+            End If
 
             'Densifier le polygone extérieur selon la largeur minimum
             CreerPolygoneExterieur.Densify(dLargMin, 0)
@@ -2161,12 +3102,12 @@ Public Class TriangulationDelaunay
     ''' </summary>
     ''' 
     ''' <param name="pGeometry">Géométrie utilisée pour trouver les lignes des triangles de Delaunay.</param>
-    ''' <param name="pLignesTriangles">Interface contenant les lignes des triangles de Delaunay.</param>
+    ''' <param name="pLignesTriangles">Interface contenant les lignes des triangles de Delaunay sans les limites des polygones ou sans la ligne.</param>
     ''' 
-    ''' <remarks>Les lignes des triangles de Delaunay ne sont pas découpées.</remarks>
-    ''' 
-    Public Shared Sub CreerPolyligneTrianglesDelaunay(ByVal pGeometry As IGeometry, ByRef pLignesTriangles As IPolyline)
+    ''' <returns>IPolyline contenant toutes les lignes des triangles de Delaunay</returns>
+    Public Shared Function CreerPolyligneTrianglesDelaunay(ByVal pGeometry As IGeometry, ByRef pLignesTriangles As IPolyline) As IPolyline
         'Déclarer les variables de travail
+        Dim pClone As IClone = Nothing                      'Interface pour cloner uen géométrie.
         Dim pGeometryBag As IGeometryBag = Nothing          'Interface contenant les lignes de généralisation de base.
         Dim pLimite As IPolyline = Nothing                  'Interface contenant la géométrie ou la limite du polygone.
         Dim pPolyline As IPolyline = Nothing                'Interface contenant une ligne.
@@ -2177,12 +3118,16 @@ Public Class TriangulationDelaunay
         Dim pListeTriangles As List(Of SimpleTriangle) = Nothing 'Liste des triangles de Delaunay.
 
         'Définir la valeur par défaut
+        CreerPolyligneTrianglesDelaunay = New Polyline
+        CreerPolyligneTrianglesDelaunay.SpatialReference = pGeometry.SpatialReference
+
+        'Définir la valeur par défaut
         pLignesTriangles = New Polyline
         pLignesTriangles.SpatialReference = pGeometry.SpatialReference
 
         Try
             'Vérifier si la géométrie n'est pas une ligne ou une surface
-            If pGeometry.Dimension = esriGeometryDimension.esriGeometry0Dimension Then Exit Sub
+            If pGeometry.Dimension = esriGeometryDimension.esriGeometry0Dimension Then Exit Function
 
             'Créer la liste des sommets
             pListeSommets = CreerListeSommets(pGeometry)
@@ -2241,6 +3186,11 @@ Public Class TriangulationDelaunay
             'Construire l'union des lignes des triangles
             pTopoOp.ConstructUnion(CType(pGeometryBag, IEnumGeometry))
 
+            'Interface pour cloner les lignes des triangles
+            pClone = CType(pLignesTriangles, IClone)
+            'Cloner les lignes des triangles
+            CreerPolyligneTrianglesDelaunay = CType(pClone.Clone, IPolyline)
+
             'Vérifier si la géométrie est une surface
             If pGeometry.GeometryType = esriGeometryType.esriGeometryPolygon Then
                 'Interface pour extraire la limite du polygone
@@ -2263,6 +3213,7 @@ Public Class TriangulationDelaunay
             Throw
         Finally
             'Vider la mémoire
+            pClone = Nothing
             pGeometryBag = Nothing
             pPolyline = Nothing
             pGeomColl = Nothing
@@ -2272,7 +3223,7 @@ Public Class TriangulationDelaunay
             pListeTriangles = Nothing
             pLimite = Nothing
         End Try
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Routine qui permet de créer et retourner les lignes des triangles de Delaunay qui sont à l'intérieure et l'extérieure de la géométrie.
@@ -2715,6 +3666,8 @@ Public Class TriangulationDelaunay
                 pSquelette.ToPoint = pPointColl.Point(pPointColl.PointCount - 2)
             End If
 
+            'pBagDroites = pBagSqueletteBase
+
         Catch ex As Exception
             Throw
         Finally
@@ -2792,11 +3745,15 @@ Public Class TriangulationDelaunay
                         'Définir le numéro du sommet précédent pour les débuts de ligne
                         pNoeudLien.NoPrec = -1
 
+                        'Vérifier si l'angle maximum est inférieure à 180
                         If pNoeudLien.AngleMax < 180 Then
                             'Définir l'angle maximum
                             pNoeudLien.AngleMin = pNoeudLien.AngleMax + 180
                             pNoeudLien.AngleMax = pNoeudLien.AngleMin + 180
                         End If
+
+                        'Définir l'angle minimum
+                        pNoeudLien.AngleMin = pNoeudLien.AngleMax - 180
                     End If
 
                     'Vérifier si c'est une fin de ligne
@@ -2973,9 +3930,9 @@ Public Class TriangulationDelaunay
 
                 'Définir l'angle de la ligne
                 dAngleDroite = Angle(pPointA, pPointB, pNoeudLien.AngleMin)
-
                 'Vérifier si l'angle de la droite est valide
                 If dAngleDroite < pNoeudLien.AngleMax Then
+                    'Debug.Print(iSel.ToString & "-" & pPointA.X.ToString & "," & pPointA.Y.ToString & ": " & dAngleDroite.ToString & ": " & pNoeudLien.AngleMin.ToString & ": " & pNoeudLien.AngleMax.ToString)
                     'Ajouter le numéro de la droite, le point de début et fin de la droite, l'angle de la droite et si elle est traitée
                     pNoeudLien.Add(iRel, pPointA, pPointB, dAngleDroite, pTest.Contains(iRel))
 

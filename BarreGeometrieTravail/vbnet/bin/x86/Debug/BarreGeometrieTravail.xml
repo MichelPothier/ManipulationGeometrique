@@ -229,6 +229,21 @@ Auteur : Michel Pothier
 	<param name="dLargMin"> Largeur minimale de généralisation.</param>
 	<param name="dLongMin"> Longueur minimale de généralisation.</param>
 	<param name="dSupMin"> Contient la superficie de généralisation minimum.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.GeneraliserLigneFractionnee(System.Double,System.Double,System.Double,System.Double)">
+	<summary>
+ Permet de créer la généralisation de ligne fractionnée pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
+</summary>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargGenMin"> Largeur minimale de généralisation.</param>
+	<param name="dLongGenMin"> Longueur minimale de généralisation.</param>
+	<param name="dLongMin"> Longueur minimale d'une ligne.</param>
+</member><member name="M:BarreGeometrieTravail.modGeometrieTravail.FractionnerPolyligne(ESRI.ArcGIS.Geometry.IPolyline)">
+	<summary>
+ Fonction qui permet de fractionner une polyligne selon les angles aigus et obtus.
+ La polyligne résultante contiendra des lignes (Path) de sens inversé entre les changement d'angle aigu et obtu des droites consécutives.
+</summary>
+	<param name="pPolyline"> Interface contenant la polyligne à fractionner.</param>
+	<returns>IPolyline contenant la polyligne fractionnée.</returns>
 </member><member name="M:BarreGeometrieTravail.modGeometrieTravail.GeneraliserLigne(System.Double,System.Double,System.Double,System.Double,System.Int32)">
 	<summary>
  Permet de créer la généralisation de ligne pour les éléments sélectionnés de la vue active et les mettre en mémoire dans la géométrie de travail.
@@ -680,6 +695,13 @@ utilisé dans ArcMap (ArcGisESRI).
 
 Auteur : Michel Pothier
 </remarks>
+</member><member name="T:BarreGeometrieTravail.cmdGeneraliserLigneFractionnee">
+	<summary>
+Commande qui permet de généraliser une ligne fractionnée selon la méthode droite et gauche.
+</summary>
+	<remarks>
+ '''Auteur : Michel Pothier
+</remarks>
 </member><member name="T:BarreGeometrieTravail.cmdImporter">
 	<summary>
 Commande qui permet d'importer les géométries de travail contenu dans les éléments graphiques du MapFrame.
@@ -827,6 +849,10 @@ Returns 'MPO_BarreGeometrieTravail_cmdImporter', the id declared for Add-in Butt
 </member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdExporter">
 	<summary>
 Returns 'MPO_BarreGeometrieTravail_cmdExporter', the id declared for Add-in Button class 'cmdExporter'
+</summary>
+</member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdGeneraliserLigneFractionnee">
+	<summary>
+Returns 'MPO_BarreGeometrieTravail_cmdGeneraliserLigneFractionnee', the id declared for Add-in Button class 'cmdGeneraliserLigneFractionnee'
 </summary>
 </member><member name="P:BarreGeometrieTravail.My.ThisAddIn.IDs.cmdGeneraliserLigne">
 	<summary>
@@ -1225,7 +1251,7 @@ Auteur : Michel Pothier
 	<param name="pSquelette"> Interface contenant le squelette du polygon.</param>
 	<param name="pBagDroites"> Interface contenant les droites de Delaunay.</param>
 	<remarks>La généralisation est effectuée à partir des lignes des triangles de Delaunay.</remarks>
-</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserPolyligne(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserPolyligne(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
 	<summary>
  Routine qui permet de retourner la Polyligne de généralisation et la Polyline d'erreurs du résultat de la généralisation effectuée pour une polyligne.
  La généralisation est effectuée à partir des lignes des triangles de Delaunay.
@@ -1239,7 +1265,26 @@ Auteur : Michel Pothier
 	<param name="pPolylineGen"> Interface contenant les lignes de généralisation.</param>
 	<param name="pPolylineErr"> Interface contenant les lignes de généralisation en erreur.</param>
 	<param name="pSquelette"> Interface contenant le squelette de la polyligne.</param>
-	<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay utilisées pour effectuer la généralisation.</param>
+	<param name="pSqueletteEnv"> Interface contenant le squelette de la polyligne avec son enveloppe.</param>
+	<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay.</param>
+	<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.GeneraliserLigne(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de retourner la Polyligne de généralisation et la Polyline d'erreurs du résultat de la généralisation effectuée pour une polyligne.
+ La généralisation est effectuée à partir des lignes des triangles de Delaunay.
+ </summary>
+	<param name="pPolyline"> Polyligne utilisée pour effectuer la généralisation.</param>
+	<param name="pPointsConnexion">Interface contenant les points de connexion entre la polyligne et les éléments en relation.</param>
+	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
+	<param name="dLargGenMin"> Largeur minimum utilisée pour généraliser.</param>
+	<param name="dLongGenMin"> Longueur minimale utilisée pour généraliser.</param>
+	<param name="dLongMin"> Longueur minimale d'une ligne.</param>
+	<param name="pPolylineGen"> Interface contenant les lignes de généralisation.</param>
+	<param name="pPolylineErr"> Interface contenant les lignes de généralisation en erreur.</param>
+	<param name="pSquelette"> Interface contenant le squelette de la polyligne.</param>
+	<param name="pSqueletteEnv"> Interface contenant le squelette de la polyligne avec son enveloppe.</param>
+	<param name="pBagDroites"> Interface contenant les droites des triangles de Delaunay.</param>
+	<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
 </member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.TraiterLongueurLigneMinimale(ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IMultipoint,System.Double)">
 	<summary>
  Routine qui permet de détruire les lignes non-connectées qui sont inférieures à la longueur minimale d'une ligne
@@ -1288,6 +1333,24 @@ Auteur : Michel Pothier
 	<param name="dLargMin">Contient la largeur de généralisation minimum.</param>
 	<param name="dLongMin">Contient la longueur de généralisation minimum.</param>
 	<param name="pPolylineErr">Interface contenant la polyligne d'erreur de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerPolyligneErreurGeneralisation(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IGeometryBag,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Function qui permet de créer la polyligne d'erreur de généralisation d'une géométrie.
+ </summary>
+	<param name="pPolyline">Interface contenant la polyligne à généraliser.</param>
+	<param name="pSquelette">Interface contenant le squelette de la géométrie.</param>
+	<param name="pBagLignesTriangles">Interface contenant les lignes des triangles.</param>
+	<param name="dLargMin">Contient la largeur de généralisation minimum.</param>
+	<param name="dLongMin">Contient la longueur de généralisation minimum.</param>
+	<param name="pPolylineErr">Interface contenant la polyligne d'erreur de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.RegrouperReseauxPolyligne(ESRI.ArcGIS.Geometry.IPolyline,System.Double)">
+	<summary>
+ Function qui permet de regrouper dans un BAG les réseaux d'un ensemble de lignes qui sont plus grand qu'une longueur minimale.
+ </summary>
+	<remarks>Un réseau est un ensemble de lignes qui se touchent entre elles.</remarks>
+	<param name="pPolyline">Interface contenant un ou plusieurs réseaux linéaires.</param>
+	<param name="dLongMin">Contient la longueur de minimale d'un réseau.</param>
+	<returns>GeometryBag contenant tous les réseaux linéaires plus grand que la longueur minimale</returns>
 </member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerPolyligneGeneralisation(ESRI.ArcGIS.Geometry.IPolyline,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud},ESRI.ArcGIS.Geometry.IGeometryBag,ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline@)">
 	<summary>
  Routine qui permet de créer et retourner la polyligne de généralisation.
@@ -1296,6 +1359,21 @@ Auteur : Michel Pothier
 	<param name="pDictLiens">Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
 	<param name="pBagDroites">Interface contenant les droites de Delaunay.</param>
 	<param name="pPolylineErr">Interface contenant la polyligne d'erreurs de généralisation.</param>
+	<param name="pPolylineGen">Interface contenant la polyligne de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.EliminerTrianglePolyligne(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet d'éliminer les triangles de la polyligne de généralisation.
+ La partie la plus longue de chaque triangle est éliminée.
+ </summary>
+	<param name="pPolyline">Interface contenant la polyligne à généraliser.</param>
+	<param name="pPolylineErr">Interface contenant la polyligne d'erreurs de généralisation.</param>
+	<param name="pPolylineGen">Interface contenant la polyligne de généralisation.</param>
+</member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.EliminerTrianglePolyligne(ESRI.ArcGIS.Geometry.IPolyline,ESRI.ArcGIS.Geometry.IPolyline@)">
+	<summary>
+ Routine qui permet de'éliminer les triangles de la polyligne de généralisation.
+ La partie la plus longue de chaque triangle est éliminée.
+ </summary>
+	<param name="pPolyline">Interface contenant la polyligne à généraliser.</param>
 	<param name="pPolylineGen">Interface contenant la polyligne de généralisation.</param>
 </member><member name="M:BarreGeometrieTravail.clsGeneraliserGeometrie.CreerPolygoneGeneralisation(ESRI.ArcGIS.Geometry.IPolygon,ESRI.ArcGIS.Geometry.IGeometryBag,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolygon@)">
 	<summary>
@@ -1333,7 +1411,19 @@ Auteur : Michel Pothier
  </summary>
 	<param name="pLignes">Interface contenant les lignes des triangles de Delaunay.</param>
 	<param name="pPolyline">Polyligne utilisée pour effectuer la généralisation de ligne.</param>
-</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerSqueletteLigneDelaunay(ESRI.ArcGIS.Geometry.IPolyline,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud}@,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerSqueletteLigneDelaunay(ESRI.ArcGIS.Geometry.IPath,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud}@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
+	<summary>
+ Routine qui permet de créer le squelette d'une ligne en utilisant les lignes des triangles de Delaunay.
+ </summary>
+	<param name="pPath"> Ligne utilisée pour créer le squelette.</param>
+	<param name="dLargMin"> Largeur minimum utilisée pour créer le squelette.</param>
+	<param name="dLongMin"> Longueur minimale utilisée pour créer le squelette.</param>
+	<param name="pSquelette"> Interface contenant le squelette de la ligne.</param>
+	<param name="pSqueletteEnv"> Interface contenant le squelette de la ligne avec son enveloppe.</param>
+	<param name="pDictLiens"> Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
+	<param name="pBagDroites"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne.</param>
+	<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerSqueletteLigneDelaunay(ESRI.ArcGIS.Geometry.IPolyline,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,System.Collections.Generic.Dictionary{System.Int32,BarreGeometrieTravail.TriangulationDelaunay.Noeud}@,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
 	<summary>
  Routine qui permet de créer le squelette d'une ligne en utilisant les lignes des triangles de Delaunay.
  </summary>
@@ -1341,9 +1431,10 @@ Auteur : Michel Pothier
 	<param name="dLargMin"> Largeur minimum utilisée pour créer le squelette.</param>
 	<param name="dLongMin"> Longueur minimale utilisée pour créer le squelette.</param>
 	<param name="pSquelette"> Interface contenant le squelette de la ligne.</param>
+	<param name="pSqueletteEnv"> Interface contenant le squelette de la ligne avec son enveloppe.</param>
 	<param name="pDictLiens"> Dictionnaire contenant l'information des sommets de la ligne à traiter.</param>
-	<param name="pBagDroitesEnv"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne avec son enveloppe.</param>
 	<param name="pBagDroites"> Interface contenant le Bag des droites des triangles de Delaunay utilisées pour créer le squelette de la ligne.</param>
+	<param name="pBagDroitesEnv"> Interface contenant les droites des triangles de Delaunay avec son enveloppe.</param>
 </member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerSquelettePolygoneDelaunay(ESRI.ArcGIS.Geometry.IPolygon4,ESRI.ArcGIS.Geometry.IMultipoint,System.Double,System.Double,System.Double,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IGeometryBag@)">
 	<summary>
  Routine qui permet de créer et retourner les lignes du squelette d'un polygone dans une Polyline.
@@ -1355,13 +1446,13 @@ Auteur : Michel Pothier
 	<param name="dDistLat"> Distance latérale utilisée pour éliminer des sommets en trop.</param>
 	<param name="dDistMin"> Distance minimum utilisée pour ajouter des sommets.</param>
 	<param name="dLongMin"> Longueur minimale utilisée pour éliminer des lignes du squelette trop petites.</param>
-</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerPolygoneExterieur(ESRI.ArcGIS.Geometry.IPolygon,System.Double)">
+</member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerPolygoneExterieur(ESRI.ArcGIS.Geometry.IGeometry,System.Double)">
 	<summary>
- Fonction qui permet de retourner le Polygone extérieur d'un Polygon à partir d'une largeur minimum.
+ Fonction qui permet de retourner le Polygone extérieur d'une géométrie à partir d'une largeur minimum.
  </summary>
-	<param name="pPolygon">Polygone utilisée pour effectuer la généralisation.</param>
+	<param name="pGeometry">Géométrie utilisée pour créer un polygone extérieure.</param>
 	<param name="dLargMin"> Largeur minimum utilisée pour créer le polygone.</param>
-	<returns>Polygon contenant le polygone extérieur à un polygone.</returns>
+	<returns>Polygon contenant le polygone extérieur à un polygone ou à une ligne.</returns>
 </member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.AjouterEnveloppePolyligne(ESRI.ArcGIS.Geometry.IPolyline,System.Double)">
 	<summary>
  Fonction qui permet de retourner la polyligne dans laquelle l'enveloppe a été ajoutée à partir d'une largeur minimum.
@@ -1394,8 +1485,8 @@ Auteur : Michel Pothier
  Routine qui permet de créer et retourner les lignes des triangles de Delaunay.
  </summary>
 	<param name="pGeometry">Géométrie utilisée pour trouver les lignes des triangles de Delaunay.</param>
-	<param name="pLignesTriangles">Interface contenant les lignes des triangles de Delaunay.</param>
-	<remarks>Les lignes des triangles de Delaunay ne sont pas découpées.</remarks>
+	<param name="pLignesTriangles">Interface contenant les lignes des triangles de Delaunay sans les limites des polygones ou sans la ligne.</param>
+	<returns>IPolyline contenant toutes les lignes des triangles de Delaunay</returns>
 </member><member name="M:BarreGeometrieTravail.TriangulationDelaunay.CreerPolyligneTrianglesDelaunay(ESRI.ArcGIS.Geometry.IGeometry,ESRI.ArcGIS.Geometry.IPolyline@,ESRI.ArcGIS.Geometry.IPolyline@)">
 	<summary>
  Routine qui permet de créer et retourner les lignes des triangles de Delaunay qui sont à l'intérieure et l'extérieure de la géométrie.

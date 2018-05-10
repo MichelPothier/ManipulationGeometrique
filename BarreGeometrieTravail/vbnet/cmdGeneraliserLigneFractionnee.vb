@@ -3,17 +3,17 @@ Imports ESRI.ArcGIS.Framework
 Imports ESRI.ArcGIS.ArcMapUI
 
 '**
-'Nom de la composante : cmdGeneraliserLigne 
+'Nom de la composante : cmdGeneraliserLigneFractionnee 
 '
 '''<summary>
-'''Commande qui permet de généraliser l'intérieur des éléments de type ligne sélectionnés selon la méthode droite ou gauche.
+'''Commande qui permet de généraliser une ligne fractionnée selon la méthode droite et gauche.
 '''</summary>
 '''
 '''<remarks>
 ''' '''Auteur : Michel Pothier
 '''</remarks>
 ''' 
-Public Class cmdGeneraliserLigne
+Public Class cmdGeneraliserLigneFractionnee
     Inherits ESRI.ArcGIS.Desktop.AddIns.Button
 
     Dim gpApp As IApplication = Nothing     'Interface ESRI contenant l'application ArcMap
@@ -51,7 +51,6 @@ Public Class cmdGeneraliserLigne
         Dim dLargGenMin As Double = 150             'Contient la largeur minimale de généralisation.
         Dim dLongGenMin As Double = 0               'Contient la longueur minimale de généralisation.
         Dim dLongMin As Double = 1250               'Contient la longueur minimale d'une ligne.
-        Dim iMethode As Integer = 2                 'Contient la méthode de généralisation 0:Droite, 1:Gauche.
         Dim sParametres As String = Nothing         'Contient les paramètres du traitement.
         Dim sValeur() As String = Nothing           'Contient les valeurs des paramètres du traitement.
 
@@ -61,8 +60,8 @@ Public Class cmdGeneraliserLigne
             pMouseCursor.SetCursor(2)
 
             'Demander les paramètres du traitement
-            sParametres = InputBox("Entrer la largeur et la longueur minimale de généralisation, la longueur minimale d'une ligne et la méthode (0:Droite/1:Gauche/2:Droite-Gauche/3:Gauche-Droite)", "Généralisation d'une polyligne", _
-                                   dLargGenMin.ToString & "," & dLongGenMin.ToString & "," & dLongMin.ToString & "," & iMethode.ToString)
+            sParametres = InputBox("Entrer la largeur et la longueur minimale de généralisation, la longueur minimale d'une ligne", "Généralisation d'une polyligne fractionnée", _
+                                   dLargGenMin.ToString & "," & dLongGenMin.ToString & "," & dLongMin.ToString)
 
             'Définir la date de début
             Dim dDateDebut As Date = System.DateTime.Now
@@ -71,7 +70,7 @@ Public Class cmdGeneraliserLigne
             sValeur = sParametres.Split(CChar(","))
 
             'Vérifier si les paramètres sont valident
-            If sValeur.Length = 4 Then
+            If sValeur.Length = 3 Then
                 ''Définir la distance latérale
                 'dDistLat = CDbl(sValeur(0))
 
@@ -81,11 +80,9 @@ Public Class cmdGeneraliserLigne
                 dLongGenMin = CDbl(sValeur(1))
                 'Définir la longueur minimale d'une ligne
                 dLongMin = CDbl(sValeur(2))
-                'Définir la méthode 0-Droite/1-Gauche
-                iMethode = CInt(sValeur(3))
 
                 'Appel du module qui effectue le traitement
-                modGeometrieTravail.GeneraliserLigne(dDistLat, dLargGenMin, dLongGenMin, dLongMin, iMethode)
+                modGeometrieTravail.GeneraliserLigneFractionnee(dDistLat, dLargGenMin, dLongGenMin, dLongMin)
 
                 'Afficher et dessiner l'information des géométries de travail
                 Call m_MenuGeometrieTravail.InfoGeometrieTravail()
