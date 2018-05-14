@@ -452,8 +452,8 @@ Public Class clsGeneraliserGeometrie
         Dim pPolylineTmp As IPolyline = Nothing                 'Interface contenant une ligne temporaire.
         Dim pPolylineErrTmp As IPolyline = Nothing              'Interface contenant une ligne d'erreur de généralisation temporaire.
         Dim pPolylineGenTmp As IPolyline = Nothing              'Interface contenant une ligne généralisée temporaire.
-        Dim pBagDroitesTmp As IGeometryBag = Nothing
-        Dim pBagDroitesEnvTmp As IGeometryBag = Nothing
+        Dim pBagDroitesTmp As IGeometryBag = Nothing            'Interface contenant les droites des triangles de Delaunay temporaire.
+        Dim pBagDroitesEnvTmp As IGeometryBag = Nothing         'Interface contenant les droites des triangles de Delaunay avec son enveloppe temporaire.
         Dim pDictLiens As New Dictionary(Of Integer, Noeud)     'Dictionnaire contenant l'information des sommets de la polyligne à traiter.
         Dim pDictDroites As New Dictionary(Of Integer, Integer) 'Dictionnaire contenant les numéros des droites à utiliser pour effectuer la généralisation.
         Dim pGeomColl As IGeometryCollection = Nothing          'Interface pour extraire les composantes d'une polyligne.
@@ -548,6 +548,8 @@ Public Class clsGeneraliserGeometrie
             pPolylineTmp = Nothing
             pPolylineErrTmp = Nothing
             pPolylineGenTmp = Nothing
+            pBagDroitesTmp = Nothing
+            pBagDroitesEnvTmp = Nothing
             pDictLiens = Nothing
             pDictDroites = Nothing
             pGeomColl = Nothing
@@ -5313,7 +5315,6 @@ Public Class TriangulationDelaunay
             pLigneB = Nothing
         End Try
     End Function
-
     ''' <summary>
     ''' Function qui permet de retourner les points d'intersection entre un élément et ses éléments en relation.
     ''' </summary>
@@ -5330,6 +5331,12 @@ Public Class TriangulationDelaunay
         Dim pEnumTopoParents As IEnumTopologyParent = Nothing   'Interface contenant le nombre d'élément au point d'intersection.
         Dim pEnumTopoNode As IEnumTopologyNode = Nothing        'Interface pour extraire les points de connexion.
         Dim pTopoNode As ITopologyNode = Nothing                'Interface contenant un point de connexion.
+        Dim pEnumTopoEdge As IEnumTopologyEdge = Nothing        'Interface pour extraire les lignes de connexion.
+        Dim pTopoEdge As ITopologyEdge = Nothing                'Interface contenant une ligne de connexion.
+        Dim pPolyline As IPolyline = Nothing                    'Interface pour extraire le centre de la ligne.
+        Dim pPointCollDiff As IPointCollection = Nothing        'Interface pour ajouter les sommets de différence.
+        Dim pPointDiff As IMultipoint = Nothing                 'Interface contenant les sommets de différence.
+        Dim pPoint As IPoint = Nothing                          'Interface contenant un point d'intersection.
 
         Try
             'Créer la géométrie des sommets en relation par défaut
@@ -5338,6 +5345,48 @@ Public Class TriangulationDelaunay
 
             'Interface pour extraire le sommets en relation
             pPointColl = CType(ExtrairePointsIntersection, IPointCollection)
+
+            'Créer un multipoint vide
+            pPointDiff = New Multipoint
+            pPointDiff.SpatialReference = pFeature.Shape.SpatialReference
+
+            'Interface pour extraire le sommets en relation
+            pPointCollDiff = CType(pPointDiff, IPointCollection)
+
+            'Extraire les lignes de connexion de la topologie
+            pEnumTopoEdge = pTopologyGraph.GetParentEdges(CType(pFeature.Class, IFeatureClass), pFeature.OID)
+            'Initialiser l'extraction des lignes de connexion
+            pEnumTopoEdge.Reset()
+            'Extraire la première ligne de connexion
+            pTopoEdge = pEnumTopoEdge.Next
+
+            'Extraire toutes les lignes de connexion
+            Do Until pTopoEdge Is Nothing
+                'Extraire le nombre d'éléments
+                pEnumTopoParents = pTopoEdge.Parents()
+                'Vérifier si plusieurs Edges
+                If pEnumTopoParents.Count > 1 Then
+                    'vérifier si la ligne est valide
+                    If pTopoEdge.Geometry IsNot Nothing Then
+                        'Définir la ligne
+                        pPolyline = CType(pTopoEdge.Geometry, IPolyline)
+                        'Créer un nouveau point vide
+                        pPoint = New Point
+                        pPoint.SpatialReference = pPolyline.SpatialReference
+                        'Extraire le centre de la ligne
+                        pPolyline.QueryPoint(esriSegmentExtension.esriNoExtension, pPolyline.Length / 2, False, pPoint)
+                        'Ajouter le point de connexion
+                        pPointColl.AddPoint(pPoint)
+                        'Ajouter le point de connexion
+                        pPointCollDiff.AddPoint(pPolyline.FromPoint)
+                        'Ajouter le point de connexion
+                        pPointCollDiff.AddPoint(pPolyline.ToPoint)
+                    End If
+                End If
+
+                'Extraire la prochaine ligne de connexion
+                pTopoEdge = pEnumTopoEdge.Next
+            Loop
 
             'Extraire les points de connexion de la topologie
             pEnumTopoNode = pTopologyGraph.GetParentNodes(CType(pFeature.Class, IFeatureClass), pFeature.OID)
@@ -5365,6 +5414,9 @@ Public Class TriangulationDelaunay
             pTopoOp.IsKnownSimple_2 = False
             pTopoOp.Simplify()
 
+            'Enlever les points de différence
+            ExtrairePointsIntersection = CType(pTopoOp.Difference(pPointDiff), IMultipoint)
+
         Catch ex As Exception
             Throw
         Finally
@@ -5374,6 +5426,12 @@ Public Class TriangulationDelaunay
             pEnumTopoParents = Nothing
             pEnumTopoNode = Nothing
             pTopoNode = Nothing
+            pEnumTopoEdge = Nothing
+            pTopoEdge = Nothing
+            pPolyline = Nothing
+            pPointCollDiff = Nothing
+            pPointDiff = Nothing
+            pPoint = Nothing
         End Try
     End Function
 
@@ -5623,7 +5681,7 @@ Public Class TriangulationDelaunay
                 'Vérifier si le point n'est pas déjà connecté
                 If pRelOp.Disjoint(pPointColl.Point(i)) Then
                     'Rechercher le point du polygone par rapport à chaque point d'intersection
-                    If pHitTest.HitTest(pPointColl.Point(i), 0.001, esriGeometryHitPartType.esriGeometryPartVertex, _
+                    If pHitTest.HitTest(pPointColl.Point(i), 0.001, esriGeometryHitPartType.esriGeometryPartBoundary, _
                                         pNewPoint, dDistance, nNumeroPartie, nNumeroSommet, bCoteDroit) Then
                         'Interface pour extraire le sommet de la composante du polygone
                         pPntColl = CType(pRingColl.Geometry(nNumeroPartie), IPointCollection)
