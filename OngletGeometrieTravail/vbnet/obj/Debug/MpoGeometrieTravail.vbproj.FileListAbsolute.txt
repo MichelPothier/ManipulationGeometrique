@@ -1,0 +1,14 @@
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\bin\Debug\MpoGeometrieTravail.dll
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\bin\Debug\MpoGeometrieTravail.pdb
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\bin\Debug\MpoGeometrieTravail.xml
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail.vbprojResolveAssemblyReference.cache
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\dckGeometrieTravail.g.vb
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail_MarkupCompile.cache
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail_MarkupCompile.lref
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\dckGeometrieTravail.baml
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail.g.resources
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail.Resources.resources
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail.vbproj.GenerateResource.Cache
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail.dll
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail.xml
+C:\Users\mpothier\Documents\GitHub\ManipulationGeometrique\OngletGeometrieTravail\vbnet\obj\Debug\MpoGeometrieTravail.pdb

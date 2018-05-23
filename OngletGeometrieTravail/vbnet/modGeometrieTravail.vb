@@ -22,6 +22,20 @@ Friend Class modGeometrieTravail
     End Enum
 
 #Region "Propriétés"
+    'Contient le ComboBox du SNRC actif.
+    Private Shared Property _cboSNRC As ComboBox
+    ''' <summary>
+    ''' Définir et retourner le ComboBoxdu SNRC actif.
+    ''' </summary>
+    Public Shared Property cboSNRC() As ComboBox
+        Get
+            Return _cboSNRC
+        End Get
+        Set(ByVal value As ComboBox)
+            _cboSNRC = value
+        End Set
+    End Property
+
     'Contient le module "MpoGeometrieTravail_Module".
     Private Shared Property _this As Object
     ''' <summary>

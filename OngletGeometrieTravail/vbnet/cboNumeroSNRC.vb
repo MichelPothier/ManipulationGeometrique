@@ -1,5 +1,6 @@
 ﻿Imports System
 Imports System.Collections.Generic
+Imports System.ComponentModel
 Imports System.Linq
 Imports System.Text
 Imports System.Threading.Tasks
@@ -24,6 +25,9 @@ Public Class cboNumeroSNRC
     Public Sub New()
         'Mettre à jour le comboBox
         UpdateCombo()
+
+        'Conserver la référence du comboBox
+        modGeometrieTravail.cboSNRC = Me
     End Sub
 
     '''<summary>
@@ -137,4 +141,12 @@ Public Class cboNumeroSNRC
             End If
         End If
     End Sub
+
+    'Private Sub cboNumeroSNRC_PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Handles Me.PropertyChanged
+    '    'Vérifier si le numéro est absent
+    '    If Not Me.ItemCollection.Any(Function(t) (TryCast(t, ComboBoxItem)).Text = Me.Text) Then
+    '        'Ajouter le numéro SNRC dans la liste
+    '        Add(New ComboBoxItem(Me.Text))
+    '    End If
+    'End Sub
 End Class

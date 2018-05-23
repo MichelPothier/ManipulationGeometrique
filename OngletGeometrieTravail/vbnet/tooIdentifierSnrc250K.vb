@@ -116,6 +116,12 @@ Public Class tooIdentifierSnrc250K
                 'Afficher la liste des géométries de travail
                 Call modGeometrieTravail.DessinerListeGeometries(modGeometrieTravail.GeometrieTravail)
 
+                'Définir le numéro SNRC dans le ComboBox
+                modGeometrieTravail.cboSNRC.Text = snrc.Numero
+
+                'Afficher l'information sur le SNRC
+                dckGeometrieTravail.Information = snrc.Information
+
                 'Retourner le succès du traitement
                 Return True
             End Function)
